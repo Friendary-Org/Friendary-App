@@ -1,51 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { FAB } from "react-native-paper";
 import { StyleSheet, View, Dimensions } from "react-native";
+import FloatingGroupMain from './FloatingGroupMain';
 
 const MainScreen = () => {
     const [state, setState] = React.useState({ open: false });
 
-    const onStateChange = ({ open }) => setState({ open });
-    const windowWidth = Dimensions.get('window').width;
-
     const { open } = state;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.contentContainer}></View>
-            <View style={styles.navContainer}>
-                <FAB
-                    icon="star-outline"
-                    style={[styles.fab, styles.fabLeft]}
-                    onPress={() => console.log("Pressed star")}
-                    size="small"
-                />
-                <FAB.Group
-                    style={{paddingRight: windowWidth / 2.56}}
-                    open={open}
-                    icon="account-plus-outline"
-                    actions={[
-                        {
-                            icon: 'plus',
-                            label: 'Create Friend',
-                            onPress: () => console.log('Pressed create'),
-                        },
-                        {
-                            icon: 'import',
-                            label: 'Import Friend',
-                            onPress: () => console.log('Pressed import'),
-                        },
-                    ]}
-                    onStateChange={onStateChange}
-                />
-                <FAB
-                    icon="wrench-outline"
-                    style={[styles.fab, styles.fabRight]}
-                    onPress={() => console.log("Pressed wrench")}
-                    size="small"
-                />
-            </View>
-        </View>
+        <React.Fragment>
+            <FloatingGroupMain />
+        </React.Fragment>
     );
 };
 
