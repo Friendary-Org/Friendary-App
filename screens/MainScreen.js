@@ -1,46 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { FAB } from "react-native-paper";
-import { StyleSheet, View, Dimensions } from "react-native";
-import FloatingGroupMain from './FloatingGroupMain';
+import React from 'react';
+import FloatingButtonsMain from './FloatingButtonsMain';
+import { View, StyleSheet, Text} from "react-native";
 
 const MainScreen = () => {
-    const [state, setState] = React.useState({ open: false });
-
-    const { open } = state;
 
     return (
-        <React.Fragment>
-            <FloatingGroupMain />
-        </React.Fragment>
+        <View style={styles.container}>
+            <Text style={{marginTop: 80}}>Hello</Text>
+            <View style={[styles.box, styles.box1]}></View>
+            <FloatingButtonsMain />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
         flexDirection: 'column',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-    },
-    contentContainer: {
-        flex: 1,
-        flexDirection: 'row',
-    },
-    navContainer: {
         width: '100%',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-    fab: {
-        margin: 16,
+    box: {
+        marginTop: 120,
+        width:100,
+        height:100
     },
-    fabLeft: {
-        justifyContent: "flex-start",
+
+    box1: {
+        backgroundColor: 'red'
     },
-    fabRight: {
-        justifyContent: "flex-end",
-    },
-});
+    })
 
 export default MainScreen;
