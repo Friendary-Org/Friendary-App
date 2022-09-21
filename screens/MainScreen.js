@@ -3,6 +3,7 @@ import FloatingButtonsMain from './FloatingButtonsMain';
 import { View, StyleSheet, Text} from "react-native";
 import SearchBar from './SearchBar';
 
+
 const MainScreen = () => {
 
     return (
@@ -27,7 +28,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'green'
     },
     helloContainer: {
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        alignItems: 'center'
     }
     })
 
