@@ -1,7 +1,7 @@
-import React from 'react';
-import FloatingButtonsMain from './FloatingButtonsMain';
+import React from "react";
+import FloatingButtonsMain from "./FloatingButtonsMain";
 import { View, StyleSheet, Text} from "react-native";
-import SearchBar from './SearchBar';
+import SearchBar from "./SearchBar";
 
 
 const MainScreen = () => {
@@ -25,11 +25,11 @@ const MainScreen = () => {
 const styles = StyleSheet.create({
     searchContainer: {
         marginTop: 50,
-        backgroundColor: 'green'
+        backgroundColor: "green"
     },
     helloContainer: {
-        backgroundColor: 'red',
-        alignItems: 'center'
+        backgroundColor: "red",
+        alignItems: "center"
     }
     })
 

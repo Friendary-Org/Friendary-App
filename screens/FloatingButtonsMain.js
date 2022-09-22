@@ -52,21 +52,17 @@ const FloatingGroupMain = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-    },
     contentContainer: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: "row",
     },
     navContainer: {
-        width: '100%',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
+        width: "100%",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        backgroundColor: "transparent",
+        position: "absolute",
+        bottom: 0,
     },
     fab: {
         margin: 16,
@@ -76,7 +72,7 @@ const styles = StyleSheet.create({
     },
     fabRight: {
         justifyContent: "flex-end",
-    },
+    }
 });
 
 export default FloatingGroupMain;
