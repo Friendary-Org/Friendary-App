@@ -7,9 +7,7 @@ import MainScreen from './screens/MainScreen'
 export default function App() {
   return (
     <PaperProvider>
-      <View style={styles.container}>
         <MainScreen />
-      </View>
     </PaperProvider>
   );
 }
