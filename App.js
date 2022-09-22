@@ -13,9 +13,9 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="Friends">
+          <Stack.Navigator initialRouteName="Friends" screenOptions={{headerShown: false}}>
               <Stack.Screen name="Friends" component={MainScreen}/>
-              <Stack.Screen name="Test" component={TestScreen} options={{headerLeft: ()=> null,}}/>
+              <Stack.Screen name="Test" component={TestScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
