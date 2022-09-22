@@ -21,6 +21,12 @@ const FloatingGroupMain = () => {
                     onPress={() => console.log("Pressed star")}
                     size="small"
                 />
+                <FAB
+                    icon="wrench-outline"
+                    style={[styles.fab, styles.fabRight]}
+                    onPress={() => console.log("Pressed wrench")}
+                    size="small"
+                />
                 <FAB.Group
                     style={{paddingRight: windowWidth / 2.56}}
                     open={open}
@@ -39,12 +45,7 @@ const FloatingGroupMain = () => {
                     ]}
                     onStateChange={onStateChange}
                 />
-                <FAB
-                    icon="wrench-outline"
-                    style={[styles.fab, styles.fabRight]}
-                    onPress={() => console.log("Pressed wrench")}
-                    size="small"
-                />
+
             </View>
         </View>
     );
