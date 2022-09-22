@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
 
-const FloatingGroupMain = () => {
+const FloatingGroupMain = ({navigation}) => {
 
     const [state, setState] = React.useState({ open: false });
 
@@ -12,13 +12,11 @@ const FloatingGroupMain = () => {
     const { open } = state;
 
     return (
-        <View style={styles.container}>
-            <View style={styles.contentContainer}></View>
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
                     style={[styles.fab, styles.fabLeft]}
-                    onPress={() => console.log("Pressed star")}
+                    onPress={() => navigation.push("Test")}
                     size="small"
                 />
                 <FAB
@@ -28,7 +26,7 @@ const FloatingGroupMain = () => {
                     size="small"
                 />
                 <FAB.Group
-                    style={{paddingRight: windowWidth / 2.56}}
+                    style={[{paddingRight: windowWidth / 2.56, margin: 0}]}
                     open={open}
                     icon="account-plus-outline"
                     actions={[
@@ -44,18 +42,14 @@ const FloatingGroupMain = () => {
                         },
                     ]}
                     onStateChange={onStateChange}
+                    backdropColor= "transparent"
                 />
 
             </View>
-        </View>
     );
 }
 
 const styles = StyleSheet.create({
-    contentContainer: {
-        flex: 1,
-        flexDirection: "row",
-    },
     navContainer: {
         width: "100%",
         justifyContent: "space-between",
