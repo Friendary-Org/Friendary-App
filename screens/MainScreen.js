@@ -1,7 +1,8 @@
 import React from "react";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
-import { View, StyleSheet, Text} from "react-native";
+import { View, StyleSheet, Image} from "react-native";
 import SearchBar from "../components/SearchBar";
+import { List } from "react-native-paper";
 
 const MainScreen = ({navigation}) => {
 
@@ -11,9 +12,11 @@ const MainScreen = ({navigation}) => {
                 <SearchBar />
             </View>
 
-            <View style={styles.helloContainer}>
-                <Text>Hello</Text>
-            </View>
+            <List.Item 
+                    title="Fabian Egartner" 
+                    description="Nickname: Egi2k" 
+                    left={props => <List.Icon {...props} icon="folder" />}
+            />
             
             <FloatingButtonsMain navigation={navigation}/>
 
