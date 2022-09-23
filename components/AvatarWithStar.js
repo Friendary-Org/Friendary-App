@@ -1,17 +1,34 @@
 import * as React from 'react';
+import { StyleSheet } from "react-native";
 import { List, Avatar, TouchableRipple } from "react-native-paper";
 
-const AvatarWithStar = () => {
+const AvatarWithStar = (props) => {
+
+    const {avatar} = props;
 
     return (
-        <TouchableRipple key={0} onPress={() => console.log("Pressed star")}>
-            <List.Icon icon="star" />
-        </TouchableRipple>
-        , 
-        <TouchableRipple key={1} onPress={() => console.log("Pressed avatar")}>
-            <Avatar.Image size={64} source={require('../assets/avatar.png')} />
-        </TouchableRipple>
+        <React.Fragment>
+            <TouchableRipple style={styles.listIconTouch} onPress={() => console.log("Pressed star")}>
+                <List.Icon style={styles.listIcon} icon="star-outline"/>
+            </TouchableRipple>
+            
+            <TouchableRipple onPress={() => console.log("Pressed avatar")}>
+                <Avatar.Image size={60} source={avatar} />
+            </TouchableRipple>
+        </React.Fragment>
     );
 }
+
+const styles = StyleSheet.create({
+    listIcon: {
+        height: 20, 
+        width: 20, 
+        margin: 0
+    },
+    listIconTouch: {
+        height: 25, 
+        width: 25
+    }
+});
 
 export default AvatarWithStar;

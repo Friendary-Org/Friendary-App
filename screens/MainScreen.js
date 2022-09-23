@@ -1,12 +1,15 @@
 import React from "react";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
 import { View, StyleSheet} from "react-native";
-import { List, Avatar, TouchableRipple } from "react-native-paper";
+import { List } from "react-native-paper";
 import SearchBar from "../components/SearchBar";
-import { AiOutlineStar } from "react-icons/ai";
+import AvatarWithStar from "../components/AvatarWithStar";
+import FriendEntry from "../components/FriendEntry";
 
 
 const MainScreen = ({navigation}) => {
+
+    const avatar = require('../assets/avatar.png')
 
     return (
         <React.Fragment>
@@ -14,20 +17,7 @@ const MainScreen = ({navigation}) => {
                 <SearchBar />
             </View>
 
-            <List.Item onPress={() => console.log("Pressed list")}
-                    title="Fabian Egartner" 
-                    description="<short description>" 
-                    left={() => 
-                        [
-                            <TouchableRipple style={styles.listIconTouch} key={0} onPress={() => console.log("Pressed star")}>
-                                <List.Icon style={styles.listIcon} icon="star-outline"/>
-                            </TouchableRipple>
-                            , 
-                            <TouchableRipple key={1} onPress={() => console.log("Pressed avatar")}>
-                                <Avatar.Image size={60} source={require('../assets/avatar.png')} />
-                            </TouchableRipple>
-                        ]}
-            />
+            <FriendEntry title="Fabian Egartner" description="Nickname: Egi2k" avatar={avatar} />
             
             <FloatingButtonsMain navigation={navigation}/>
 
@@ -44,15 +34,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#F7F6F6", //main background color
         alignItems: "center",
         height: "100%",
-    },
-    listIcon: {
-        height: 20, 
-        width: 20, 
-        margin: 0
-    },
-    listIconTouch: {
-        height: 25, 
-        width: 25
     }
     })
 
