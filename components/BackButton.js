@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     },
     fab: {
         margin: 32,
+        backgroundColor: "#80D8F7"
     },
 });
 
