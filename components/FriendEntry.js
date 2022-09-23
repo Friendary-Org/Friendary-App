@@ -7,7 +7,7 @@ const FriendEntry = (props) => {
     const {title, description} = props;
 
     return (
-        <List.Item onPress={() => console.log("Pressed list")}
+        <List.Item onPress={() => console.log("pressed list")}
             title = {title} 
             description = {description}
             left = {() => <AvatarWithStar avatar={props.avatar}/>}

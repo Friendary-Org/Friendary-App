@@ -8,11 +8,11 @@ const AvatarWithStar = (props) => {
 
     return (
         <React.Fragment>
-            <TouchableRipple style={styles.listIconTouch} onPress={() => console.log("Pressed star")}>
+            <TouchableRipple style={styles.listIconTouch} onPress={() => console.log("pressed star")}>
                 <List.Icon style={styles.listIcon} icon="star-outline"/>
             </TouchableRipple>
             
-            <TouchableRipple onPress={() => console.log("Pressed avatar")}>
+            <TouchableRipple onPress={() => console.log("pressed avatar")}>
                 <Avatar.Image size={60} source={avatar} />
             </TouchableRipple>
         </React.Fragment>

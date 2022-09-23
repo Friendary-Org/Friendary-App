@@ -1,15 +1,18 @@
 import React from "react";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
 import { View, StyleSheet} from "react-native";
-import { List } from "react-native-paper";
+
 import SearchBar from "../components/SearchBar";
-import AvatarWithStar from "../components/AvatarWithStar";
-import FriendEntry from "../components/FriendEntry";
+import FriendList from "../components/FriendList";
 
 
 const MainScreen = ({navigation}) => {
 
-    const avatar = require('../assets/avatar.png')
+    // data for testing purposes
+    const friendList = [
+        {id: 0, title: "Fabian Egartner", description: "Nickname: Egi2k", avatar: require('../assets/avatar.png')},
+        {id: 1, title: "John Walker", description: "Nickname: Cube", avatar: require('../assets/favicon.png')}
+    ];
 
     return (
         <React.Fragment>
@@ -17,10 +20,11 @@ const MainScreen = ({navigation}) => {
                 <SearchBar />
             </View>
 
-            <FriendEntry title="Fabian Egartner" description="Nickname: Egi2k" avatar={avatar} />
+            <View style={styles.friendList}>
+                <FriendList friendList={friendList} />
+            </View>
             
             <FloatingButtonsMain navigation={navigation}/>
-
         </React.Fragment>
     );
 };
@@ -30,10 +34,9 @@ const styles = StyleSheet.create({
         marginTop: 50,
         backgroundColor: "green"
     },
-    helloContainer: {
-        backgroundColor: "#F7F6F6", //main background color
-        alignItems: "center",
-        height: "100%",
+    friendList: {
+        marginTop: 5,
+        backgroundColor: "#F7F6F6" //main background color
     }
     })
 
