@@ -8,7 +8,7 @@ const CreateFriendScreen = ({route,navigation}) => {
     return(
         <View style={styles.containerView}>
             <AddFriendAvatar/>
-            <AddFriendAvatar avatarSource={require("../assets/test-avatar.jpg")}/>
+            <AddFriendAvatar avatar={require("../assets/test-avatar.jpg")}/>
             <BackButton navigation={navigation}/>
         </View>  
     );

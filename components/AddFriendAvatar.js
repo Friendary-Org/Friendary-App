@@ -4,30 +4,30 @@ import { Avatar, IconButton } from 'react-native-paper';
 
 const avatarSize = 128;
 
-const AddFriendAvatar = ({avatarSource}) => {
-    if (avatarSource== null){
+const AddFriendAvatar = ({avatar}) => {
+    if (avatar== null){
         return (
-            <React.Fragment>
+            <View style={styles.avatarContainer}>
                     <Avatar.Icon size={avatarSize} icon="account-circle" style={styles.icon}/>
                     <IconButton
                         style={styles.upload}
                         icon="plus-circle-outline"
-                        size={avatarSize/2.5}
+                        size={avatarSize/4}
                         onPress={() => console.log('Pressed')}
                     />
-            </React.Fragment>
+            </View>
         );
     }else{
         return (
-            <React.Fragment>
-                    <Avatar.Image size={avatarSize} source={avatarSource}/>
+            <View style={styles.avatarContainer}>
+                    <Avatar.Image size={avatarSize} source={avatar}/>
                     <IconButton
                         style={styles.upload}
                         icon="pencil-outline"
-                        size={avatarSize/2.5}
+                        size={avatarSize/4}
                         onPress={() => console.log('Pressed')}
                     />
-            </React.Fragment>
+            </View>
         );
     }
     
@@ -39,9 +39,13 @@ const styles = StyleSheet.create({
     },
     upload: {
         position: "absolute",
-        marginLeft: avatarSize*0.75,
-        marginTop: avatarSize*0.75,
-    }
+        marginLeft: avatarSize*0.65,
+        marginTop: avatarSize*0.65,
+        backgroundColor: "#80D8F7"
+    },
+    avatarContainer: {
+        flexDirection: "row"
+    },
 });
 
 export default AddFriendAvatar;
