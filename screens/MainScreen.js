@@ -1,9 +1,9 @@
 import React from "react";
-import FloatingButtonsMain from "../components/FloatingButtonsMain";
-import { View, StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import SearchBar from "../components/SearchBar";
 import FriendList from "../components/FriendList";
+import FloatingButtonsMain from "../components/FloatingButtonsMain";
 
 
 const MainScreen = ({navigation}) => {
@@ -32,12 +32,11 @@ const MainScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     searchContainer: {
         marginTop: 50,
-        backgroundColor: "green"
     },
     friendList: {
         marginTop: 5,
         backgroundColor: "#F7F6F6" //main background color
     }
-    })
+});
 
 export default MainScreen;

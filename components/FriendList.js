@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Divider} from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 
 import FriendEntry from './FriendEntry';
+
 
 const FriendList = (props) => {
 
@@ -10,9 +11,14 @@ const FriendList = (props) => {
     return (
         <React.Fragment>
             {friendList.map((friend) => (   
-                <React.Fragment>    
-                        <FriendEntry key={friend.id} title={friend.title} description={friend.description} avatar={friend.avatar}/>
-                        <Divider />      
+                <React.Fragment key={friend.id}>    
+                    <FriendEntry 
+                        title={friend.title} 
+                        description={friend.description} 
+                        avatar={friend.avatar}
+                    />
+
+                    <Divider />      
                 </React.Fragment>
             ))}    
         </React.Fragment>
