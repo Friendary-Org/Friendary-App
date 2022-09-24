@@ -4,33 +4,20 @@ import { Avatar, IconButton } from 'react-native-paper';
 
 const avatarSize = 128;
 
-const AddFriendAvatar = ({avatar}) => {
-    if (avatar== null){
-        return (
-            <View style={styles.avatarContainer}>
-                    <Avatar.Icon size={avatarSize} icon="account-circle" style={styles.icon}/>
-                    <IconButton
-                        style={styles.upload}
-                        icon="plus-circle-outline"
-                        size={avatarSize/4}
-                        onPress={() => console.log('Pressed')}
-                    />
-            </View>
-        );
-    }else{
-        return (
-            <View style={styles.avatarContainer}>
-                    <Avatar.Image size={avatarSize} source={avatar}/>
-                    <IconButton
-                        style={styles.upload}
-                        icon="pencil-outline"
-                        size={avatarSize/4}
-                        onPress={() => console.log('Pressed')}
-                    />
-            </View>
-        );
-    }
-    
+const AddFriendAvatar = ({avatar,editable}) => {
+    return (
+        <View style={styles.avatarContainer}>
+                <Avatar.Image size={avatarSize} source={avatar!==undefined?avatar:require("../assets/test-avatar.jpg")}/>
+                <IconButton
+                    style={[styles.upload,editable==undefined?{display:"none"}:{}]}
+                    icon="pencil-outline"
+                    size={avatarSize/4}
+                    onPress={() => console.log('Pressed')
+                    }
+                    mode="outlined"
+                />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
