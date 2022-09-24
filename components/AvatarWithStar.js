@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet } from "react-native";
-import { List, Avatar, TouchableRipple } from "react-native-paper";
+import { List, Avatar, TouchableRipple, IconButton, MD3Colors } from "react-native-paper";
 
 const AvatarWithStar = (props) => {
 
@@ -8,26 +8,15 @@ const AvatarWithStar = (props) => {
 
     return (
         <React.Fragment>
-            <TouchableRipple style={styles.listIconTouch} onPress={() => console.log("pressed star")}>
-                <List.Icon style={styles.listIcon} icon="star-outline"/>
-            </TouchableRipple>
-            
-            <TouchableRipple onPress={() => console.log("pressed avatar")}>
-                <Avatar.Image size={60} source={avatar} />
-            </TouchableRipple>
+            <IconButton icon="star-outline" style={styles.starIconButton} size={20} onPress={() => console.log("pressed star")} />
+            <Avatar.Image size={60} source={avatar} />
         </React.Fragment>
     );
 }
 
 const styles = StyleSheet.create({
-    listIcon: {
-        height: 20, 
-        width: 20, 
+    starIconButton: {
         margin: 0
-    },
-    listIconTouch: {
-        height: 25, 
-        width: 25
     }
 });
 
