@@ -28,10 +28,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         marginLeft: avatarSize*0.65,
         marginTop: avatarSize*0.65,
-        backgroundColor: "#80D8F7"
+        backgroundColor: "#80D8F7",
     },
     avatarContainer: {
-        flexDirection: "row"
+        flexDirection: "row",
     },
 });
 

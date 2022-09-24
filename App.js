@@ -8,11 +8,20 @@ import TestScreen from "./screens/TestScreen";
 import CreateFriendScreen from "./screens/CreateFriendScreen";
 const Stack = createStackNavigator();
 
+import {
+  en,
+  de,
+  enGB,
+  registerTranslation,
+} from 'react-native-paper-dates'
+registerTranslation('en', en)
+registerTranslation('de', de)
+registerTranslation('en-GB', enGB)
 
 export default function App() {
 
   return (
-    <PaperProvider>
+    <PaperProvider theme={{ version: 2 }}>
       <NavigationContainer>
           <Stack.Navigator initialRouteName="Friends" screenOptions={{headerShown: false}}>
               <Stack.Screen name="Friends" component={MainScreen}/>
