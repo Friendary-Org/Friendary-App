@@ -38,7 +38,7 @@ const FloatingGroupMain = ({navigation}) => {
                         {
                             icon: 'import',
                             label: 'Import Friend',
-                            onPress: () => console.log('Pressed import'),
+                            onPress: () => navigation.push("ImportFriend"),
                         },
                     ]}
                     onStateChange={onStateChange}
