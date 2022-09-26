@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import BackButton from "../components/BackButton"
 
-const TestScreen = ({route,navigation}) => {
+const TestScreen = ({navigation}) => {
     return(
         <View style={styles.containerView}>
             <Text>These are really awesome Details!</Text>
