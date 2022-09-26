@@ -4,7 +4,8 @@ import { Avatar, IconButton } from 'react-native-paper';
 
 const avatarSize = 128;
 
-const AddFriendAvatar = ({avatar,editable}) => {
+const BigAvatar = (props) => {
+    const {avatar,editable} = props;
     return (
         <View style={styles.avatarContainer}>
                 <Avatar.Image size={avatarSize} source={avatar!==undefined?avatar:require("../assets/test-avatar.jpg")}/>
@@ -35,4 +36,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AddFriendAvatar;
+export default BigAvatar;

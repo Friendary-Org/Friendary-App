@@ -1,41 +1,55 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { Divider, TextInput } from 'react-native-paper';
-import { DatePickerInput } from 'react-native-paper-dates';
+import { View, StyleSheet } from 'react-native';
+import { Divider, Menu, Button, TextInput, Text } from 'react-native-paper';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 import BackButton from "../components/BackButton"
-import AddFriendAvatar from "../components/AddFriendAvatar"
+import BigAvatar from "../components/BigAvatar"
+import AddCategoryButton from "../components/AddCategoryButton"
 
-const CreateFriendScreen = ({route,navigation}) => {
-    const [text, setText] = React.useState("");
-    const [inputDate, setInputDate] = React.useState(inputDate);
+const CreateFriendScreen = ({ route, navigation }) => {
+    const [name, setName] = React.useState("");
+    const [date, setDate] = React.useState(new Date(1598051730000));
 
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setDate(currentDate);
+    };
 
-    return(
+    return (
         <View style={styles.containerView}>
             <View style={styles.baseInfo}>
-                <AddFriendAvatar editable/>
+                <BigAvatar editable />
                 <TextInput
                     style={styles.input}
                     label="Name*"
                     mode="outlined"
-                    value={text}
-                    onChangeText={text => setText(text)}
+                    value={name}
+                    onChangeText={name => setName(name)}
                 />
-                <DatePickerInput
-                    style={styles.input}
-                    locale="en"
-                    label="Birthdate"
-                    value={inputDate}
-                    onChange={(inputDate) => setInputDate(inputDate)}
-                    mode="outlined"
-                    editable="false"
-                />
+                <View style={styles.birthdateContainer}>
+                    <TextInput
+                        style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
+                        label="Birthdate*"
+                        mode="outlined"
+                        editable={false}
+                        outlineColor="transparent"
+
+                    />
+                    <DateTimePicker
+                        style={[{ width: "45%" }, { marginTop: "2%" }]}
+                        testID="dateTimePicker"
+                        value={date}
+                        onChange={onChange}
+                    />
+                </View>
+                <AddCategoryButton/>
             </View>
-            
-            <Divider/>
-            <BackButton navigation={navigation}/>
-        </View>  
+            <BackButton navigation={navigation} />
+        </View>
+
+
     );
 };
 
@@ -47,15 +61,19 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         marginTop: "10%",
     },
-    baseInfo:{
-        width:"70%",
-        maxHeight: "40%",
-        flex:1,
+    baseInfo: {
+        width: "100%",
+        flex: 1,
         alignContent: "center",
         alignItems: "center"
     },
     input: {
-        width: 250
+        width: "80%"
+    },
+    birthdateContainer: {
+        width: "80%",
+        flexDirection: "row",
+        alignItems: "center"
     }
 });
 
