@@ -5,8 +5,9 @@ import { Button } from "react-native-paper";
 import * as Contacts from 'expo-contacts';
 
 import ContactList from "../components/ContactList";
+import SearchBar from "../components/SearchBar";
 
-const ImportFriendScreen = ({navigation}) => {
+const ImportFriendScreen = () => {
 
     const [ contacts, setContacts ] = useState([]);
     const [ error, setError ] = useState("");
@@ -36,6 +37,10 @@ const ImportFriendScreen = ({navigation}) => {
                 <Text style={styles.importText}>Import from Contacts</Text>
             </View>
 
+            <View style={styles.searchContainer}>
+                <SearchBar />
+            </View>
+
             {error == "" ?
                 <ScrollView>
                     <View style={styles.contactList}>
@@ -54,12 +59,12 @@ const ImportFriendScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
     importTextContainer: {
+        justifyContent: "center",
         marginTop: "10%",
-        height: "5%",
+        height: "6%",
         backgroundColor: "#A1C8E8"
     },
     importText: {
-        marginTop: 10,
         paddingLeft: 8,
         fontSize: 16,
         fontWeight: "bold",
@@ -74,7 +79,9 @@ const styles = StyleSheet.create({
     },
     selectButtonContainer: {
         height: "10%",
-    }
+    },
+    searchContainer: {
+    },
 });
 
 export default ImportFriendScreen;
