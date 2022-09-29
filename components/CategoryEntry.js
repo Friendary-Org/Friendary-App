@@ -6,7 +6,7 @@ const CategoryEntry = (props) => {
     const {editable, initialValue} = props;
     const [entryValue, setEntryValue] = React.useState(initialValue);
     
-    if (editable) {
+    if (editable==true) {
         return (
             <TextInput
                 mode="outlined"
@@ -19,7 +19,7 @@ const CategoryEntry = (props) => {
         )
     } else {
         return (
-            <Text style={styles.categoryEntry}>{value}</Text>
+            <Text style={styles.categoryEntry}>{initialValue}</Text>
         )
     }
 

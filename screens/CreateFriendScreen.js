@@ -56,12 +56,12 @@ const CreateFriendScreen = ({ route, navigation }) => {
                             outlineColor="transparent"
 
                         />
-                        <DateTimePicker
+                        {/* <DateTimePicker
                             style={[{ width: "45%" }, { marginTop: "2%" }]}
                             testID="dateTimePicker"
                             value={date}
                             onChange={onChange}
-                        />
+                        /> */}
                     </View>
                 </View>
                 <View style={styles.lineStyle} />
