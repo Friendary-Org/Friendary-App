@@ -11,6 +11,7 @@ const ImportFriendScreen = () => {
 
     const [ contacts, setContacts ] = useState([]);
     const [ error, setError ] = useState("");
+    const [ filterString, setFilterString ] = useState("");
 
     useEffect(() => {
         (async () => {
@@ -38,13 +39,13 @@ const ImportFriendScreen = () => {
             </View>
 
             <View style={styles.searchContainer}>
-                <SearchBar />
+                <SearchBar setFilterString={setFilterString}/>
             </View>
 
             {error == "" ?
                 <ScrollView>
                     <View style={styles.contactList}>
-                        <ContactList contactList={contacts}/>
+                        <ContactList contactList={contacts} filterString={filterString}/>
                     </View>
                 </ScrollView> :
                 <Text style={styles.errorText}>{error}</Text>
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     contactList: {
-        height: "80%",
+        height: "100%",
         backgroundColor: "#F7F6F6" //main background color
     },
     selectButtonContainer: {
