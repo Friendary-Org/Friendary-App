@@ -19,7 +19,7 @@ const ImportFriendScreen = ({navigation}) => {
               fields: [Contacts.Fields.Name],
             });
     
-            if (data.length > 4) {
+            if (data.length > 0) {
                 setContacts(data)
             }
             else {
