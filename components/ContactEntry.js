@@ -7,7 +7,7 @@ import { List, Checkbox } from "react-native-paper";
 const ContactEntry = (props) => {
 
     const { name } = props;
-    const [checked, setChecked] = useState("unchecked");
+    const [ checked, setChecked ] = useState("unchecked");
 
     return (
         <List.Item 

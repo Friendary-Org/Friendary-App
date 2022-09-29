@@ -1,18 +1,34 @@
 import React from "react";
-import { View, StyleSheet, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Button } from "react-native-paper";
+import * as Contacts from 'expo-contacts';
 
 import ContactList from "../components/ContactList";
 
-
 const ImportFriendScreen = ({navigation}) => {
 
-// static data for testing purposes (data comes frome phone contact list later)
-    const contactList = [
-        {contactId: 100, fields: {name: "Fabian Egartner"}},
-        {contactId: 101, fields: {name: "John Walker"}},
-        {contactId: 102, fields: {name: "Max Test"}}
-    ];
+    const [ contacts, setContacts ] = useState([]);
+    const [ error, setError ] = useState("");
+
+    useEffect(() => {
+        (async () => {
+          const { status } = await Contacts.requestPermissionsAsync();
+          if (status === 'granted') {
+            const { data } = await Contacts.getContactsAsync({
+              fields: [Contacts.Fields.Name],
+            });
+    
+            if (data.length > 4) {
+                setContacts(data)
+            }
+            else {
+                setError("no contacts found ...")
+            }
+          }
+        })();
+      }, []);
+
 
     return (
         <React.Fragment>
@@ -20,9 +36,14 @@ const ImportFriendScreen = ({navigation}) => {
                 <Text style={styles.importText}>Import from Contacts</Text>
             </View>
 
-            <View style={styles.contactList}>
-                <ContactList contactList={contactList}/>
-            </View>
+            {error == "" ?
+                <ScrollView>
+                    <View style={styles.contactList}>
+                        <ContactList contactList={contacts}/>
+                    </View>
+                </ScrollView> :
+                <Text style={styles.errorText}>{error}</Text>
+            }
 
             <View style={styles.selectButtonContainer}>
                 <Button style={styles.selectButton} mode="contained" onPress={() => console.log('select pressed')}>Select</Button>
@@ -43,16 +64,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
     },
+    errorText: {
+        textAlign: "center",
+        padding: 16,
+    },
     contactList: {
         height: "80%",
         backgroundColor: "#F7F6F6" //main background color
-        
     },
     selectButtonContainer: {
         height: "10%",
-    },
-    selectButton: {
-
     }
 });
 
