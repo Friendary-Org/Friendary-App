@@ -5,6 +5,7 @@ import { TextInput, Text } from 'react-native-paper';
 const CategoryEntry = (props) => {
     const {editable, initialValue} = props;
     const [entryValue, setEntryValue] = React.useState(initialValue);
+    console.log("Category entry editable: "+editable);
     
     if (editable==true) {
         return (

@@ -65,7 +65,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                     </View>
                 </View>
                 <View style={styles.lineStyle} />
-                <CategoryList editable />
+                <CategoryList />
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />

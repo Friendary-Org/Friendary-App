@@ -5,6 +5,7 @@ import CategoryEntry from '../components/CategoryEntry';
 
 const Category = (props) => {
     const { entries, editable } = props;
+    console.log("Category editable: "+editable);
     if(entries!==undefined){
         return (
             <List.Accordion
@@ -13,7 +14,7 @@ const Category = (props) => {
                 left={props => <Text>👍</Text>}>
                 <View style={styles.categoryEntryContainer}>
                     {entries.map((entry, index) => (
-                        <CategoryEntry initialValue={entry} index={index} editable />
+                        <CategoryEntry initialValue={entry} key={index} editable={editable?editable:undefined} />
                     ))}
                     <IconButton
                         style={[styles.addEntry]}
