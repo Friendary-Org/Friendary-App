@@ -1,22 +1,26 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, Text } from 'react-native-paper';
+import { TextInput, Text, IconButton } from 'react-native-paper';
 
 const CategoryEntry = (props) => {
-    const {editable, initialValue} = props;
+    const { editable, initialValue, deleteCallback, index} = props;
     const [entryValue, setEntryValue] = React.useState(initialValue);
-    console.log("Category entry editable: "+editable);
-    
-    if (editable==true) {
+
+
+    if (editable == true) {
         return (
-            <TextInput
-                mode="outlined"
-                style={styles.categoryEntry}
-                editable={true}
-                outlineColor="transparent"
-                value={entryValue}
-                onChangeText={entryValue => setEntryValue(entryValue)}
-            />
+            <View style={{ width: "45%" }}>
+                <TextInput
+                    mode="outlined"
+                    editable={true}
+                    outlineColor="transparent"
+                    value={entryValue}
+                    onChangeText={entryValue => setEntryValue(entryValue)}
+                    right={<TextInput.Icon icon="trash-can-outline" onPress={() => deleteCallback(index)}/>}
+                />
+
+            </View>
+
         )
     } else {
         return (
@@ -30,8 +34,8 @@ const CategoryEntry = (props) => {
 
 const styles = StyleSheet.create({
     categoryEntry: {
-        width: "45%",
-        margin: "1%"
+        margin: "1%",
+        width: "45%"
     }
 });
 

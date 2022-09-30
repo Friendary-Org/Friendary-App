@@ -7,9 +7,8 @@ import AddCategoryButton from "../components/AddCategoryButton";
 
 const CategoryList = (props) => {
     const { editable, categoryValues } = props;
-    const testEntries = ["Bier", "Wein", "Katzen", "Rum"];
-    console.log("Category list editable: " + editable);
 
+    const testEntries = ["Bier", "Wein", "Katzen", "Rum"];
 
     return (
         <View style={styles.categoryContainer}>
@@ -28,11 +27,6 @@ const styles = StyleSheet.create({
         flex: 2,
         width: "80%",
         paddingBottom: "15%",
-    },
-    addEntry: {
-        alignSelf: "center",
-        marginLeft: "35%",
-        backgroundColor: "#80D8F7",
     },
 });
 

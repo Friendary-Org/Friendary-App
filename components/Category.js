@@ -1,11 +1,25 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { List, Text, IconButton } from 'react-native-paper';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import CategoryEntry from '../components/CategoryEntry';
 
 const Category = (props) => {
     const { entries, editable } = props;
-    console.log("Category editable: "+editable);
+    let uuidEntries = entries.map(item => { 
+        return {uid: uuidv4(), value: item};
+    })
+
+    const [newEntries, setEntries] = React.useState(uuidEntries);
+    
+    const addEntry = () => {
+        setEntries([...newEntries,{uid: uuidv4(), value:""}]);
+    }
+    const deleteEntry = (index) => {
+        setEntries([...newEntries.slice(0, index), ...newEntries.slice(index + 1)]);
+    }
+
     if(entries!==undefined){
         return (
             <List.Accordion
@@ -13,15 +27,14 @@ const Category = (props) => {
                 title="Likes"
                 left={props => <Text>👍</Text>}>
                 <View style={styles.categoryEntryContainer}>
-                    {entries.map((entry, index) => (
-                        <CategoryEntry initialValue={entry} key={index} editable={editable?editable:undefined} />
+                    {newEntries.map((entry, index) => (
+                        <CategoryEntry initialValue={entry.value} editable={editable?editable:undefined} index={index} deleteCallback={deleteEntry} key={entry.uid}/>
                     ))}
                     <IconButton
-                        style={[styles.addEntry]}
+                        style={[styles.addEntry,editable==undefined?{display:"none"}:{}]}
                         icon="plus"
                         size={16}
-                        onPress={() => console.log('Pressed')
-                        }
+                        onPress={() => addEntry()}
                         mode="outlined"
                     />
                 </View>
@@ -37,6 +50,11 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         paddingLeft: "5%",
         justifyContent: "flex-start"
+    },
+    addEntry: {
+        alignSelf: "center",
+        marginLeft: "35%",
+        backgroundColor: "#80D8F7",
     },
 });
 export default Category;
