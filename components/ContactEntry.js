@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Text } from "react-native";
 import { List, Checkbox } from "react-native-paper";
 
 
