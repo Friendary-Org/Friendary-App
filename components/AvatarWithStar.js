@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { StyleSheet } from "react-native";
 import { Avatar, IconButton } from "react-native-paper";
+import FriendEntry from './FriendEntry';
 
 
 const AvatarWithStar = (props) => {
 
-    const {avatar} = props;
+    const { defaultAvatar } = props;
 
     return (
         <React.Fragment>
@@ -16,7 +17,7 @@ const AvatarWithStar = (props) => {
                 onPress={() => console.log("pressed star")} 
             />
 
-            <Avatar.Image size={60} source={avatar} />
+            <Avatar.Image size={60} source={defaultAvatar} />
         </React.Fragment>
     );
 }

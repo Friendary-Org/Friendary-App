@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ContactList from "../components/ContactList";
 import SearchBar from "../components/SearchBar";
 
-const ImportFriendScreen = () => {
+const ImportFriendScreen = ({navigation}) => {
 
     const [ contactList, setContactList ] = useState([]);
     const [ error, setError ] = useState("");
@@ -27,6 +27,11 @@ const ImportFriendScreen = () => {
                                                 return {
                                                         id: phoneContact.id, 
                                                         name: phoneContact.name, 
+                                                        description: "no description",
+                                                        avatar: "",
+                                                        birthday: "",
+                                                        categories: [],
+                                                        categoryEntries: [],
                                                         checked: "unchecked"
                                                     }
                                                 }
@@ -60,7 +65,6 @@ const ImportFriendScreen = () => {
             await AsyncStorage.setItem('contacts', JSON.stringify([]));
         }
         
-        // contactsToImportList.forEach((contact) => storeContact(contact))
         storeContacts(contactsToImportList)
     }
 
@@ -78,6 +82,8 @@ const ImportFriendScreen = () => {
         } catch (error) {
             console.log("error saving data: " + error.message)
         }
+
+        navigation.popToTop("Friends")
     } 
 
     const _removeData = async () => {
