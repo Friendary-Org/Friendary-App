@@ -10,8 +10,7 @@ import FloatingButtonsMain from "../components/FloatingButtonsMain";
 
 const MainScreen = ({navigation}) => {
 
-    const [ friendList, setFriendList] = useState([]);
-    const defaultAvatar = require('../assets/avatar.png');
+    const [ friendList, setFriendList ] = useState([]);
 
     // data for testing purposes
     // const friendList = [
@@ -19,10 +18,9 @@ const MainScreen = ({navigation}) => {
     //     {id: 1, title: "John Walker", description: "Nickname: Cube", avatar: require('../assets/favicon.png')}
     // ];
 
-    useEffect( () => {
+    useEffect(() => {
         // _removeData();
         _fetchData();
-        
     }, []);
 
     const _fetchData = async () => {
@@ -37,15 +35,6 @@ const MainScreen = ({navigation}) => {
         }
     }
 
-    const _removeData = async () => {
-        try {
-            await AsyncStorage.removeItem('contacts');
-            console.log("removal successful");
-        } catch (error) {
-            console.log("removal failed: " + error.message)
-        }
-    }
-
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
@@ -54,7 +43,7 @@ const MainScreen = ({navigation}) => {
 
             {friendList.length > 0 ?
                     <View style={styles.friendList}>
-                        <FriendList friendList={friendList} defaultAvatar={defaultAvatar}/>
+                        <FriendList friendList={friendList} />
                     </View> :
                 <Text>{"no contacts found ..."}</Text>
             }

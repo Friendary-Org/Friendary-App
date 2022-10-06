@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Text } from 'react-native';
 import { Divider } from 'react-native-paper';
 
 import ContactEntry from './ContactEntry';
@@ -19,7 +18,6 @@ const ContactList = (props) => {
                             </React.Fragment>   
             ))}
         </ React.Fragment>
-
     );
 }
 

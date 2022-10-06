@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ContactList from "../components/ContactList";
 import SearchBar from "../components/SearchBar";
 
+
 const ImportFriendScreen = ({navigation}) => {
 
     const [ contactList, setContactList ] = useState([]);
@@ -19,22 +20,23 @@ const ImportFriendScreen = ({navigation}) => {
           const { status } = await Contacts.requestPermissionsAsync();
           if (status === 'granted') {
             const { data } = await Contacts.getContactsAsync({
-              fields: [Contacts.Fields.Name],
+              fields: [Contacts.Fields, Contacts.IMAGE],
             });
     
             if (data.length > 0) {
+                console.log(data)
                 const contactList = data.map((phoneContact) => {
-                                                return {
-                                                        id: phoneContact.id, 
-                                                        name: phoneContact.name, 
-                                                        description: "no description",
-                                                        avatar: "",
-                                                        birthday: "",
-                                                        categories: [],
-                                                        categoryEntries: [],
-                                                        checked: "unchecked"
-                                                    }
-                                                }
+                                    return {
+                                            id: phoneContact.id, 
+                                            name: phoneContact.name, 
+                                            description: "no description",
+                                            avatar: phoneContact.imageAvailable?phoneContact.image:"default",
+                                            birthday: "",
+                                            categories: [],
+                                            categoryEntries: [],
+                                            checked: "unchecked"
+                                        }
+                                    }
                 );
 
                 setContactList(contactList)
@@ -58,7 +60,6 @@ const ImportFriendScreen = ({navigation}) => {
 
     const importSelectedContacts = async () => {
         const contactsToImportList = contactList.filter((contact) => contact.checked == "checked")
-
         const contacts = await AsyncStorage.getItem('contacts');
 
         if (contacts == null) {
@@ -83,7 +84,7 @@ const ImportFriendScreen = ({navigation}) => {
             console.log("error saving data: " + error.message)
         }
 
-        navigation.popToTop("Friends")
+        navigation.push("Friends")
     } 
 
     const _removeData = async () => {
