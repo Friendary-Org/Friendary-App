@@ -3,11 +3,15 @@ import { View, StyleSheet } from 'react-native';
 import { Divider, Menu, Button, Text } from 'react-native-paper';
 
 const AddCategoryButton = (props) => {
-    const { addCallback, categoryList } = props;
+    const { addCallback, categoryList} = props;
     const [visible, setVisible] = React.useState(false);
-
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+
+    const addCategory = (uid) => {
+        closeMenu();
+        addCallback(uid);
+    }
 
     return (
         <Menu
@@ -20,7 +24,7 @@ const AddCategoryButton = (props) => {
             <Divider bold />
             {categoryList.map((category) => (
                 <React.Fragment key={category.uid}>
-                    <Menu.Item onPress={() => addCallback(category.uid)} title={category.icon+" "+category.name} />
+                    <Menu.Item onPress={() => addCategory(category.uid)} title={category.icon+" "+category.name} />
                 </React.Fragment>
             ))}
         </Menu>
