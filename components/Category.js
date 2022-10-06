@@ -7,11 +7,14 @@ import CategoryEntry from '../components/CategoryEntry';
 
 const Category = (props) => {
     const { entries, editable } = props;
-    let uuidEntries = entries.map(item => { 
+    let uuidEntries = newEntries.map(item => { 
         return {uid: uuidv4(), value: item};
     })
-
-    const [newEntries, setEntries] = React.useState(uuidEntries);
+    
+    const [newEntries, setEntries] = React.useState(entries);
+    if(uuidEntries!= undefined){
+        setEntries(uuidEntries);
+    }
     
     const addEntry = () => {
         setEntries([...newEntries,{uid: uuidv4(), value:""}]);
