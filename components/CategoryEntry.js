@@ -13,7 +13,6 @@ const CategoryEntry = (props) => {
                 <TextInput
                     mode="outlined"
                     editable={true}
-                    outlineColor="transparent"
                     value={entryValue}
                     onChangeText={entryValue => setEntryValue(entryValue)}
                     right={<TextInput.Icon icon="trash-can-outline" onPress={() => deleteCallback(index)}/>}
@@ -34,7 +33,7 @@ const CategoryEntry = (props) => {
 
 const styles = StyleSheet.create({
     categoryEntry: {
-        margin: "1%",
+        margin: "3%",
         width: "45%"
     }
 });
