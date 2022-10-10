@@ -29,7 +29,7 @@ const MainScreen = ({navigation}) => {
             if (contacts != null)
                 setFriendList(JSON.parse(contacts))
             else 
-                console.log("not entry for given key")
+                console.log("no entry for given key")
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }

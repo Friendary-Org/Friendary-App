@@ -12,8 +12,8 @@ const AvatarWithStar = (props) => {
         icon: require('../assets/icon.png'), 
     }
       
-    const getImage = (avatar) => { // dynamically invoked
-        return IMAGES[avatar];
+    const getImage = (key) => {
+        return IMAGES[key];
     }
 
     // const testImage = "https://image.shutterstock.com/image-photo/word-example-written-on-magnifying-260nw-1883859943.jpg"
@@ -29,7 +29,7 @@ const AvatarWithStar = (props) => {
             {/* <Avatar.Image size={60} source={getImage(avatar)} /> */}
             {avatar.uri != undefined ?
                 <Avatar.Image size={60} source={{ uri: avatar.uri }} /> :
-                <Avatar.Image size={60} source={getImage(avatar)} /> 
+                <Avatar.Image size={60} source={getImage("default")} /> 
             }
             
         </React.Fragment>
