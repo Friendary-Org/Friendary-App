@@ -24,8 +24,8 @@ const CategoryList = (props) => {
         setUnusedCategories(unusedCategories.filter((cat) => cat.uid !== category.uid));
     }
     const deleteCategory = (index) => {
-        setCategories([...newCategories.slice(0, index), ...newEntries.slice(index + 1)]);
-        setUnusedCategories(categoryList.filter(ar => !newCategories.find(rm => (rm.uid === ar.uid) )));
+        setCategories([...newCategories.slice(0, index), ...newCategories.slice(index + 1)]);        
+        setUnusedCategories([...unusedCategories,newCategories[index]]);
     }
 
         return (
@@ -34,7 +34,7 @@ const CategoryList = (props) => {
                 {newCategories.length > 0 ?
                     (<List.Section title="Categories" >
                     {newCategories.map((cat, index) => (
-                             <Category category={cat} key={cat.uid} editable={editable?editable:undefined}/>
+                             <Category category={cat} key={cat.uid} editable={editable?editable:undefined} deleteCallback={deleteCategory} index={index}/>
                         ))}
                     </List.Section>) : null
                 }  

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import CategoryEntry from './CategoryEntry';
 
 const Category = (props) => {
-    const { category, editable } = props;
+    const { category, editable, deleteCallback, index } = props;
     let uuidEntries = category.entries.map(item => {
         return { uid: uuidv4(), value: item };
     })
@@ -31,8 +31,15 @@ const Category = (props) => {
                 <IconButton
                     style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
                     icon="plus"
-                    size={16}
+                    size={20}
                     onPress={() => addEntry()}
+                    mode="outlined"
+                />
+                <IconButton
+                    style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
+                    icon="trash-can-outline"
+                    size={20}
+                    onPress={() => deleteCallback(index)}
                     mode="outlined"
                 />
             </View>
