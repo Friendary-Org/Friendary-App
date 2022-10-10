@@ -1,40 +1,21 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import SaveButton from '../components/SaveButton';
 import CategoryList from '../components/CategoryList';
+import BirthdateEntry from '../components/BirthdateEntry';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
-    const [date, setDate] = React.useState(new Date());
     const [categories, setCategories] = React.useState([]);
-    const [show, setShow] = React.useState(false);
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate;
-        setShow(false);
-        setDate(currentDate);
-    };
+    const [date, setDate] = React.useState(new Date());
 
     const save = () => {
         console.log("Pressed Save");
     }
-
-    const horizontalLine = (color) => (
-        <hr
-            style={{
-                color,
-                backgroundColor: color,
-                height: 4
-            }}
-        />
-    );
-
 
     return (
         <React.Fragment>
@@ -48,43 +29,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                         value={name}
                         onChangeText={name => setName(name)}
                     />
-                    <View style={styles.birthdateContainer}>
-                        {Platform.OS == "ios" ?
-                            <React.Fragment>
-                                <TextInput
-                                    style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
-                                    label="Birthdate*"
-                                    mode="outlined"
-                                    editable={false}
-                                    outlineColor="transparent"
-                                />
-                                <DateTimePicker
-                                    style={[{ width: "45%" }, { marginTop: "2%" }]}
-                                    testID="dateTimePicker"
-                                    value={date}
-                                    onChange={onChange}
-                                />
-                            </React.Fragment>
-
-                            :
-                            <React.Fragment>
-                                <TextInput
-                                    style={{width: "100%"}}
-                                    label="Birthdate*"
-                                    mode="outlined"
-                                    value={date.toLocaleDateString()}
-                                    onFocus={() => setShow(true)}
-
-                                />
-                                {show && <DateTimePicker
-                                    style={[{ width: "45%" }, { marginTop: "2%" }]}
-                                    testID="dateTimePicker"
-                                    value={date}
-                                    onChange={onChange}
-                                />}
-                            </React.Fragment>
-                        }
-                    </View>
+                    <BirthdateEntry editable/>
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
                 <CategoryList editable categories={[]} />
@@ -113,11 +58,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: "80%"
-    },
-    birthdateContainer: {
-        width: "80%",
-        flexDirection: "row",
-        alignItems: "center",
     },
     lineStyle: {
         borderWidth: 0.5,
