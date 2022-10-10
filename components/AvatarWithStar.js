@@ -1,11 +1,22 @@
 import * as React from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { Avatar, IconButton } from "react-native-paper";
 
 
 const AvatarWithStar = (props) => {
 
-    const {avatar} = props;
+    const { avatar } = props;
+
+    const IMAGES = {
+        default: require(`../assets/avatar.png`),
+        icon: require('../assets/icon.png'), 
+    }
+      
+    const getImage = (key) => {
+        return IMAGES[key];
+    }
+
+    // const testImage = "https://image.shutterstock.com/image-photo/word-example-written-on-magnifying-260nw-1883859943.jpg"
 
     return (
         <React.Fragment>
@@ -15,8 +26,12 @@ const AvatarWithStar = (props) => {
                 size={20} 
                 onPress={() => console.log("pressed star")} 
             />
-
-            <Avatar.Image size={60} source={avatar} />
+            {/* <Avatar.Image size={60} source={getImage(avatar)} /> */}
+            {avatar.uri != undefined ?
+                <Avatar.Image size={60} source={{ uri: avatar.uri }} /> :
+                <Avatar.Image size={60} source={getImage("default")} /> 
+            }
+            
         </React.Fragment>
     );
 }

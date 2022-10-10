@@ -12,12 +12,7 @@ const FriendList = (props) => {
         <React.Fragment>
             {friendList.map((friend) => (   
                 <React.Fragment key={friend.id}>    
-                    <FriendEntry 
-                        title={friend.title} 
-                        description={friend.description} 
-                        avatar={friend.avatar}
-                    />
-
+                    <FriendEntry friend={friend} />
                     <Divider />      
                 </React.Fragment>
             ))}    

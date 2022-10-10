@@ -6,15 +6,17 @@ import AvatarWithStar from "../components/AvatarWithStar";
 
 const FriendEntry = (props) => {
 
-    const { title, description } = props;
+    const { friend } = props;
 
     return (
-        <List.Item 
-            onPress={() => console.log("pressed list")}
-            title = {title} 
-            description = {description}
-            left = {() => <AvatarWithStar avatar={props.avatar}/>}
-        />
+        <React.Fragment>
+            <List.Item 
+                onPress={() => console.log("pressed list")}
+                title = {friend.name} 
+                description = {friend.description}
+                left = {() => <AvatarWithStar avatar={friend.avatar} />}
+            />
+        </React.Fragment>
     );
 }
 
