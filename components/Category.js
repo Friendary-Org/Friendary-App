@@ -47,11 +47,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         flexWrap: "wrap",
         paddingLeft: "5%",
-        justifyContent: "flex-start"
+        justifyContent: "center"
     },
     addEntry: {
         alignSelf: "center",
-        marginLeft: "35%",
         backgroundColor: "#80D8F7",
     },
 });

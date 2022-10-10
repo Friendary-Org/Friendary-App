@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { ScrollView, View, StyleSheet, Platform } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
@@ -11,11 +11,13 @@ import CategoryList from '../components/CategoryList';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
-    const [date, setDate] = React.useState(new Date(1598051730000));
+    const [date, setDate] = React.useState(new Date());
     const [categories, setCategories] = React.useState([]);
+    const [show, setShow] = React.useState(false);
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
+        setShow(false);
         setDate(currentDate);
     };
 
@@ -33,7 +35,6 @@ const CreateFriendScreen = ({ route, navigation }) => {
         />
     );
 
-    const categoryValues = ["Bier, Wein, Klavier, Joggen, Ficken"];
 
     return (
         <React.Fragment>
@@ -48,24 +49,45 @@ const CreateFriendScreen = ({ route, navigation }) => {
                         onChangeText={name => setName(name)}
                     />
                     <View style={styles.birthdateContainer}>
-                        <TextInput
-                            style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
-                            label="Birthdate*"
-                            mode="outlined"
-                            editable={false}
-                            outlineColor="transparent"
+                        {Platform.OS == "ios" ?
+                            <React.Fragment>
+                                <TextInput
+                                    style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
+                                    label="Birthdate*"
+                                    mode="outlined"
+                                    editable={false}
+                                    outlineColor="transparent"
+                                />
+                                <DateTimePicker
+                                    style={[{ width: "45%" }, { marginTop: "2%" }]}
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    onChange={onChange}
+                                />
+                            </React.Fragment>
 
-                        />
-                        {/* <DateTimePicker
-                            style={[{ width: "45%" }, { marginTop: "2%" }]}
-                            testID="dateTimePicker"
-                            value={date}
-                            onChange={onChange}
-                        /> */}
+                            :
+                            <React.Fragment>
+                                <TextInput
+                                    style={{width: "100%"}}
+                                    label="Birthdate*"
+                                    mode="outlined"
+                                    value={date.toLocaleDateString()}
+                                    onFocus={() => setShow(true)}
+
+                                />
+                                {show && <DateTimePicker
+                                    style={[{ width: "45%" }, { marginTop: "2%" }]}
+                                    testID="dateTimePicker"
+                                    value={date}
+                                    onChange={onChange}
+                                />}
+                            </React.Fragment>
+                        }
                     </View>
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable categories={[]}/>
+                <CategoryList editable categories={[]} />
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />

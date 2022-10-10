@@ -9,7 +9,7 @@ const CategoryEntry = (props) => {
 
     if (editable == true) {
         return (
-            <View style={{ width: "45%" }}>
+            <View style={{ width: "100%" }}>
                 <TextInput
                     mode="outlined"
                     editable={true}
@@ -34,7 +34,7 @@ const CategoryEntry = (props) => {
 const styles = StyleSheet.create({
     categoryEntry: {
         margin: "3%",
-        width: "45%"
+        width: "100%"
     }
 });
 
