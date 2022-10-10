@@ -33,7 +33,6 @@ const ImportFriendScreen = ({navigation}) => {
                                             avatar: phoneContact.imageAvailable?phoneContact.image:"default",
                                             birthday: "",
                                             categories: [],
-                                            categoryEntries: [],
                                             checked: "unchecked"
                                         }
                                     }
