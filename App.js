@@ -5,7 +5,10 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import MainScreen from "./screens/MainScreen";
 import TestScreen from "./screens/TestScreen";
+
 import CreateFriendScreen from "./screens/CreateFriendScreen";
+import ImportFriendScreen from "./screens/ImportFriendScreen";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -17,6 +20,7 @@ export default function App() {
               <Stack.Screen name="Friends" component={MainScreen}/>
               <Stack.Screen name="Test" component={TestScreen}/>
               <Stack.Screen name="Create Friend" component={CreateFriendScreen}/>
+              <Stack.Screen name="ImportFriend" component={ImportFriendScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

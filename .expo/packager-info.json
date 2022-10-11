@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
   "packagerPort": 19000,
-  "expoServerNgrokUrl": "https://jd-ncy.anonymous.friendary-app.exp.direct",
-  "packagerNgrokUrl": "https://jd-ncy.anonymous.friendary-app.exp.direct",
-  "ngrokPid": 15052,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "packagerPid": null,
   "webpackServerPort": null
 }
