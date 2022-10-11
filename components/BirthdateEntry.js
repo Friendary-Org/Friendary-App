@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Keyboard } from "react-native";
 import { TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -12,6 +12,7 @@ const BirthdateEntry = (props) => {
         const currentDate = selectedDate;
         setShow(false);
         setDate(currentDate);
+        Keyboard.dismiss();
     };
 
     if (editable === undefined) {
@@ -49,7 +50,7 @@ const BirthdateEntry = (props) => {
                     :
                     <React.Fragment>
                         <TextInput
-                            style={{ width: "100%" }}
+                            style={[{ width: "100%" },{marginTop: "2%"}]}
                             label="Birthdate*"
                             mode="outlined"
                             value={date.toLocaleDateString()}
