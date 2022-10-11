@@ -33,7 +33,7 @@ const FloatingGroupMain = ({navigation}) => {
                         {
                             icon: 'plus',
                             label: 'Create Friend',
-                            onPress: () => console.log('Pressed create'),
+                            onPress: () => navigation.push("Create Friend"),
                         },
                         {
                             icon: 'import',
