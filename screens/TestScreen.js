@@ -48,6 +48,24 @@ const TestScreen = ({navigation}) => {
         console.log(entries);
     }
 
+    const categoryList = [
+        {uid: 0, name: "Likes", icon: "👍", entries: [""]},
+        {uid: 1, name: "Dislikes", icon: "👎", entries: [""]},
+        {uid: 2, name: "Allergies", icon: "💉", entries: [""]}
+    ];
+
+    const _addDefaultCategories = async () => {
+        try {
+            await AsyncStorage.setItem(
+                'categories',
+                JSON.stringify(categoryList)
+            );
+            console.log("save successful")
+        } catch (error) {
+            console.log("error saving data: " + error.message)
+        }
+    }
+
     return(
         <View style={styles.containerView}>
             <Text>These are really awesome Details!</Text>
@@ -57,6 +75,7 @@ const TestScreen = ({navigation}) => {
             <Button onPress={() => _removeData()}>Remove</Button>
             <Button onPress={() => _printAllEntriesFromAsyncStorage()}>Print All Entries</Button>
             <Button onPress={() => console.log("save pressed")}>Delete</Button>
+            <Button onPress={() => _addDefaultCategories()}>Add default categories</Button>
 
             <BackButton navigation={navigation}/>
         </View>

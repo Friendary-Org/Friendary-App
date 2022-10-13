@@ -18,6 +18,17 @@ const Category = (props) => {
     const deleteEntry = (index) => {
         setEntries([...newEntries.slice(0, index), ...newEntries.slice(index + 1)]);
     }
+    const changeEntry = (index, value) => {
+        const changedEntries = newEntries.map((e, i) => {
+            if (i === index) {
+                e.value = value;
+                return e;
+            } else {
+                return e;
+            }
+        });
+        setEntries(changedEntries);
+    }
 
     return (
         <List.Accordion
@@ -26,7 +37,7 @@ const Category = (props) => {
             left={props => <Text>{category.icon}</Text>}>
             <View style={styles.categoryEntryContainer}>
                 {newEntries.map((entry, index) => (
-                    <CategoryEntry initialValue={entry.value} editable={editable ? editable : undefined} index={index} key={entry.uid} deleteCallback={deleteEntry}/>
+                    <CategoryEntry entryValue={entry.value} editable={editable ? editable : undefined} index={index} key={entry.uid} deleteCallback={deleteEntry} changeCallback={changeEntry} />
                 ))}
                 <IconButton
                     style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
+import { v4 as uuidv4 } from 'uuid';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -10,11 +11,19 @@ import BirthdateEntry from '../components/BirthdateEntry';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
-    const [categories, setCategories] = React.useState([]);
     const [date, setDate] = React.useState(new Date());
+    const [newCategories, setCategories] = React.useState([]);
 
     const save = () => {
-        console.log("Pressed Save");
+        let friend = {
+            id: uuidv4(), 
+            name: name, 
+            description: "no description",
+            avatar: "default",
+            birthday: date,
+            categories: newCategories,
+        }
+        console.log(friend.categories);
     }
 
     return (
@@ -29,10 +38,10 @@ const CreateFriendScreen = ({ route, navigation }) => {
                         value={name}
                         onChangeText={name => setName(name)}
                     />
-                    <BirthdateEntry editable/>
+                    <BirthdateEntry date={date} setDate={setDate} editable/>
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable categories={[]} />
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories}/>
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />

@@ -4,9 +4,8 @@ import { TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const BirthdateEntry = (props) => {
-    const { editable } = props;
+    const { editable, date, setDate } = props;
     const [show, setShow] = React.useState(false);
-    const [date, setDate] = React.useState(new Date());
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
