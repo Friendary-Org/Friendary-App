@@ -12,13 +12,16 @@ import SearchBar from "../components/SearchBar";
 const ImportFriendScreen = ({navigation}) => {
 
     const [ contactList, setContactList ] = useState([]);
-    const [ filteredContactList, setFilteredContactList ] = useState([]);
+    const [ contactsToDisable, setContactsToDisable ] = useState([]);
     const [ existingFriendList, setExistingFriendList ] = useState([]);
     const [ error, setError ] = useState("");
     const [ filterString, setFilterString ] = useState("");
+    
+    
 
     useEffect(() => {
         (async () => {
+            
           const { status } = await Contacts.requestPermissionsAsync();
           if (status === 'granted') {
             const { data } = await Contacts.getContactsAsync({
@@ -34,7 +37,8 @@ const ImportFriendScreen = ({navigation}) => {
                                             avatar: phoneContact.imageAvailable?phoneContact.image:"default",
                                             birthday: "",
                                             categories: [],
-                                            checked: "unchecked"
+                                            checked: "unchecked",
+                                            disabled: false
                                         }
                                     }
                 );
@@ -53,21 +57,52 @@ const ImportFriendScreen = ({navigation}) => {
         fetchData();
     }, [contactList]) 
 
-    useEffect(() => {
-        if (contactList.length !== 0 && existingFriendList !== 0) {
-            console.log("existingFriendList: " + existingFriendList);
-            console.log("contactList: " + contactList);
 
-            let filteredContacts = [...contactList];
-            filteredContacts = filteredContacts.filter((contact) => existingFriendList.find((friend) => contact.id === friend.id) === undefined)
-            console.log("filtered?" + filteredContacts);
-            setFilteredContactList(filteredContacts)
+    useEffect(() => {
+
+        if (contactList.length !== 0 && existingFriendList !== 0) {
+            let contactsToDisable = [];
+
+            contactList.forEach(contact => 
+                existingFriendList.forEach(existingFriend => 
+                                            contact.id === existingFriend.id ?
+                                            contactsToDisable.push(contact) :
+                                            "" 
+                )
+            );
+
+            setContactsToDisable(contactsToDisable);
         }
     }, [existingFriendList]) 
 
-    // useEffect(() => {
-    //     console.log("existingFriendList: " + existingFriendList)
-    // }, [existingFriendList]) r
+
+    useEffect(() => {
+
+        if (contactList.length !== 0 && contactsToDisable.length !== 0) {
+
+            contactList.forEach(contact => 
+                contactsToDisable.forEach(disableContact => {
+                                            if (contact.id === disableContact.id) {
+                                                contact.disabled = true;
+                                            }
+                                        })
+            );                                       
+            setContactsToDisable([]);
+        }
+        
+    }), [contactsToDisable]
+
+    const fetchData = async () => {
+        try {
+            const contacts = await AsyncStorage.getItem('contacts');
+            if (contacts != null)
+                setExistingFriendList(JSON.parse(contacts))
+            else 
+                console.log("no entry for given key")
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
+        }
+    }
 
     const setChecked = (contactName, newCheckedState) => {
         const updatedContactList = contactList.map((contact) => {
@@ -108,18 +143,6 @@ const ImportFriendScreen = ({navigation}) => {
         navigation.push("Friends")
     } 
 
-    const fetchData = async () => {
-        try {
-            const contacts = await AsyncStorage.getItem('contacts');
-            if (contacts != null)
-                setExistingFriendList(JSON.parse(contacts))
-            else 
-                console.log("no entry for given key")
-        } catch (error) {
-            console.log("error retrieving data: " + error.message)
-        }
-    }
-
     // for testing purposes 
     const _removeData = async () => {
         try {
@@ -149,10 +172,8 @@ const ImportFriendScreen = ({navigation}) => {
             </View>
 
             {error == "" ?
-                <ScrollView>
-                    <View style={styles.contactList}>
-                        <ContactList contactList={filteredContactList} filterString={filterString} setChecked={setChecked} />
-                    </View>
+                <ScrollView style={styles.scrollView}>
+                    <ContactList contactList={contactList} filterString={filterString} setChecked={setChecked} />
                 </ScrollView> :
                 <Text style={styles.errorText}>{error}</Text>
             }
@@ -188,7 +209,9 @@ const styles = StyleSheet.create({
         textAlign: "center",
         padding: 16,
     },
-    contactList: {
+    scrollView: {
+        padding: 2,
+        width: "100%",
         height: "100%",
         backgroundColor: "#F7F6F6" //main background color
     },

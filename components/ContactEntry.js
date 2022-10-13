@@ -10,10 +10,12 @@ const ContactEntry = (props) => {
     return (
         <List.Item 
             title = {contact.name} 
-            onPress={() => setChecked(contact.name, determineNewCheckedState)}
+            style = {contact.disabled ? {backgroundColor: 'lightgrey'}:{}}
+            onPress={() => !contact.disabled ? setChecked(contact.name, determineNewCheckedState) : ""}
             right = {() => <Checkbox 
-                                status={contact.checked} 
-                                onPress={() => setChecked(contact.name, determineNewCheckedState)}
+                                status={contact.checked}
+                                disabled={contact.disabled}
+                                onPress={() => !contact.disabled ? setChecked(contact.name, determineNewCheckedState) : ""}
                             /> 
                     }
         />
