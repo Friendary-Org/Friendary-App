@@ -20,7 +20,7 @@ const ImportFriendScreen = ({navigation}) => {
           const { status } = await Contacts.requestPermissionsAsync();
           if (status === 'granted') {
             const { data } = await Contacts.getContactsAsync({
-              fields: [Contacts.Fields, Contacts.IMAGE],
+              fields: [Contacts.Fields.Name, Contacts.IMAGE],
             });
     
             if (data.length > 0) {
