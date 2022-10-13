@@ -6,17 +6,21 @@ import { v4 as uuidv4 } from 'uuid';
 import CategoryEntry from './CategoryEntry';
 
 const Category = (props) => {
-    const { category, editable, deleteCallback, index } = props;
+    const { category, editable, deleteCallback, index, changeEntriesCallback } = props;
     let uuidEntries = category.entries.map(item => {
         return { uid: uuidv4(), value: item };
     })
     const [newEntries, setEntries] = React.useState(uuidEntries);
 
     const addEntry = () => {
-        setEntries([...newEntries, { uid: uuidv4(), value: "" }]);
+        const changedEntries = [...newEntries, { uid: uuidv4(), value: "" }];
+        changeEntriesCallback(category, changedEntries);
+        setEntries(changedEntries);
     }
     const deleteEntry = (index) => {
-        setEntries([...newEntries.slice(0, index), ...newEntries.slice(index + 1)]);
+        const changedEntries = [...newEntries.slice(0, index), ...newEntries.slice(index + 1)];
+        changeEntriesCallback(category, changedEntries);
+        setEntries(changedEntries);
     }
     const changeEntry = (index, value) => {
         const changedEntries = newEntries.map((e, i) => {
@@ -27,6 +31,7 @@ const Category = (props) => {
                 return e;
             }
         });
+        changeEntriesCallback(category, changedEntries);
         setEntries(changedEntries);
     }
 

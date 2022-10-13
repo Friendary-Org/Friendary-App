@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -14,8 +15,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState([]);
 
-    const save = () => {
-        let friend = {
+    const save = async () => {
+        let newContact = {
             id: uuidv4(), 
             name: name, 
             description: "no description",
@@ -23,7 +24,28 @@ const CreateFriendScreen = ({ route, navigation }) => {
             birthday: date,
             categories: newCategories,
         }
-        console.log(friend.categories);
+        let contacts = await _fetchContacts();
+        contacts = [...contacts, newContact];
+        try {
+            await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
+            console.log("Saved new contact")
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
+        }
+
+        console.log(friend);
+    }
+
+    const _fetchContacts = async() => {
+        try {
+            const contacts = await AsyncStorage.getItem('contacts');
+            if (contacts != null)
+                return JSON.parse(contacts);
+            else 
+                return []
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
+        }
     }
 
     return (

@@ -8,7 +8,7 @@ import AddCategoryButton from "../components/AddCategoryButton";
 
 const CategoryList = (props) => {
     const [categoryList, setcategoryList] = React.useState([]);
-    const { editable, categories, newCategories, setCategories } = props;
+    const { editable, newCategories, setCategories } = props;
     const [unusedCategories, setUnusedCategories] = React.useState([])
 
     const _fetchCategoryList = async () => {
@@ -44,6 +44,23 @@ const CategoryList = (props) => {
         setUnusedCategories([...unusedCategories, newCategories[index]]);
     }
 
+    const changeEntries = (category, newEntries) => {
+        const onlyEntries = newEntries.map(function(e) { 
+            delete e.uid; 
+            return e.value; 
+        });
+        const changedCategories = newCategories.map((e) => {
+            if (e.uid === category.uid) {
+                e.entries = onlyEntries;
+                return e;
+            } else {
+                return e;
+            }
+        });
+        setCategories(changedCategories);
+
+    }
+
     return (
         <View style={styles.categoryContainer}>
             <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} />    
@@ -55,6 +72,7 @@ const CategoryList = (props) => {
                             key={cat.uid}
                             editable={editable ? editable : undefined}
                             deleteCallback={deleteCategory}
+                            changeEntriesCallback={changeEntries}
                             index={index} />
                     ))}
                 </List.Section>) : null
