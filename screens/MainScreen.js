@@ -11,6 +11,7 @@ import FloatingButtonsMain from "../components/FloatingButtonsMain";
 const MainScreen = ({navigation}) => {
 
     const [ friendList, setFriendList ] = useState([]);
+    const [ filterString, setFilterString ] = useState("");
 
     // data for testing purposes
     // const friendList = [
@@ -38,12 +39,12 @@ const MainScreen = ({navigation}) => {
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
-                <SearchBar />
+                <SearchBar setFilterString={setFilterString}/>
             </View>
 
             {friendList.length > 0 ?
                     <View style={styles.friendList}>
-                        <FriendList friendList={friendList} />
+                        <FriendList friendList={friendList} filterString={filterString}/>
                     </View> :
                 <Text>{"no contacts found ..."}</Text>
             }
