@@ -12,6 +12,8 @@ import SearchBar from "../components/SearchBar";
 const ImportFriendScreen = ({navigation}) => {
 
     const [ contactList, setContactList ] = useState([]);
+    const [ filteredContactList, setFilteredContactList ] = useState([]);
+    const [ existingFriendList, setExistingFriendList ] = useState([]);
     const [ error, setError ] = useState("");
     const [ filterString, setFilterString ] = useState("");
 
@@ -24,7 +26,6 @@ const ImportFriendScreen = ({navigation}) => {
             });
     
             if (data.length > 0) {
-                console.log(data)
                 const contactList = data.map((phoneContact) => {
                                     return {
                                             id: phoneContact.id, 
@@ -46,6 +47,27 @@ const ImportFriendScreen = ({navigation}) => {
           }
         })();
     }, []);
+
+
+    useEffect(() => {
+        fetchData();
+    }, [contactList]) 
+
+    useEffect(() => {
+        if (contactList.length !== 0 && existingFriendList !== 0) {
+            console.log("existingFriendList: " + existingFriendList);
+            console.log("contactList: " + contactList);
+
+            let filteredContacts = [...contactList];
+            filteredContacts = filteredContacts.filter((contact) => existingFriendList.find((friend) => contact.id === friend.id) === undefined)
+            console.log("filtered?" + filteredContacts);
+            setFilteredContactList(filteredContacts)
+        }
+    }, [existingFriendList]) 
+
+    // useEffect(() => {
+    //     console.log("existingFriendList: " + existingFriendList)
+    // }, [existingFriendList]) r
 
     const setChecked = (contactName, newCheckedState) => {
         const updatedContactList = contactList.map((contact) => {
@@ -86,6 +108,19 @@ const ImportFriendScreen = ({navigation}) => {
         navigation.push("Friends")
     } 
 
+    const fetchData = async () => {
+        try {
+            const contacts = await AsyncStorage.getItem('contacts');
+            if (contacts != null)
+                setExistingFriendList(JSON.parse(contacts))
+            else 
+                console.log("no entry for given key")
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
+        }
+    }
+
+    // for testing purposes 
     const _removeData = async () => {
         try {
             await AsyncStorage.removeItem('contacts');
@@ -95,6 +130,7 @@ const ImportFriendScreen = ({navigation}) => {
         }
     }
 
+    // for testing purposes
     const _printAllEntriesFromAsyncStorage = async () => {   
         const keys = await AsyncStorage.getAllKeys();
         const entries = await AsyncStorage.multiGet(keys);
@@ -115,7 +151,7 @@ const ImportFriendScreen = ({navigation}) => {
             {error == "" ?
                 <ScrollView>
                     <View style={styles.contactList}>
-                        <ContactList contactList={contactList} filterString={filterString} setChecked={setChecked} />
+                        <ContactList contactList={filteredContactList} filterString={filterString} setChecked={setChecked} />
                     </View>
                 </ScrollView> :
                 <Text style={styles.errorText}>{error}</Text>
