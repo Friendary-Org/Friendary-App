@@ -32,8 +32,6 @@ const CreateFriendScreen = ({ route, navigation }) => {
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
-
-        console.log(friend);
     }
 
     const _fetchContacts = async() => {

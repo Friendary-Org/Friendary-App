@@ -26,6 +26,7 @@ const Category = (props) => {
         const changedEntries = newEntries.map((e, i) => {
             if (i === index) {
                 e.value = value;
+                console.log(e)
                 return e;
             } else {
                 return e;

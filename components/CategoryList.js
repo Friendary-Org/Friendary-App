@@ -14,7 +14,11 @@ const CategoryList = (props) => {
     const _fetchCategoryList = async () => {
         try {
             const value = await AsyncStorage.getItem('categories').then((value) => {
-                setcategoryList(JSON.parse(value));
+                if(value != null){
+                    setcategoryList(JSON.parse(value));
+                }else{
+                    setcategoryList([])
+                }
             });
         } catch (error) {
             console.log("error retrieving data: " + error.message)
