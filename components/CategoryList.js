@@ -88,10 +88,8 @@ const CategoryList = (props) => {
 
 const styles = StyleSheet.create({
     categoryContainer: {
-        flex: 2,
+        flex: 1,
         width: "80%",
-        paddingBottom: "15%",
-        paddingTop: "20%"
     },
 });
 

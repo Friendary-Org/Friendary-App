@@ -7,7 +7,7 @@ const CategoryEntry = (props) => {
 
     if (editable == true) {
         return (
-            <View style={{ width: "100%" }}>
+            <View style={[{ width: "100%" }]}>
                 <TextInput
                     mode="outlined"
                     editable={true}

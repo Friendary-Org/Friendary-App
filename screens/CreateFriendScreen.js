@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
-import { TextInput, Snackbar } from 'react-native-paper';
+import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -12,6 +12,7 @@ import BirthdateEntry from '../components/BirthdateEntry';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
+    const [description, setDescription] = React.useState("");
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState([]);
 
@@ -25,7 +26,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
             let newContact = {
                 id: uuidv4(),
                 name: name,
-                description: "no description",
+                description: description,
                 avatar: "default",
                 birthday: date.toDateString() != new Date().toDateString() ? date : "",
                 categories: newCategories,
@@ -60,22 +61,27 @@ const CreateFriendScreen = ({ route, navigation }) => {
     }
 
     return (
-        <React.Fragment>
-            <ScrollView contentContainerStyle={styles.containerView}>
-                <View style={styles.baseInfo}>
-                    <BigAvatar editable />
-                    <TextInput
-                        style={styles.input}
-                        label="Name*"
-                        mode="outlined"
-                        value={name}
-                        onChangeText={name => setName(name)}
-                    />
-                    <BirthdateEntry date={date} setDate={setDate} editable />
-                </View>
-                {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
-            </ScrollView>
+        <ScrollView contentContainerStyle={styles.containerView}>
+            <View style={styles.baseInfo}>
+                <BigAvatar editable />
+                <TextInput
+                    style={styles.input}
+                    label="Name*"
+                    mode="outlined"
+                    value={name}
+                    onChangeText={name => setName(name)}
+                />
+                <TextInput
+                    style={styles.input}
+                    label="Description"
+                    mode="outlined"
+                    value={description}
+                    onChangeText={desc => setDescription(desc)}
+                />
+                <BirthdateEntry date={date} setDate={setDate} editable />
+            </View>
+            {/* <View style={styles.lineStyle} /> */}
+            <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />
             <Snackbar
@@ -83,24 +89,28 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 onDismiss={onDismissSnackBar}>
                 {snackBarMessage}
             </Snackbar>
-        </React.Fragment>
+        </ScrollView>
 
     );
 };
 
 const styles = StyleSheet.create({
     containerView: {
-        flex: 1,
         alignItems: "center",
         flexDirection: "column",
         justifyContent: "flex-start",
         marginTop: "10%",
         backgroundColor: "#F7F6F6",
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
     },
     baseInfo: {
         width: "100%",
         flex: 1,
-        alignContent: "center",
+        alignContent: "flex-start",
         alignItems: "center"
     },
     input: {
