@@ -21,6 +21,10 @@ const MainScreen = ({navigation}) => {
     useEffect(() => {
         // _removeData();
         _fetchData();
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            _fetchData();
+        });
+        return willFocusSubscription;
     }, []);
 
     const _fetchData = async () => {
