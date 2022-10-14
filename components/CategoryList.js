@@ -49,10 +49,11 @@ const CategoryList = (props) => {
     }
 
     const changeEntries = (category, newEntries) => {
-        const onlyEntries = newEntries.map(function(e) { 
+        let onlyEntries = newEntries.map(function(e) { 
             delete e.uid; 
-            return e.value; 
+            return e.value;  
         });
+        onlyEntries = onlyEntries.filter(e =>  e);
         const changedCategories = newCategories.map((e) => {
             if (e.uid === category.uid) {
                 e.entries = onlyEntries;

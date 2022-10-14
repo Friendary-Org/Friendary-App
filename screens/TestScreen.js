@@ -42,6 +42,15 @@ const TestScreen = ({navigation}) => {
         }
     }
 
+    const _removeContacts = async () => {
+        try {
+            await AsyncStorage.removeItem('contacts');
+            console.log("removal successful");
+        } catch (error) {
+            console.log("removal failed: " + error.message)
+        }
+    }
+
     const _printAllEntriesFromAsyncStorage = async () => {   
         const keys = await AsyncStorage.getAllKeys();
         const entries = await AsyncStorage.multiGet(keys);
@@ -74,7 +83,7 @@ const TestScreen = ({navigation}) => {
             <Button onPress={() => _fetchData()}>Fetch</Button>
             <Button onPress={() => _removeData()}>Remove</Button>
             <Button onPress={() => _printAllEntriesFromAsyncStorage()}>Print All Entries</Button>
-            <Button onPress={() => console.log("save pressed")}>Delete</Button>
+            <Button onPress={() => _removeContacts()}>Delete Contacts</Button>
             <Button onPress={() => _addDefaultCategories()}>Add default categories</Button>
 
             <BackButton navigation={navigation}/>
