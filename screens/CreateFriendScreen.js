@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Platform } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Snackbar } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,31 +15,44 @@ const CreateFriendScreen = ({ route, navigation }) => {
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState([]);
 
+    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+    const [snackBarMessage, setSnackBarMessage] = React.useState("")
+
+    const onDismissSnackBar = () => setSnackBarVisible(false);
+
     const save = async () => {
-        let newContact = {
-            id: uuidv4(), 
-            name: name, 
-            description: "no description",
-            avatar: "default",
-            birthday: date,
-            categories: newCategories,
+        if (name != "") {
+            let newContact = {
+                id: uuidv4(),
+                name: name,
+                description: "no description",
+                avatar: "default",
+                birthday: date.toDateString() != new Date().toDateString() ? date : "",
+                categories: newCategories,
+            }
+            let contacts = await _fetchContacts();
+            contacts = [...contacts, newContact];
+            try {
+                await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
+                setSnackBarMessage("New friend created successfully!");
+                setSnackBarVisible(true);
+                setTimeout(() => navigation.goBack(), 1500);
+            } catch (error) {
+                console.log("error retrieving data: " + error.message)
+            }
+        } else {
+            setSnackBarMessage("Please enter a name!");
+            setSnackBarVisible(true);
         }
-        let contacts = await _fetchContacts();
-        contacts = [...contacts, newContact];
-        try {
-            await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
-            console.log("Saved new contact")
-        } catch (error) {
-            console.log("error retrieving data: " + error.message)
-        }
+
     }
 
-    const _fetchContacts = async() => {
+    const _fetchContacts = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
             if (contacts != null)
                 return JSON.parse(contacts);
-            else 
+            else
                 return []
         } catch (error) {
             console.log("error retrieving data: " + error.message)
@@ -58,13 +71,18 @@ const CreateFriendScreen = ({ route, navigation }) => {
                         value={name}
                         onChangeText={name => setName(name)}
                     />
-                    <BirthdateEntry date={date} setDate={setDate} editable/>
+                    <BirthdateEntry date={date} setDate={setDate} editable />
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories}/>
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />
+            <Snackbar
+                visible={snackBarVisible}
+                onDismiss={onDismissSnackBar}>
+                {snackBarMessage}
+            </Snackbar>
         </React.Fragment>
 
     );

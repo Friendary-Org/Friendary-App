@@ -19,7 +19,7 @@ const BirthdateEntry = (props) => {
             <View style={styles.birthdateContainer}>
                         <TextInput
                             style={{ width: "100%" }}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             value={date.toLocaleDateString()}
                             editable={false}
@@ -34,7 +34,7 @@ const BirthdateEntry = (props) => {
                     <React.Fragment>
                         <TextInput
                             style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             editable={false}
                             outlineColor="transparent"
@@ -50,7 +50,7 @@ const BirthdateEntry = (props) => {
                     <React.Fragment>
                         <TextInput
                             style={[{ width: "100%" },{marginTop: "2%"}]}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             value={date.toLocaleDateString()}
                             onFocus={() => setShow(true)}
