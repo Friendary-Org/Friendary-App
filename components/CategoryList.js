@@ -68,7 +68,7 @@ const CategoryList = (props) => {
 
     return (
         <View style={styles.categoryContainer}>
-            <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} />    
+            {editable && <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} />}    
             {newCategories.length > 0 ?
                 (<List.Section title="Categories" style={{width: "80%"}}>
                     {newCategories.map((cat, index) => (
