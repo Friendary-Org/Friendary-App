@@ -12,12 +12,8 @@ const FriendList = (props) => {
         <React.Fragment>
             {friendList.filter((friend) => friend.name !== undefined ?
                                            friend.name.toLowerCase().includes(filterString.toLowerCase()) :
-                                           ""
-                            )
-
-                                
-                                           
-            .map((friend) => (   
+                                           ""                                    
+            ) .map((friend) => (   
                 <React.Fragment key={friend.id}>    
                     <FriendEntry friend={friend} />
                     <Divider />      
