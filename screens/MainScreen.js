@@ -47,11 +47,11 @@ const MainScreen = ({navigation}) => {
             </View>
 
             {friendList !== undefined && friendList.length > 0 ?
-                    <View>
-                        <ScrollView style={styles.scrollView}>
-                            <FriendList friendList={friendList} filterString={filterString}/>
-                        </ScrollView>
-                    </View> :
+                <View>
+                    <ScrollView style={styles.scrollView}>
+                        <FriendList friendList={friendList} filterString={filterString}/>
+                    </ScrollView>
+                </View> :
                 <View>
                     <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
                 </View>    
