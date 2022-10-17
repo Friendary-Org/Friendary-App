@@ -8,7 +8,7 @@ import AddCategoryButton from "../components/AddCategoryButton";
 
 const CategoryList = (props) => {
     const [categoryList, setcategoryList] = React.useState([]);
-    const { editable, newCategories, setCategories } = props;
+    const { editable, newCategories, setCategories, navigation } = props;
     const [unusedCategories, setUnusedCategories] = React.useState([])
 
     const _fetchCategoryList = async () => {
@@ -32,6 +32,10 @@ const CategoryList = (props) => {
 
     useEffect(() => {
         _fetchCategoryList();
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            _fetchCategoryList();
+        });
+        return willFocusSubscription;
     }, []);
 
     useEffect(() => {
@@ -68,7 +72,7 @@ const CategoryList = (props) => {
 
     return (
         <View style={styles.categoryContainer}>
-            <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} />    
+            <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation}/>    
             {newCategories.length > 0 ?
                 (<List.Section title="Categories" style={{width: "80%"}}>
                     {newCategories.map((cat, index) => (
