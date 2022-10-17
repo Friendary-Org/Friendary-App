@@ -33,7 +33,7 @@ const ImportFriendScreen = ({navigation}) => {
                                     return {
                                             id: phoneContact.id, 
                                             name: phoneContact.name, 
-                                            description: "no description",
+                                            description: "",
                                             avatar: phoneContact.imageAvailable?phoneContact.image:"default",
                                             birthday: "",
                                             categories: [],

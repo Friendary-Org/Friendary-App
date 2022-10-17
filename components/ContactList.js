@@ -10,7 +10,10 @@ const ContactList = (props) => {
 
     return (
         <React.Fragment>
-            {contactList.filter((contact) => contact.name.toLowerCase().includes(filterString.toLowerCase()))
+            {contactList.filter((contact) => contact.name !== undefined ?
+                                           contact.name.toLowerCase().includes(filterString.toLowerCase()) :
+                                           ""                                    
+            )
                         .map((contact) => (   
                             <React.Fragment key={contact.id}>    
                                 <ContactEntry contact={contact} setChecked={props.setChecked}/>

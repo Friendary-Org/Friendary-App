@@ -4,9 +4,8 @@ import { TextInput } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const BirthdateEntry = (props) => {
-    const { editable } = props;
+    const { editable, date, setDate } = props;
     const [show, setShow] = React.useState(false);
-    const [date, setDate] = React.useState(new Date());
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
@@ -20,7 +19,7 @@ const BirthdateEntry = (props) => {
             <View style={styles.birthdateContainer}>
                         <TextInput
                             style={{ width: "100%" }}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             value={date.toLocaleDateString()}
                             editable={false}
@@ -35,7 +34,7 @@ const BirthdateEntry = (props) => {
                     <React.Fragment>
                         <TextInput
                             style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             editable={false}
                             outlineColor="transparent"
@@ -51,7 +50,7 @@ const BirthdateEntry = (props) => {
                     <React.Fragment>
                         <TextInput
                             style={[{ width: "100%" },{marginTop: "2%"}]}
-                            label="Birthdate*"
+                            label="Birthdate"
                             mode="outlined"
                             value={date.toLocaleDateString()}
                             onFocus={() => setShow(true)}

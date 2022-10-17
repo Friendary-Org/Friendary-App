@@ -20,7 +20,12 @@ const MainScreen = ({navigation}) => {
     // ];
 
     useEffect(() => {
+        // _removeData();
         fetchData();
+        const willFocusSubscription = navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return willFocusSubscription;
     }, []);
 
     const fetchData = async () => {
