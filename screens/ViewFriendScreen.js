@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
-import { TextInput, Snackbar, Text } from 'react-native-paper';
+import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView,} from 'react-native';
+import { TextInput, Snackbar, Text,IconButton, MD3Colors} from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,33 +20,7 @@ const ViewFriendScreen = ({ route, navigation }) => {
 
     const onDismissSnackBar = () => setSnackBarVisible(false);
 
-    const save = async () => {
-        if (name != "") {
-            let newContact = {
-                id: uuidv4(),
-                name: name,
-                description: description,
-                avatar: "default",
-                birthday: date.toDateString() != new Date().toDateString() ? date : "",
-                categories: newCategories,
-            }
-            let contacts = await _fetchContacts();
-            contacts = [...contacts, newContact];
-            try {
-                await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
-                setSnackBarMessage("New friend created successfully!");
-                setSnackBarVisible(true);
-                setTimeout(() => navigation.goBack(), 1500);
-            } catch (error) {
-                console.log("error retrieving data: " + error.message);
-            }
-        } else {
-            setSnackBarMessage("Please enter a name!");
-            setSnackBarVisible(true);
-        }
-
-    }
-
+    
     const _fetchContacts = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
@@ -64,6 +38,14 @@ const ViewFriendScreen = ({ route, navigation }) => {
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
+                    <IconButton
+                       icon="pencil-outline"
+                       style={styles.iconButton}
+                       size={20}
+                       onPress={() => console.log("pressed")}
+                      
+                    
+                    />
                     <BigAvatar />
                     <Text
                         style={styles.input}
@@ -121,6 +103,11 @@ const styles = StyleSheet.create({
     scrollView: {
         width: "100%",
         paddingBottom: 200
+    },
+    iconButton: {
+        position: 'absolute',
+        top:0,
+        right:0,
     }
 });
 export default ViewFriendScreen;
