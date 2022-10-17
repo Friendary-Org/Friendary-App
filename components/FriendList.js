@@ -6,11 +6,14 @@ import FriendEntry from './FriendEntry';
 
 const FriendList = (props) => {
 
-    const {friendList} = props;
+    const { friendList, filterString } = props;
 
     return (
         <React.Fragment>
-            {friendList.map((friend) => (   
+            {friendList.filter((friend) => friend.name !== undefined ?
+                                           friend.name.toLowerCase().includes(filterString.toLowerCase()) :
+                                           ""                                    
+            ) .map((friend) => (   
                 <React.Fragment key={friend.id}>    
                     <FriendEntry friend={friend} />
                     <Divider />      
