@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
-import SaveButton from '../components/SaveButton';
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
+import SaveButton from '../components/Savebutton';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
@@ -83,7 +83,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                     <BirthdateEntry date={date} setDate={setDate} editable />
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation}/>
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />

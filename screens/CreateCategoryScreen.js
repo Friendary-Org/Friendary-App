@@ -1,61 +1,77 @@
-import React from "react";
-import { TextInput, HelperText } from "react-native-paper";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
 import SaveButton from "../components/Savebutton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import BackButton from "../components/BackButton";
 
-const CreateCategoryScreen = () => {
+const CreateCategoryScreen = ({ route, navigation }) => {
+    const [categoryList, setcategoryList] = React.useState([]);
     const [categoryName, setCategoryName] = React.useState("");
+    const [icon, setIcon] = React.useState("");
+    const onChangeText = text => setIcon(text);
 
-        const [icon, setIcon] = React.useState("");
-    
-        const onChangeText = text => setIcon(text);
-    
-        const validateText = () => {
-            let regex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
-            return !regex.test(icon);
-        }
-        const _saveCategory = async () => {
-            let categoryList = _fetchCategoryList();
-            let newCategory = {uid: Math.max(...categoryList.map(o => o.uid)), name: categoryName, icon: icon, entries: [""]};
-        //     try {
-        //         await AsyncStorage.setItem('categoryName', JSON.stringify(categoryName));
-        //         console.log("Saved Category")
-        //     } catch (error) {
-        //         console.log("error while saving category: " + error.message)
-        //     }
-            }
-        const _fetchCategoryList = async () => {
+    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
+    const [snackBarMessage, setSnackBarMessage] = React.useState("");
+    const onDismissSnackBar = () => setSnackBarVisible(false);
+
+    const validateText = () => {
+        let regex = /^(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
+        return !regex.test(icon);
+    }
+
+    const saveCategory = async () => {
+        if (categoryName == "") {
+            setSnackBarMessage("Please enter a category name!");
+            setSnackBarVisible(true);
+        } else if (validateText()) {
+            setSnackBarMessage("Please enter a valid category icon!");
+            setSnackBarVisible(true);
+        } else {
+            let newUid = Math.max(...categoryList.map(o => o.uid)) + 1;
+            let newCategory = { uid: newUid, name: categoryName, icon: icon, entries: [""] };
             try {
-                await AsyncStorage.getItem('categories').then((value) => {
-                    return JSON.parse(value);
-                });
+                await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
+                setSnackBarMessage("New category created successfully!");
+                setSnackBarVisible(true);
+                setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
-                console.log("error retrieving data: " + error.message)
+                console.log("error while saving category: " + error.message)
             }
-            return []
         }
+    }
 
-        
+    const fetchCategoryList = async () => {
+        try {
+            const value = await AsyncStorage.getItem('categories').then((value) => {
+                if (value != null) {
+                    setcategoryList(JSON.parse(value));
+                } else {
+                    setcategoryList([])
+                }
+            });
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
+        }
+        return []
+    }
 
-return(
-    <React.Fragment>
-         <View style={style.header}>
-        <Text variant="headlineMedium">Create Category</Text>
-        </View>
-       
-        <View style={style.TextInput}>
-        <TextInput
-        label="Category Name"
-        value={categoryName}
-        onChangeText={categoryName => setCategoryName(categoryName)}
-        mode="outlined"
-        />
-        </View>
+    useEffect(() => {
+        fetchCategoryList();
+    }, []);
 
-        <View>
+    return (
+        <View style={styles.containerView}>
+            <Text style={styles.header} variant="headlineMedium">Create new category</Text>
             <TextInput
-            style={{marginTop: "10%"}}
+                style={styles.input}
+                label="Category Name*"
+                value={categoryName}
+                onChangeText={categoryName => setCategoryName(categoryName)}
+                mode="outlined"
+            />
+            <TextInput
+                style={styles.input}
                 label="Set Emoji"
                 mode="outlined"
                 value={icon}
@@ -64,27 +80,35 @@ return(
             <HelperText type="error" visible={validateText()}>
                 Can only be a single emoji
             </HelperText>
+            <SaveButton callback={saveCategory}></SaveButton>
+            <BackButton navigation={navigation} />
+            <Snackbar
+                visible={snackBarVisible}
+                onDismiss={onDismissSnackBar}>
+                {snackBarMessage}
+            </Snackbar>
         </View>
-        <SaveButton callback={_saveCategory}></SaveButton>
-
-    </React.Fragment>
-);
+    );
 }
 
-const style = StyleSheet.create({
-    TextInput: {
-        marginTop: 20,
+const styles = StyleSheet.create({
+    header: {
+        alignSelf: "center"
     },
-    header:{
-        marginTop: 50,
+    input: {
+        width: "80%",
+        marginTop: "2%"
+    },
+    containerView: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
         alignItems: "center",
+        backgroundColor: "#F7F6F6",
+        width: "100%",
+        paddingBottom: "20%"
     },
-    Emoji: {
-        marginTop: 20,
-    },
-    FieldsText:{
-        fontSize: 20,
-    },
-    });
+});
 
 export default CreateCategoryScreen;
