@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet, Platform } from 'react-native';
+import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,7 +61,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
     }
 
     return (
-        <View style={styles.containerView}>
+        <KeyboardAvoidingView style={styles.containerView}
+            behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
                     <BigAvatar editable />
@@ -91,7 +92,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 onDismiss={onDismissSnackBar}>
                 {snackBarMessage}
             </Snackbar>
-        </View>
+        </KeyboardAvoidingView>
 
     );
 };
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         width: "100%",
-        paddingBottom: 300
+        paddingBottom: 200
     }
 });
 export default CreateFriendScreen;
