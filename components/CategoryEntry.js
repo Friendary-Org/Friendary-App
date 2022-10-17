@@ -3,18 +3,16 @@ import { View, StyleSheet } from 'react-native';
 import { TextInput, Text, IconButton } from 'react-native-paper';
 
 const CategoryEntry = (props) => {
-    const { editable, initialValue, deleteCallback, index} = props;
-    const [entryValue, setEntryValue] = React.useState(initialValue);
-
+    const { editable, deleteCallback, index, entryValue, changeCallback} = props;
 
     if (editable == true) {
         return (
-            <View style={{ width: "100%" }}>
+            <View style={[{ width: "100%" }]}>
                 <TextInput
                     mode="outlined"
                     editable={true}
                     value={entryValue}
-                    onChangeText={entryValue => setEntryValue(entryValue)}
+                    onChangeText={text => changeCallback(index, text)}
                     right={<TextInput.Icon icon="trash-can-outline" onPress={() => deleteCallback(index)}/>}
                 />
 
@@ -23,7 +21,7 @@ const CategoryEntry = (props) => {
         )
     } else {
         return (
-            <Text style={styles.categoryEntry}>{initialValue}</Text>
+            <Text style={styles.categoryEntry}>{entryValue}</Text>
         )
     }
 

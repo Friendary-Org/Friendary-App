@@ -6,17 +6,40 @@ import { v4 as uuidv4 } from 'uuid';
 import CategoryEntry from './CategoryEntry';
 
 const Category = (props) => {
-    const { category, editable, deleteCallback, index } = props;
-    let uuidEntries = category.entries.map(item => {
-        return { uid: uuidv4(), value: item };
-    })
-    const [newEntries, setEntries] = React.useState(uuidEntries);
+    const { category, editable, deleteCallback, index, changeEntriesCallback } = props;
+    const [newEntries, setEntries] = React.useState(category.entries);
+    useEffect(() => {
+        let uuidEntries = category.entries.map(item => {
+            return { uid: uuidv4(), value: item };
+        })
+        setEntries(uuidEntries)
+    }, [category]);
+
+    
+    
 
     const addEntry = () => {
-        setEntries([...newEntries, { uid: uuidv4(), value: "" }]);
+        const changedEntries = [...newEntries, { uid: uuidv4(), value: "" }];
+        changeEntriesCallback(category, changedEntries);
+        setEntries(changedEntries);
     }
     const deleteEntry = (index) => {
-        setEntries([...newEntries.slice(0, index), ...newEntries.slice(index + 1)]);
+        const changedEntries = [...newEntries.slice(0, index), ...newEntries.slice(index + 1)];
+        changeEntriesCallback(category, changedEntries);
+        setEntries(changedEntries);
+    }
+    const changeEntry = (index, value) => {
+        const changedEntries = newEntries.map((e, i) => {
+            if (i === index) {
+                e.value = value;
+                return e;
+            } else {
+                return e;
+            }
+        });
+        changeEntriesCallback(category, changedEntries);
+        setEntries(changedEntries);
+        
     }
 
     return (
@@ -26,7 +49,7 @@ const Category = (props) => {
             left={props => <Text>{category.icon}</Text>}>
             <View style={styles.categoryEntryContainer}>
                 {newEntries.map((entry, index) => (
-                    <CategoryEntry initialValue={entry.value} editable={editable ? editable : undefined} index={index} key={entry.uid} deleteCallback={deleteEntry}/>
+                    <CategoryEntry entryValue={entry.value} editable={editable ? editable : undefined} index={index} key={index} deleteCallback={deleteEntry} changeCallback={changeEntry} />
                 ))}
                 <IconButton
                     style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
