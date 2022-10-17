@@ -20,11 +20,10 @@ const MainScreen = ({navigation}) => {
     // ];
 
     useEffect(() => {
-        // _removeData();
-        _fetchData();
+        fetchData();
     }, []);
 
-    const _fetchData = async () => {
+    const fetchData = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
             if (contacts != null)
@@ -42,11 +41,15 @@ const MainScreen = ({navigation}) => {
                 <SearchBar setFilterString={setFilterString}/>
             </View>
 
-            {friendList.length > 0 ?
-                    <View style={styles.friendList}>
-                        <FriendList friendList={friendList} filterString={filterString}/>
+            {friendList !== undefined && friendList.length > 0 ?
+                    <View>
+                        <ScrollView style={styles.scrollView}>
+                            <FriendList friendList={friendList} filterString={filterString}/>
+                        </ScrollView>
                     </View> :
-                <Text>{"no contacts found ..."}</Text>
+                <View>
+                    <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
+                </View>    
             }
             
             <FloatingButtonsMain navigation={navigation}/>
@@ -58,9 +61,16 @@ const styles = StyleSheet.create({
     searchContainer: {
         marginTop: 50,
     },
-    friendList: {
-        marginTop: 5,
+    scrollView: {
+        padding: 2,
         backgroundColor: "#F7F6F6" //main background color
+    },
+    noFriendsText: {
+        fontSize: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+        top: '35%',
+        height: '100%',
     }
 });
 
