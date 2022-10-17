@@ -39,7 +39,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 setSnackBarVisible(true);
                 setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
-                console.log("error retrieving data: " + error.message)
+                console.log("error retrieving data: " + error.message);
             }
         } else {
             setSnackBarMessage("Please enter a name!");
@@ -61,27 +61,29 @@ const CreateFriendScreen = ({ route, navigation }) => {
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.containerView}>
-            <View style={styles.baseInfo}>
-                <BigAvatar editable />
-                <TextInput
-                    style={styles.input}
-                    label="Name*"
-                    mode="outlined"
-                    value={name}
-                    onChangeText={name => setName(name)}
-                />
-                <TextInput
-                    style={styles.input}
-                    label="Description"
-                    mode="outlined"
-                    value={description}
-                    onChangeText={desc => setDescription(desc)}
-                />
-                <BirthdateEntry date={date} setDate={setDate} editable />
-            </View>
-            {/* <View style={styles.lineStyle} /> */}
-            <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
+        <View style={styles.containerView}>
+            <ScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.baseInfo}>
+                    <BigAvatar editable />
+                    <TextInput
+                        style={styles.input}
+                        label="Name*"
+                        mode="outlined"
+                        value={name}
+                        onChangeText={name => setName(name)}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        label="Description"
+                        mode="outlined"
+                        value={description}
+                        onChangeText={desc => setDescription(desc)}
+                    />
+                    <BirthdateEntry date={date} setDate={setDate} editable />
+                </View>
+                {/* <View style={styles.lineStyle} /> */}
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
+            </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />
             <Snackbar
@@ -89,26 +91,21 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 onDismiss={onDismissSnackBar}>
                 {snackBarMessage}
             </Snackbar>
-        </ScrollView>
+        </View>
 
     );
 };
 
 const styles = StyleSheet.create({
     containerView: {
-        alignItems: "center",
+        flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
         marginTop: "10%",
         backgroundColor: "#F7F6F6",
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
+        width: "100%",
     },
     baseInfo: {
-        width: "100%",
         flex: 1,
         alignContent: "flex-start",
         alignItems: "center"
@@ -122,5 +119,9 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         margin: 0,
     },
+    scrollView: {
+        width: "100%",
+        paddingBottom: 300
+    }
 });
 export default CreateFriendScreen;
