@@ -1,48 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, StyleSheet } from 'react-native';
+import { Button, Text} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BackButton from "../components/BackButton"
 
 const TestScreen = ({navigation}) => {
 
-    const fabian = {name: 'Fabian', age: 28}
-
-    const _storeData = async () => {
-        try {
-            await AsyncStorage.setItem(
-                'personFabian',
-                JSON.stringify(fabian)
-            );
-            console.log("save successful")
-        } catch (error) {
-            console.log("error saving data: " + error.message)
-        }
-    }
-
-    const _fetchData = async () => {
-        try {
-            const value = await AsyncStorage.getItem('personFabian');
-            if (value !== null)
-                console.log(JSON.parse(value));
-            else 
-                console.log("not entry for given key")
-        } catch (error) {
-            console.log("error retrieving data: " + error.message)
-        }
-    }
-
-    const _removeData = async () => {
-        try {
-            await AsyncStorage.removeItem('personFabian');
-            console.log("removal successful");
-        } catch (error) {
-            console.log("removal failed: " + error.message)
-        }
-    }
-
-    const _removeContacts = async () => {
+    const removeContacts = async () => {
         try {
             await AsyncStorage.removeItem('contacts');
             console.log("removal successful");
@@ -51,10 +16,15 @@ const TestScreen = ({navigation}) => {
         }
     }
 
-    const _printAllEntriesFromAsyncStorage = async () => {   
-        const keys = await AsyncStorage.getAllKeys();
-        const entries = await AsyncStorage.multiGet(keys);
-        console.log(entries);
+    const printContacts = async () => {   
+        const contacts = await AsyncStorage.getItem("contacts");
+        if(contacts != null){
+            JSON.parse(contacts).map((c) => (
+                console.log(c)
+            ));
+        }else
+            console.log("no contacts found")
+        
     }
 
     const categoryList = [
@@ -63,28 +33,50 @@ const TestScreen = ({navigation}) => {
         {uid: 2, name: "Allergies", icon: "💉", entries: [""]}
     ];
 
-    const _addDefaultCategories = async () => {
+    const addDefaultCategories = async () => {
         try {
             await AsyncStorage.setItem(
                 'categories',
                 JSON.stringify(categoryList)
             );
-            console.log("save successful")
+            console.log("added default categories")
         } catch (error) {
             console.log("error saving data: " + error.message)
         }
     }
 
+    const printCategories = async () => {   
+        const categories = await AsyncStorage.getItem("categories");
+        if(categories != null){
+            JSON.parse(categories).map((c) => (
+                console.log(c)
+            ));
+        }else
+            console.log("no categories found")
+        
+    }
+
+    const removeCategories = async () => {
+        try {
+            await AsyncStorage.removeItem('categories');
+            console.log("removal successful");
+        } catch (error) {
+            console.log("removal failed: " + error.message)
+        }
+    }
+
     return(
         <View style={styles.containerView}>
-            <Text>These are really awesome Details!</Text>
+            <Text variant="displaySmall">Debug Screen</Text>
+            
+            <Text variant="bodyLarge" style={{marginTop: "5%"}}>Contacts</Text>
+            <Button onPress={() => printContacts()}>Print all Contacts</Button>
+            <Button onPress={() => removeContacts()}>Delete all Contacts</Button>
 
-            <Button onPress={() => _storeData()}>Save</Button>
-            <Button onPress={() => _fetchData()}>Fetch</Button>
-            <Button onPress={() => _removeData()}>Remove</Button>
-            <Button onPress={() => _printAllEntriesFromAsyncStorage()}>Print All Entries</Button>
-            <Button onPress={() => _removeContacts()}>Delete Contacts</Button>
-            <Button onPress={() => _addDefaultCategories()}>Add default categories</Button>
+            <Text variant="bodyLarge" style={{marginTop: "5%"}}>Categories</Text>
+            <Button onPress={() => printCategories()}>Print all categories</Button>
+            <Button onPress={() => addDefaultCategories()}>Add default categories</Button>
+            <Button onPress={() => removeCategories()}>Delete all categories</Button>
 
             <BackButton navigation={navigation}/>
         </View>
@@ -95,7 +87,8 @@ const styles = StyleSheet.create({
     containerView: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
+        marginTop: "10%"
     }
 });
 
