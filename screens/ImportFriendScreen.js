@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ContactList from "../components/ContactList";
 import SearchBar from "../components/SearchBar";
+import BackButton from "../components/BackButton";
 
 
 const ImportFriendScreen = ({navigation}) => {
@@ -34,7 +35,7 @@ const ImportFriendScreen = ({navigation}) => {
                                             id: phoneContact.id, 
                                             name: phoneContact.name, 
                                             description: "",
-                                            avatar: phoneContact.imageAvailable?phoneContact.image:"default",
+                                            avatar: phoneContact.imageAvailable?phoneContact.image:undefined,
                                             birthday: "",
                                             categories: [],
                                             checked: "unchecked",
@@ -143,24 +144,6 @@ const ImportFriendScreen = ({navigation}) => {
         navigation.push("Friends")
     } 
 
-    // for testing purposes 
-    const _removeData = async () => {
-        try {
-            await AsyncStorage.removeItem('contacts');
-            console.log("removal successful");
-        } catch (error) {
-            console.log("removal failed: " + error.message)
-        }
-    }
-
-    // for testing purposes
-    const _printAllEntriesFromAsyncStorage = async () => {   
-        const keys = await AsyncStorage.getAllKeys();
-        const entries = await AsyncStorage.multiGet(keys);
-        console.log(entries);
-    }
-    
-
     return (
         <React.Fragment>
             <View style={styles.importTextContainer}>
@@ -179,16 +162,9 @@ const ImportFriendScreen = ({navigation}) => {
             }
 
             <View style={styles.selectButtonContainer}>
-                <Button style={styles.selectButton} mode="contained" onPress={() => _removeData()}>Remove</Button>
-            </View>
-
-            <View style={styles.selectButtonContainer}>
-                <Button style={styles.selectButton} mode="contained" onPress={() => _printAllEntriesFromAsyncStorage()}>Print</Button>
-            </View>
-
-            <View style={styles.selectButtonContainer}>
                 <Button style={styles.selectButton} mode="contained" onPress={() => importSelectedContacts()}>Import</Button>
             </View>
+            <BackButton navigation={navigation}/>
         </React.Fragment>
     );
 }
@@ -212,13 +188,17 @@ const styles = StyleSheet.create({
     scrollView: {
         padding: 2,
         width: "100%",
-        height: "100%",
+        height: "20%",
         backgroundColor: "#F7F6F6" //main background color
     },
     selectButtonContainer: {
-        height: "10%",
+        marginBottom: 85,
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
     },
-    searchContainer: {
+    selectButton: {
+        marginTop: 10
     },
 });
 

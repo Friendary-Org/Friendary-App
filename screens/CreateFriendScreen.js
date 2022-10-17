@@ -21,13 +21,15 @@ const CreateFriendScreen = ({ route, navigation }) => {
 
     const onDismissSnackBar = () => setSnackBarVisible(false);
 
+    const [avatar, setAvatar] = React.useState(null)
+
     const save = async () => {
         if (name != "") {
             let newContact = {
                 id: uuidv4(),
                 name: name,
                 description: description,
-                avatar: "default",
+                avatar: avatar,
                 birthday: date.toDateString() != new Date().toDateString() ? date : "",
                 categories: newCategories,
             }
@@ -65,7 +67,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
-                    <BigAvatar editable />
+                    <BigAvatar editable setAvatar={setAvatar}/>
                     <TextInput
                         style={styles.input}
                         label="Name*"
