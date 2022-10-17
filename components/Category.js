@@ -7,10 +7,16 @@ import CategoryEntry from './CategoryEntry';
 
 const Category = (props) => {
     const { category, editable, deleteCallback, index, changeEntriesCallback } = props;
-    let uuidEntries = category.entries.map(item => {
-        return { uid: uuidv4(), value: item };
-    })
-    const [newEntries, setEntries] = React.useState(uuidEntries);
+    const [newEntries, setEntries] = React.useState(category.entries);
+    useEffect(() => {
+        let uuidEntries = category.entries.map(item => {
+            return { uid: uuidv4(), value: item };
+        })
+        setEntries(uuidEntries)
+    }, [category]);
+
+    
+    
 
     const addEntry = () => {
         const changedEntries = [...newEntries, { uid: uuidv4(), value: "" }];
@@ -33,6 +39,7 @@ const Category = (props) => {
         });
         changeEntriesCallback(category, changedEntries);
         setEntries(changedEntries);
+        
     }
 
     return (
@@ -42,7 +49,7 @@ const Category = (props) => {
             left={props => <Text>{category.icon}</Text>}>
             <View style={styles.categoryEntryContainer}>
                 {newEntries.map((entry, index) => (
-                    <CategoryEntry entryValue={entry.value} editable={editable ? editable : undefined} index={index} key={entry.uid} deleteCallback={deleteEntry} changeCallback={changeEntry} />
+                    <CategoryEntry entryValue={entry.value} editable={editable ? editable : undefined} index={index} key={index} deleteCallback={deleteEntry} changeCallback={changeEntry} />
                 ))}
                 <IconButton
                     style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
