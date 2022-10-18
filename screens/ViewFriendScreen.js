@@ -6,8 +6,6 @@ import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
-import { Directions } from 'react-native-gesture-handler';
-
 
 const ViewFriendScreen = ({ route, navigation }) => {
     const friend = route.params.friend
@@ -32,7 +30,7 @@ const ViewFriendScreen = ({ route, navigation }) => {
                         icon="pencil-outline"
                         style={styles.iconButton}
                         size={32}
-                        onPress={() => console.log("pressed")}
+                        onPress={() => navigation.push("Edit Friend",{friend})}
                     />
                     <BigAvatar
                         preloadedAvatar={friend.avatar}

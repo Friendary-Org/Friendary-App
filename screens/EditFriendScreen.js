@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
 import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,11 +10,12 @@ import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
 import SaveButton from '../components/Savebutton';
 
-const CreateFriendScreen = ({ route, navigation }) => {
-    const [name, setName] = React.useState("");
-    const [description, setDescription] = React.useState("");
+const EditFriendScreen = ({ route, navigation }) => {
+    const friend = route.params.friend;
+    const [name, setName] = React.useState(friend.name);
+    const [description, setDescription] = React.useState(friend.description);
     const [date, setDate] = React.useState(new Date());
-    const [newCategories, setCategories] = React.useState([]);
+    const [newCategories, setCategories] = React.useState(friend.categories);
 
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("")
@@ -25,8 +26,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
 
     const save = async () => {
         if (name != "") {
-            let newContact = {
-                id: uuidv4(),
+            let changedFriend = {
+                id: friend.id,
                 name: name,
                 description: description,
                 avatar: avatar,
@@ -34,12 +35,21 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 categories: newCategories,
             }
             let contacts = await _fetchContacts();
-            contacts = [...contacts, newContact];
+
+            contacts = contacts.map((c) =>{
+                if(c.id==changedFriend.id){
+                    return changedFriend
+                }else{
+                    return c
+                }
+            });
+
             try {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
-                setSnackBarMessage("New friend created successfully!");
+                setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
-                setTimeout(() => navigation.goBack(), 1500);
+                changedFriend.birthday = changedFriend.birthday.toDateString();
+                setTimeout(() => navigation.navigate("View Friend",{friend: changedFriend}), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }
@@ -62,12 +72,21 @@ const CreateFriendScreen = ({ route, navigation }) => {
         }
     }
 
+    useEffect(() => {
+        if(friend.birthday!=""){
+            setDate(new Date(friend.birthday))
+        }
+        if(friend.avatar!=null){
+            setAvatar(friend.avatar)
+        }
+    },[]);
+
     return (
         <KeyboardAvoidingView style={styles.containerView}
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
-                    <BigAvatar editable setAvatar={setAvatar}/>
+                    <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar}/>
                     <TextInput
                         style={styles.input}
                         label="Name*"
@@ -128,4 +147,4 @@ const styles = StyleSheet.create({
         paddingBottom: 200
     }
 });
-export default CreateFriendScreen;
+export default EditFriendScreen;
