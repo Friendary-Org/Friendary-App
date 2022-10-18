@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, } from 'react-native';
 import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
 
@@ -8,13 +8,12 @@ import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
 
 const ViewFriendScreen = ({ route, navigation }) => {
-    const friend = route.params.friend
+    const [friend, setFriend] = React.useState(route.params.friend)
 
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
-
 
     return (
         <KeyboardAvoidingView style={styles.containerView}
