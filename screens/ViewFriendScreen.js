@@ -1,50 +1,57 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, } from 'react-native';
-import { Snackbar, Text, IconButton, } from 'react-native-paper';
+import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
 
+
 const ViewFriendScreen = ({ route, navigation }) => {
     const friend = route.params.friend
 
-    const [snackBarVisible, setSnackBarVisible] = React.useState(false);
-    const [snackBarMessage, setSnackBarMessage] = React.useState("")
+    const [modalVisible, setModalVisible] = React.useState(false);
 
-    const onDismissSnackBar = () => setSnackBarVisible(false);
-
+    const showModal = () => setModalVisible(true);
+    const hideModal = () => setModalVisible(false);
 
 
     return (
         <KeyboardAvoidingView style={styles.containerView}
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
+                <Portal>
+                    <Modal visible={modalVisible} onDismiss={hideModal}contentContainerStyle={styles.modalContainer}>
+                        <Text variant="headlineMedium">{friend.description}</Text>
+                    </Modal>
+                </Portal>
                 <View style={styles.baseInfo}>
                     <IconButton
                         icon="pencil-outline"
                         style={styles.iconButton}
-                        size={20}
+                        size={32}
                         onPress={() => console.log("pressed")}
-
-
                     />
                     <BigAvatar
                         preloadedAvatar={friend.avatar}
                     />
-                    <Text variant="headlineLarge">{friend.name}</Text>
+                    <View>
+                        <IconButton
+                            icon="note"
+                            size={32}
+                            style={styles.description}
+                            onPress={() => showModal()}
+                        />
+                        <Text variant="headlineLarge">{friend.name}</Text>
+
+                    </View>
                     <BirthdateEntry date={new Date(friend.birthday)} />
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
                 <CategoryList newCategories={friend.categories} navigation={navigation} />
             </ScrollView>
             <BackButton navigation={navigation} />
-            <Snackbar
-                visible={snackBarVisible}
-                onDismiss={onDismissSnackBar}>
-                {snackBarMessage}
-            </Snackbar>
         </KeyboardAvoidingView>
 
     );
@@ -81,6 +88,18 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         right: 0,
+    },
+    description: {
+        position: 'absolute',
+        bottom: 15,
+        marginLeft: "7%",
+    },
+    modalContainer: {
+        backgroundColor: 'white',
+        padding: 20,
+        width: "90%",
+        alignSelf: "center",
     }
+
 });
 export default ViewFriendScreen;
