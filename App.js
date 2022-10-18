@@ -17,7 +17,7 @@ export default function App() {
   return (
     <PaperProvider>
       <NavigationContainer>
-          <Stack.Navigator initialRouteName="View Friend" screenOptions={{headerShown: false}}>
+          <Stack.Navigator initialRouteName="Friends" screenOptions={{headerShown: false}}>
               <Stack.Screen name="Friends" component={MainScreen}/>
               <Stack.Screen name="Test" component={TestScreen}/>
               <Stack.Screen name="Create Category" component={CreateCategoryScreen}/>

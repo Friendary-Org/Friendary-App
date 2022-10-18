@@ -6,7 +6,7 @@ import FriendEntry from './FriendEntry';
 
 const FriendList = (props) => {
 
-    const { friendList, filterString } = props;
+    const { friendList, filterString, navigation } = props;
 
     return (
         <React.Fragment>
@@ -15,7 +15,8 @@ const FriendList = (props) => {
                                            ""                                    
             ) .map((friend) => (   
                 <React.Fragment key={friend.id}>    
-                    <FriendEntry friend={friend} />
+                    <FriendEntry friend={friend} 
+                    navigation={navigation}/>
                     <Divider />      
                 </React.Fragment>
             ))}    
