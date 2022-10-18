@@ -17,7 +17,7 @@ const AddCategoryButton = (props) => {
         <Menu
             visible={visible}
             onDismiss={closeMenu}
-            anchor={<Button icon="plus" mode="outlined" onPress={() => openMenu()}>
+            anchor={<Button style={{marginTop: "2%"}} icon="plus" mode="outlined" onPress={() => openMenu()}>
                 Add Category
             </Button>}>
             <Menu.Item leadingIcon="plus" onPress={() => {closeMenu(); navigation.push("Create Category")}} title="Create new Category         " />

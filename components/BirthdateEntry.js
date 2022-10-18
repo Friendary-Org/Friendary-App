@@ -19,8 +19,8 @@ const BirthdateEntry = (props) => {
         return(
             <View style={styles.birthdateContainer}>
                         <Text
-                            style={{ width: "100%" }} variant="headlineSmall"
-                        > Birthday: {date.toLocaleDateString()}</Text>
+                            style={[{ width: "100%" },{textAlign: "center"}]} variant="bodyLarge"
+                        > Birthdate: {date.toLocaleDateString()}</Text>
             </View>
         )
     } else {
