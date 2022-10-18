@@ -5,7 +5,7 @@ import {createStackNavigator} from "@react-navigation/stack";
 
 import MainScreen from "./screens/MainScreen";
 import TestScreen from "./screens/TestScreen";
-
+import CreateCategoryScreen from "./screens/CreateCategoryScreen";
 import CreateFriendScreen from "./screens/CreateFriendScreen";
 import ImportFriendScreen from "./screens/ImportFriendScreen";
 import ViewFriendScreen from "./screens/ViewFriendScreen";
@@ -20,6 +20,7 @@ export default function App() {
           <Stack.Navigator initialRouteName="View Friend" screenOptions={{headerShown: false}}>
               <Stack.Screen name="Friends" component={MainScreen}/>
               <Stack.Screen name="Test" component={TestScreen}/>
+              <Stack.Screen name="Create Category" component={CreateCategoryScreen}/>
               <Stack.Screen name="Create Friend" component={CreateFriendScreen}/>
               <Stack.Screen name="ImportFriend" component={ImportFriendScreen}/>
               <Stack.Screen name="View Friend" component={ViewFriendScreen}/>

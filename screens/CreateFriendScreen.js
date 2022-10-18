@@ -6,9 +6,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
-import SaveButton from '../components/SaveButton';
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
+import SaveButton from '../components/Savebutton';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
@@ -21,13 +21,15 @@ const CreateFriendScreen = ({ route, navigation }) => {
 
     const onDismissSnackBar = () => setSnackBarVisible(false);
 
+    const [avatar, setAvatar] = React.useState(null)
+
     const save = async () => {
         if (name != "") {
             let newContact = {
                 id: uuidv4(),
                 name: name,
                 description: description,
-                avatar: "default",
+                avatar: avatar,
                 birthday: date.toDateString() != new Date().toDateString() ? date : "",
                 categories: newCategories,
             }
@@ -65,7 +67,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
-                    <BigAvatar editable />
+                    <BigAvatar editable setAvatar={setAvatar}/>
                     <TextInput
                         style={styles.input}
                         label="Name*"
@@ -83,7 +85,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                     <BirthdateEntry date={date} setDate={setDate} editable />
                 </View>
                 {/* <View style={styles.lineStyle} /> */}
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories} />
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation}/>
             </ScrollView>
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />
