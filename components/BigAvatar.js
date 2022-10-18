@@ -1,23 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Avatar, IconButton } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker'
 
 const avatarSize = 128;
 
 const BigAvatar = (props) => {
-    const {avatar,editable} = props;
+
+    const IMAGE = {default: require(`../assets/avatar_neutral.jpg`)}
+    const {editable, setAvatar} = props;
+
+    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+    const [image, setImage] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            const galleryStatus = await ImagePicker.getMediaLibraryPermissionsAsync();
+            setHasGalleryPermission(galleryStatus.status === 'granted');
+        })();
+    }, []);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4,3],
+            quality: 1
+        });
+
+        if (!result.cancelled) {
+            setImage(result.uri);
+            setAvatar(result.uri);
+        }
+
+        if (hasGalleryPermission === false) {
+            return <Text>No access to image gallery granted</Text>
+        }
+    }
+
     return (
-        <View style={styles.avatarContainer}>
-                <Avatar.Image size={avatarSize} source={avatar!==undefined?avatar:require("../assets/test-avatar.jpg")}/>
+        <React.Fragment>
+            <View style={styles.avatarContainer}>
+                {image != null ? 
+                    <Avatar.Image size={avatarSize} source={{uri: image}}/> :
+                    <Avatar.Image size={avatarSize} source={IMAGE["default"]}/>
+                }
+
                 <IconButton
                     style={[styles.upload,editable==undefined?{display:"none"}:{}]}
                     icon="pencil-outline"
                     size={avatarSize/4}
-                    onPress={() => console.log('Pressed')
-                    }
+                    onPress={() => pickImage()}
                     mode="outlined"
                 />
-        </View>
+            </View>
+        </React.Fragment>
     );
 }
 
