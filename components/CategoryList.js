@@ -72,7 +72,7 @@ const CategoryList = (props) => {
 
     return (
         <View style={styles.categoryContainer}>
-            <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation}/>    
+            {editable && <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation}/>}    
             {newCategories.length > 0 ?
                 (<List.Section title="Categories" style={{width: "80%"}}>
                     {newCategories.map((cat, index) => (
@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "flex-start",
         alignItems: "center",
-        marginTop: "2%",
     },
 
 });

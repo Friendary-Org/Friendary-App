@@ -8,6 +8,7 @@ import TestScreen from "./screens/TestScreen";
 import CreateCategoryScreen from "./screens/CreateCategoryScreen";
 import CreateFriendScreen from "./screens/CreateFriendScreen";
 import ImportFriendScreen from "./screens/ImportFriendScreen";
+import ViewFriendScreen from "./screens/ViewFriendScreen";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
               <Stack.Screen name="Create Category" component={CreateCategoryScreen}/>
               <Stack.Screen name="Create Friend" component={CreateFriendScreen}/>
               <Stack.Screen name="ImportFriend" component={ImportFriendScreen}/>
+              <Stack.Screen name="View Friend" component={ViewFriendScreen}/>
           </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

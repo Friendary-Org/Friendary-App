@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, Keyboard } from "react-native";
-import { TextInput } from 'react-native-paper';
+import { TextInput, Text} from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import FriendEntry from './FriendEntry';
 
 const BirthdateEntry = (props) => {
     const { editable, date, setDate } = props;
@@ -17,14 +18,9 @@ const BirthdateEntry = (props) => {
     if (editable === undefined) {
         return(
             <View style={styles.birthdateContainer}>
-                        <TextInput
-                            style={{ width: "100%" }}
-                            label="Birthdate"
-                            mode="outlined"
-                            value={date.toLocaleDateString()}
-                            editable={false}
-
-                        />
+                        <Text
+                            style={[{ width: "100%" },{textAlign: "center"}]} variant="bodyLarge"
+                        > Birthdate: {date.toLocaleDateString()}</Text>
             </View>
         )
     } else {

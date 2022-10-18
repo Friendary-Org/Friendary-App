@@ -49,7 +49,8 @@ const MainScreen = ({navigation}) => {
             {friendList !== undefined && friendList.length > 0 ?
                 <View>
                     <ScrollView style={styles.scrollView}>
-                        <FriendList friendList={friendList} filterString={filterString}/>
+                        <FriendList friendList={friendList} filterString={filterString}
+                        navigation={navigation}/>
                     </ScrollView>
                 </View> :
                 <View>
