@@ -3,6 +3,7 @@ import { useState, useEffect} from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';   
 import { PaperSelect } from 'react-native-paper-select';
+import { useIsFocused } from '@react-navigation/native';
 
 import SearchBar from "../components/SearchBar";
 import FriendList from "../components/FriendList";
@@ -33,17 +34,29 @@ const MainScreen = ({navigation}) => {
 
     const [ friendList, setFriendList ] = useState([]);
     const [ filterString, setFilterString ] = useState("");
+    const isFocused = useIsFocused()
     const [ filterType, setFilterType ] = useState("Names");
     const [ categoryList, setcategoryList ] = React.useState([]);
     const [ filterOptions, setFilterOptions ] = useState(null);
 
     useEffect(() => {
-        const willFocusSubscription = navigation.addListener('focus', () => {
-            fetchData();
-            fetchCategoryList();
-        });
-        return willFocusSubscription;
+        //removeContacts();
+        fetchData();
     }, []);
+
+    useEffect(() => {
+        //removeContacts();
+        fetchData();
+    }, [isFocused]);
+
+    const removeContacts = async () => {
+        try {
+            await AsyncStorage.removeItem('contacts');
+            console.log("removal successful");
+        } catch (error) {
+            console.log("removal failed: " + error.message)
+        }
+    }
 
     useEffect(() => {
         if (categoryList !== null) {
@@ -64,8 +77,8 @@ const MainScreen = ({navigation}) => {
             if (contacts != null) {
                 // console.log(contacts)
                 setFriendList(JSON.parse(contacts))
-            } else 
-                console.log("no entry for given key")
+            else 
+            setFriendList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
