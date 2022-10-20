@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, } from 'react-native';
 import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -9,11 +10,16 @@ import BirthdateEntry from '../components/BirthdateEntry';
 
 const ViewFriendScreen = ({ route, navigation }) => {
     const [friend, setFriend] = React.useState(route.params.friend)
+    const isFocused = useIsFocused()
 
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
+
+    useEffect(() => {
+        setFriend(route.params.friend);
+    }, [isFocused]);
 
     return (
         <KeyboardAvoidingView style={styles.containerView}
@@ -21,7 +27,7 @@ const ViewFriendScreen = ({ route, navigation }) => {
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <Portal>
                     <Modal visible={modalVisible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-                        <Text variant="bodyLarge">{friend.description!=""?friend.description:"No description"}</Text>
+                        <Text variant="bodyLarge" style={styles.description}>{friend.description!=""?friend.description:"No description"}</Text>
                     </Modal>
                 </Portal>
                 <View style={styles.baseInfo}>
@@ -82,8 +88,11 @@ const styles = StyleSheet.create({
     modalContainer: {
         backgroundColor: 'white',
         padding: 20,
-        width: "90%",
+        width: "100%",
         alignSelf: "center",
+    },
+    description: {
+        textAlign: "center",
     }
 });
 export default ViewFriendScreen;

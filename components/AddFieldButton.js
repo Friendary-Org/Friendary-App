@@ -7,7 +7,6 @@ const AddFieldButton =  () => {
     const [fields, setFields] = React.useState([{ value: null }]);
   
     function handleChange(i, event) {
-        console.log(i)
         const values = [...fields];
         values[i].value = event;
         setFields(values);

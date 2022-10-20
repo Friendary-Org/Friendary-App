@@ -49,8 +49,6 @@ const EditFriendScreen = ({ route, navigation }) => {
                 setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
                 changedFriend.birthday = changedFriend.birthday.toString();
-                console.log(changedFriend.categories)
-                console.log("------------")
                 setTimeout(() => navigation.navigate("View Friend", { friend: changedFriend }), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
