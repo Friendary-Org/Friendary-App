@@ -16,9 +16,6 @@ const FriendList = (props) => {
                                            friend                                    
             ) .filter(
                 (friend) => 
-                // {console.log("FTa: " + filterType); return friend}
-
-
                 {
                     console.log("-------------------")
                     console.log("friend: " + friend.name)
@@ -35,15 +32,32 @@ const FriendList = (props) => {
                         console.log("categories: " + categories)
 
                         let categoryNames = []
-                        let categoryEntries = []
 
+                        // single category with 0-x entries
                         if (categories.length === 1) {
                             categoryNames.push(categories[0].name)
                             console.log("SINGLE CATEGORY PUSHED: " + categories[0].name)
                             console.log("categoryNames: " + categoryNames)
 
-                            return categoryNames[0].toLowerCase() === filterType.toLowerCase()
+                            if (categoryNames[0].toLowerCase() !== filterType.toLowerCase())
+                                return false;
+
+                            if (filterString === "")
+                                return true;
+
+                            let entries = friend.categories[0].entries
+
+                            if (entries.length === 0)
+                                return false;
+
+                            if (entries.length === 1) 
+                                return entries[0].toLowerCase() === filterString.toLowerCase();
+
+                            if (entries.length > 1) {
+                                return entries.find(entry => entry.toLowerCase() === filterString.toLowerCase()) !== undefined;
+                            }
                         }
+                        // multiple categories with 0-x entries
                         else 
                         {
                             console.log("MULTIPLES CATEGORIES PUSHED: ")
@@ -51,92 +65,38 @@ const FriendList = (props) => {
                                 console.log("category: " + category.name)
                                 categoryNames.push(category.name)
                             })
-                            console.log("categoryNames: " + categoryNames)
-                            console.log("categoryNames_length: " + categoryNames.length)
 
-                            return categoryNames.find(categoryName => categoryName.toLowerCase() === filterType.toLowerCase()) !== undefined
+                            if (categoryNames.find(categoryName => categoryName.toLowerCase() === filterType.toLowerCase()) !== undefined &&
+                            filterString === "")
+                                return true;
+
+                            for (let i = 0; i < categories.length; i++) {
+                                let currentCategory = categories[i];
+                                console.log("CurrentCategory[" + i + "]: " + currentCategory.name)
+
+                                if (currentCategory.name.toLowerCase() === filterType.toLowerCase()) {
+                                    console.log("MATCH")
+
+                                    let currentCategoryEntries = currentCategory.entries
+
+                                    if (currentCategoryEntries.length === 0) {
+                                        return false;
+                                    }
+
+                                    if (currentCategoryEntries.length === 1) {
+                                        return currentCategory.entries[0].toLowerCase() === filterString.toLowerCase();
+                                    }
+
+                                    if (currentCategoryEntries.length > 1) {
+                                        return currentCategoryEntries.find(currentCategoryEntry => 
+                                                    currentCategoryEntry.toLowerCase() === filterString.toLowerCase()) 
+                                                !== undefined;
+                                    }
+                                }
+                            }
                         }
                     }
-
-
-                //         if (categories.length === 1) {
-                //             categoryNames.push(categories[0].name)
-                //             categoryEntries.push(categories[0].entries)
-                //         }
-                //         else {
-                //             categories.forEach(category => {
-                //                 categoryNames.push(category.name);
-                //                 categoryEntries.push(category.entries)
-                //             })
-                //         }
-
-                //         console.log("categoryNames: " + categoryNames)
-                //         console.log("categoryEntries: " + categoryEntries)
-
-                //         if (categoryNames.length === 1) {
-                //             console.log("CATEGORIE NAME LENGTH 1")
-                //             if (categoryNames[0].toLowerCase() === filterType.toLowerCase()) {
-                //                 console.log("OK2")
-                //                 let entries = categoryEntries.toString().split(',')
-
-                //                 console.log(entries.length)
-
-                //                 if (entries.length === 1) {
-                //                     console.log("OK AGAIN");
-
-                //                     console.log("AAAA: " + entries.length)
-
-                //                     if (categoryEntries[0].toString().toLowerCase() === filterString.toLowerCase()) {
-                //                         console.log("ROUTE B")
-                //                         return friend
-                //                     }
-                //                 }
-                //                 else if (entries.length !== 0 && entries.length > 1) {
-                //                     console.log("good")
-                //                     entries.forEach(categoryEntry => {
-                //                         let abc = categoryEntry.toString().toLowerCase()
-                //                         let ft = filterString.toLowerCase()
-                //                         console.log("ZZZ " + abc + " " + ft)
-
-                //                         if (categoryEntry.toString().toLowerCase() === filterString.toLowerCase()) {
-                //                             console.log("ROUTE C")
-                //                             console.log("ABBBBBB: " + categoryEntry.toString().toLowerCase() + ", " + filterString.toLowerCase())
-                //                             return friend
-                //                         }
-                //                     })
-                //                 }
-
-                //                 if (filterString === "") {
-                //                     console.log("ROUTE D")
-                //                     console.log(friend.name)
-                //                     return friend;
-                //                 }
-                //             }
-                //         }
-
-                //         else if (categoryNames.length !== 0 && categoryNames.length > 1) {
-                //         console.log("CATEGORIE NAME LENGTH > 1")
-
-                //             categoryNames.forEach(categoryName => {
-                //                     let cat = categoryName.toLowerCase()
-                //                     let ft = filterType.toLowerCase()
-                                    
-                //                     console.log("cat: " + cat + ", ft: " + ft)
-
-                //                     if (categoryName.toLowerCase() === filterType.toLowerCase()) {
-                //                         console.log("YES")
-                //                         console.log(friend.name)
-                //                         return friend;
-                //                     }
-                //                 }
-                //             )
-                //         }
-                //     }
-                //     else {
-                //         console.log("DAMN")
-                //     }
                 }
-            
             ) .map((friend) => (   
                 <React.Fragment key={friend.id}>    
                     <FriendEntry friend={friend} 
