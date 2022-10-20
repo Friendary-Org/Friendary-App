@@ -46,14 +46,16 @@ const MainScreen = ({navigation}) => {
     }, []);
 
     useEffect(() => {
-        let filterOptions = [{_id: -1, value: "Names"}]
-        categoryList.forEach((c) => {filterOptions.push({_id: c.uid, value: c.name})})
+        if (categoryList !== null) {
+            let filterOptions = [{_id: -1, value: "Names"}]
+            categoryList.forEach((c) => {filterOptions.push({_id: c.uid, value: c.name})})
 
-        setFilterOptions({
+            setFilterOptions({
                 value: "Names",
                 list: filterOptions,
                 selectedList: [filterOptions[0]]
             })
+        }
     }, [categoryList]);
 
     const fetchData = async () => {
@@ -71,13 +73,11 @@ const MainScreen = ({navigation}) => {
 
     const fetchCategoryList = async () => {
         try {
-            const value = await AsyncStorage.getItem('categories').then((value) => {
-                if(value != null){
-                    setcategoryList(JSON.parse(value));
-                }else{
-                    setcategoryList([])
-                }
-            });
+            const categories = AsyncStorage.getItem('categories');
+            if(categories != null)
+                setcategoryList(JSON.parse(value));
+            else
+                setcategoryList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
