@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react';
-import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 'react-native';
-import { TextInput, Snackbar, Text } from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, Alert } from 'react-native';
+import { TextInput, Snackbar, Text, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -36,10 +36,10 @@ const EditFriendScreen = ({ route, navigation }) => {
             }
             let contacts = await _fetchContacts();
 
-            contacts = contacts.map((c) =>{
-                if(c.id==changedFriend.id){
+            contacts = contacts.map((c) => {
+                if (c.id == changedFriend.id) {
                     return changedFriend
-                }else{
+                } else {
                     return c
                 }
             });
@@ -48,16 +48,51 @@ const EditFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
-                changedFriend.birthday = changedFriend.birthday.toDateString();
+                changedFriend.birthday = changedFriend.birthday.toString();
                 console.log(changedFriend.categories)
                 console.log("------------")
-                setTimeout(() => navigation.navigate("View Friend",{friend: changedFriend}), 1500);
+                setTimeout(() => navigation.navigate("View Friend", { friend: changedFriend }), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }
         } else {
             setSnackBarMessage("Please enter a name!");
             setSnackBarVisible(true);
+        }
+
+    }
+
+    const confirm = async () => new Promise((resolve) => {
+        Alert.alert(
+            "Delete Friend",
+            `Do you want to delete ${friend.name} from your list? This can't be reverted`,
+            [
+                {
+                    text: "No",
+                    onPress: () => resolve("false"),
+                    style: "cancel"
+                },
+                { text: "Yes", onPress: () => resolve("true") }
+            ]
+        );
+    });
+
+    const deleteFriend = async () => {
+        let value = await confirm();
+
+        if (value=="true") {
+            let contacts = await _fetchContacts();
+
+            contacts = contacts.filter(c => c.id != friend.id);
+
+            try {
+                await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
+                setSnackBarMessage("Friend deleted successfully!");
+                setSnackBarVisible(true);
+                setTimeout(() => navigation.popToTop(), 1500);
+            } catch (error) {
+                console.log("error retrieving data: " + error.message);
+            }
         }
 
     }
@@ -75,20 +110,20 @@ const EditFriendScreen = ({ route, navigation }) => {
     }
 
     useEffect(() => {
-        if(friend.birthday!=""){
+        if (friend.birthday != "") {
             setDate(new Date(friend.birthday))
         }
-        if(friend.avatar!=null){
+        if (friend.avatar != null) {
             setAvatar(friend.avatar)
         }
-    },[]);
+    }, []);
 
     return (
         <KeyboardAvoidingView style={styles.containerView}
             behavior={"padding"}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
-                    <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar}/>
+                    <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar} />
                     <TextInput
                         style={styles.input}
                         label="Name*"
@@ -106,8 +141,16 @@ const EditFriendScreen = ({ route, navigation }) => {
                     <BirthdateEntry date={date} setDate={setDate} editable />
                 </View>
                 <View style={styles.lineStyle} />
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation}/>
+                <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation} />
+                <Button icon="trash-can-outline"
+                    mode="outlined"
+                    onPress={() => deleteFriend()}
+                    textColor="red"
+                    style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : {width: "40%"}]}>
+                    Delete Friend
+                </Button>
             </ScrollView>
+
             <SaveButton callback={save} />
             <BackButton navigation={navigation} />
             <Snackbar
@@ -147,6 +190,11 @@ const styles = StyleSheet.create({
     scrollView: {
         width: "100%",
         paddingBottom: 200
+    },
+    deleteButton: {
+        borderColor: "red",
+        alignSelf: "center",
+        marginTop: "2%"
     }
 });
 export default EditFriendScreen;

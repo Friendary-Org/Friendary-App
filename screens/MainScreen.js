@@ -20,13 +20,22 @@ const MainScreen = ({navigation}) => {
     // ];
 
     useEffect(() => {
-        // _removeData();
+        //removeContacts();
         fetchData();
         const willFocusSubscription = navigation.addListener('focus', () => {
             fetchData();
         });
         return willFocusSubscription;
     }, []);
+
+    const removeContacts = async () => {
+        try {
+            await AsyncStorage.removeItem('contacts');
+            console.log("removal successful");
+        } catch (error) {
+            console.log("removal failed: " + error.message)
+        }
+    }
 
     const fetchData = async () => {
         try {
