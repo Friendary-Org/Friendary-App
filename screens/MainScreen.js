@@ -40,23 +40,14 @@ const MainScreen = ({navigation}) => {
     const [ filterOptions, setFilterOptions ] = useState(null);
 
     useEffect(() => {
-        //removeContacts();
         fetchData();
+        fetchCategoryList();
     }, []);
 
     useEffect(() => {
-        //removeContacts();
         fetchData();
+        fetchCategoryList();
     }, [isFocused]);
-
-    const removeContacts = async () => {
-        try {
-            await AsyncStorage.removeItem('contacts');
-            console.log("removal successful");
-        } catch (error) {
-            console.log("removal failed: " + error.message)
-        }
-    }
 
     useEffect(() => {
         if (categoryList !== null) {
@@ -77,7 +68,7 @@ const MainScreen = ({navigation}) => {
             if (contacts != null) {
                 // console.log(contacts)
                 setFriendList(JSON.parse(contacts))
-            else 
+            } else 
             setFriendList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
@@ -86,15 +77,24 @@ const MainScreen = ({navigation}) => {
 
     const fetchCategoryList = async () => {
         try {
-            const categories = AsyncStorage.getItem('categories');
+            const categories = await AsyncStorage.getItem('categories');
             if(categories != null)
-                setcategoryList(JSON.parse(value));
+                setcategoryList(JSON.parse(categories));
             else
                 setcategoryList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
         return []
+    }
+
+    const removeContacts = async () => {
+        try {
+            await AsyncStorage.removeItem('contacts');
+            console.log("removal successful");
+        } catch (error) {
+            console.log("removal failed: " + error.message)
+        }
     }
 
     return (

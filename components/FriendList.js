@@ -16,15 +16,16 @@ const FriendList = (props) => {
                                            friend                                    
             ) .filter(
                 (friend) => 
-                
-                // {console.log("FT: " + filterType); return friend}
+                // {console.log("FTa: " + filterType); return friend}
+
 
                 {
                     console.log("-------------------")
+                    console.log("friend: " + friend.name)
 
                     if (filterType.toUpperCase() === "NAMES") {
                         console.log("FILTERTYPE = NAMES")
-                        return friend
+                        return true
                     }
 
                     if (friend.categories !== undefined && friend.categories.length > 0) {
@@ -36,84 +37,104 @@ const FriendList = (props) => {
                         let categoryNames = []
                         let categoryEntries = []
 
-                        console.log(categories.length)
-
                         if (categories.length === 1) {
                             categoryNames.push(categories[0].name)
-                            categoryEntries.push(categories[0].entries)
+                            console.log("SINGLE CATEGORY PUSHED: " + categories[0].name)
+                            console.log("categoryNames: " + categoryNames)
+
+                            return categoryNames[0].toLowerCase() === filterType.toLowerCase()
                         }
-                        else {
+                        else 
+                        {
+                            console.log("MULTIPLES CATEGORIES PUSHED: ")
                             categories.forEach(category => {
-                                categoryNames.push(category.name);
-                                categoryEntries.push(category.entries)
+                                console.log("category: " + category.name)
+                                categoryNames.push(category.name)
                             })
+                            console.log("categoryNames: " + categoryNames)
+                            console.log("categoryNames_length: " + categoryNames.length)
+
+                            return categoryNames.find(categoryName => categoryName.toLowerCase() === filterType.toLowerCase()) !== undefined
                         }
+                    }
 
-                        console.log("categoryNames: " + categoryNames)
-                        console.log("categoryEntries: " + categoryEntries)
 
-                        if (categoryNames.length === 1) {
-                            console.log("CATEGORIE NAME LENGTH 1")
-                            if (categoryNames[0].toLowerCase() === filterType.toLowerCase()) {
-                                console.log("OK2")
-                                let entries = categoryEntries.toString().split(',')
+                //         if (categories.length === 1) {
+                //             categoryNames.push(categories[0].name)
+                //             categoryEntries.push(categories[0].entries)
+                //         }
+                //         else {
+                //             categories.forEach(category => {
+                //                 categoryNames.push(category.name);
+                //                 categoryEntries.push(category.entries)
+                //             })
+                //         }
 
-                                console.log(entries.length)
+                //         console.log("categoryNames: " + categoryNames)
+                //         console.log("categoryEntries: " + categoryEntries)
 
-                                if (entries.length === 1) {
-                                    console.log("OK AGAIN");
+                //         if (categoryNames.length === 1) {
+                //             console.log("CATEGORIE NAME LENGTH 1")
+                //             if (categoryNames[0].toLowerCase() === filterType.toLowerCase()) {
+                //                 console.log("OK2")
+                //                 let entries = categoryEntries.toString().split(',')
 
-                                    console.log("AAAA: " + entries.length)
+                //                 console.log(entries.length)
 
-                                    if (categoryEntries[0].toString().toLowerCase() === filterString.toLowerCase()) {
-                                        console.log("ROUTE B")
-                                        return friend
-                                    }
-                                }
-                                else if (entries.length !== 0 && entries.length > 1) {
-                                    console.log("good")
-                                    entries.forEach(categoryEntry => {
-                                        let abc = categoryEntry.toString().toLowerCase()
-                                        let ft = filterString.toLowerCase()
-                                        console.log("ZZZ " + abc + " " + ft)
+                //                 if (entries.length === 1) {
+                //                     console.log("OK AGAIN");
 
-                                        if (categoryEntry.toString().toLowerCase() === filterString.toLowerCase()) {
-                                            console.log("ROUTE C")
-                                            console.log("ABBBBBB: " + categoryEntry.toString().toLowerCase() + ", " + filterString.toLowerCase())
-                                            return friend
-                                        }
-                                    })
-                                }
+                //                     console.log("AAAA: " + entries.length)
 
-                                if (filterString === "") {
-                                    console.log("ROUTE D")
-                                    console.log(friend.name)
-                                    return friend;
-                                }
-                            }
-                        }
+                //                     if (categoryEntries[0].toString().toLowerCase() === filterString.toLowerCase()) {
+                //                         console.log("ROUTE B")
+                //                         return friend
+                //                     }
+                //                 }
+                //                 else if (entries.length !== 0 && entries.length > 1) {
+                //                     console.log("good")
+                //                     entries.forEach(categoryEntry => {
+                //                         let abc = categoryEntry.toString().toLowerCase()
+                //                         let ft = filterString.toLowerCase()
+                //                         console.log("ZZZ " + abc + " " + ft)
 
-                        else if (categoryNames.length !== 0 && categoryNames.length > 1) {
-                        console.log("CATEGORIE NAME LENGTH > 1")
+                //                         if (categoryEntry.toString().toLowerCase() === filterString.toLowerCase()) {
+                //                             console.log("ROUTE C")
+                //                             console.log("ABBBBBB: " + categoryEntry.toString().toLowerCase() + ", " + filterString.toLowerCase())
+                //                             return friend
+                //                         }
+                //                     })
+                //                 }
 
-                            categoryNames.forEach(categoryName => {
-                                    let cat = categoryName.toLowerCase()
-                                    let ft = filterType.toLowerCase()
+                //                 if (filterString === "") {
+                //                     console.log("ROUTE D")
+                //                     console.log(friend.name)
+                //                     return friend;
+                //                 }
+                //             }
+                //         }
+
+                //         else if (categoryNames.length !== 0 && categoryNames.length > 1) {
+                //         console.log("CATEGORIE NAME LENGTH > 1")
+
+                //             categoryNames.forEach(categoryName => {
+                //                     let cat = categoryName.toLowerCase()
+                //                     let ft = filterType.toLowerCase()
                                     
-                                    console.log("cat: " + cat + ", ft: " + ft)
+                //                     console.log("cat: " + cat + ", ft: " + ft)
 
-                                    if (categoryName.toLowerCase() === filterType.toLowerCase()) {
-                                        console.log("YES")
-                                        console.log(friend.name)
-                                        return friend;
-                                    }
-                                }
-                            )
-                        }
-                    }
-                    else {
-                        console.log("DAMN")
-                    }
+                //                     if (categoryName.toLowerCase() === filterType.toLowerCase()) {
+                //                         console.log("YES")
+                //                         console.log(friend.name)
+                //                         return friend;
+                //                     }
+                //                 }
+                //             )
+                //         }
+                //     }
+                //     else {
+                //         console.log("DAMN")
+                //     }
                 }
             
             ) .map((friend) => (   
