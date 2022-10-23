@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Divider } from 'react-native-paper';
-import { concat } from 'react-native-reanimated';
 
 import FriendEntry from './FriendEntry';
 

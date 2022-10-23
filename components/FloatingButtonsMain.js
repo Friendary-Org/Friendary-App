@@ -44,7 +44,6 @@ const FloatingGroupMain = ({navigation}) => {
                     onStateChange={onStateChange}
                     backdropColor= "transparent"
                 />
-
             </View>
     );
 }

@@ -12,29 +12,9 @@ import FloatingButtonsMain from "../components/FloatingButtonsMain";
 
 const MainScreen = ({navigation}) => {
 
-    // let filterList = [
-    //     { _id: '1', value: "NAMES"},
-    //     { _id: '2', value: "LIKES"},
-    //     { _id: '3', value: "DISLIKES"},
-    //     { _id: '4', value: "MOVIES"},
-    // ];
-
-    // const [filterList, setFilterList] = useState([{ _id: '1', value: "NAMES"}])
-    // const [filterOptions, setFilterOptions] = useState({
-    //     value: filterList[0].value,
-    //     list: filterList,
-    //     selectedList: [filterList[0]]
-    // });
-
-    // const [filterOptions, setFilterOptions] = useState({
-    //     value: filterList[0].value,
-    //     list: filterList,
-    //     selectedList: [filterList[0]]
-    // });
-
     const [ friendList, setFriendList ] = useState([]);
     const [ filterString, setFilterString ] = useState("");
-    const isFocused = useIsFocused()
+    const isFocused = useIsFocused();
     const [ filterType, setFilterType ] = useState("Names");
     const [ categoryList, setcategoryList ] = React.useState([]);
     const [ filterOptions, setFilterOptions ] = useState(null);
@@ -46,7 +26,6 @@ const MainScreen = ({navigation}) => {
 
     useEffect(() => {
         fetchData();
-        fetchCategoryList();
     }, [isFocused]);
 
     useEffect(() => {
@@ -65,11 +44,10 @@ const MainScreen = ({navigation}) => {
     const fetchData = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
-            if (contacts != null) {
-                // console.log(contacts)
+            if (contacts != null) 
                 setFriendList(JSON.parse(contacts))
-            } else 
-            setFriendList([])
+            else 
+                setFriendList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
@@ -85,7 +63,6 @@ const MainScreen = ({navigation}) => {
         } catch (error) {
             console.log("error retrieving data: " + error.message)
         }
-        return []
     }
 
     const removeContacts = async () => {
@@ -126,19 +103,20 @@ const MainScreen = ({navigation}) => {
 
             </View>
 
-            {friendList !== undefined && friendList.length > 0 ?
-                <View>
-                    <ScrollView style={styles.scrollView}>
-                        <FriendList friendList={friendList} filterString={filterString} filterType={filterType}
-                        navigation={navigation}/>
-                    </ScrollView>
-                </View> :
-                <View>
+            <ScrollView style={styles.scrollView}>
+                {friendList !== undefined && friendList.length > 0 ?
+                    <FriendList friendList={friendList} 
+                                filterString={filterString} 
+                                filterType={filterType}
+                                navigation={navigation}
+                    /> :
                     <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
-                </View>    
-            }
+                }
+            </ScrollView>
             
-            <FloatingButtonsMain navigation={navigation}/>
+            <View>
+                <FloatingButtonsMain navigation={navigation}/>
+            </View>
         </React.Fragment>
     );
 };
@@ -149,7 +127,8 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         padding: 2,
-        backgroundColor: "#F7F6F6" //main background color
+        marginBottom: '20%',
+        backgroundColor: "#F7F6F6", //main background color
     },
     noFriendsText: {
         fontSize: 16,
