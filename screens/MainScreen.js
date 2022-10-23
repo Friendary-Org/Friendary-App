@@ -14,10 +14,10 @@ const MainScreen = ({navigation}) => {
 
     const [ friendList, setFriendList ] = useState([]);
     const [ filterString, setFilterString ] = useState("");
-    const isFocused = useIsFocused();
     const [ filterType, setFilterType ] = useState("Names");
     const [ categoryList, setcategoryList ] = React.useState([]);
     const [ filterOptions, setFilterOptions ] = useState(null);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         fetchData();
@@ -84,6 +84,7 @@ const MainScreen = ({navigation}) => {
                     label = "active filter"
                     arrayList = {[...filterOptions.list]}
                     selectedArrayList = {filterOptions.selectedList}
+                    textInputMode = "flat"
                     multiEnable = {false}
                     value = {filterOptions.value} 
                     onSelection = {(value) => {
@@ -95,7 +96,6 @@ const MainScreen = ({navigation}) => {
                         });
 
                         value.selectedList.length > 0 ? setFilterType(value.text) : setFilterType("Names")
-                        console.log("SELECTED: " + value.text)
                     }}
                     modalCloseButtonText="cancel"
                     modalDoneButtonText="select"
@@ -110,7 +110,9 @@ const MainScreen = ({navigation}) => {
                                 filterType={filterType}
                                 navigation={navigation}
                     /> :
-                    <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
+                    <View style={{padding: 12}}>
+                        <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
+                    </View>
                 }
             </ScrollView>
             
@@ -127,15 +129,16 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         padding: 2,
-        marginBottom: '20%',
+        marginBottom: "20%",
         backgroundColor: "#F7F6F6", //main background color
     },
     noFriendsText: {
         fontSize: 16,
         fontWeight: "bold",
         textAlign: "center",
-        top: '35%',
-        height: '100%',
+        top: "35%",
+        height: "100%",
+        width: "100%"
     }
 });
 
