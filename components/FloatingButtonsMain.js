@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         backgroundColor: "transparent",
         bottom: -2500,
+        position: "absolute"
     },
     fab: {
         marginHorizontal: 16,

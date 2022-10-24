@@ -21,14 +21,15 @@ const styles = StyleSheet.create({
     navContainer: {
         width: "100%",
         justifyContent: "center",
-        position: "absolute",
         alignItems: "center",
+        position: "absolute",
         backgroundColor: "transparent",
-        bottom: 0,
+        bottom: -2500,
     },
     fab: {
-        margin: 32,
-        backgroundColor: "#80D8F7"
+        marginTop: -2560,
+        backgroundColor: "#80D8F7",
+        height: 40
     },
 });
 
