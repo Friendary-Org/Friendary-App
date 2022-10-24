@@ -33,18 +33,17 @@ const FloatingGroupMain = ({navigation}) => {
                         {
                             icon: 'plus',
                             label: 'Create Friend',
-                            onPress: () => console.log('Pressed create'),
+                            onPress: () => navigation.push("Create Friend"),
                         },
                         {
                             icon: 'import',
                             label: 'Import Friend',
-                            onPress: () => console.log('Pressed import'),
+                            onPress: () => navigation.push("ImportFriend"),
                         },
                     ]}
                     onStateChange={onStateChange}
                     backdropColor= "transparent"
                 />
-
             </View>
     );
 }

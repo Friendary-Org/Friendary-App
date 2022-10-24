@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
 
-const BackButton = ({navigation}) => {
+const SaveButton = (props) => {
+    const {callback} = props;
 
     return (
             <View style={styles.navContainer}>
                 <FAB
-                    icon="arrow-left-top"
+                    icon="content-save-outline"
+                    label="Save"
                     style={[styles.fab]}
-                    onPress={() => navigation.goBack()}
-                    size="small"
+                    onPress={() => callback()}
+                    size="medium"
                 />
-
             </View>
     );
 }
@@ -27,9 +28,8 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     fab: {
-        margin: 32,
-        backgroundColor: "#80D8F7"
+        marginBottom: 80,
     },
 });
 
-export default BackButton;
+export default SaveButton;
