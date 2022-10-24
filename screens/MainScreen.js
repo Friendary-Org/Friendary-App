@@ -8,6 +8,7 @@ import { useIsFocused } from '@react-navigation/native';
 import SearchBar from "../components/SearchBar";
 import FriendList from "../components/FriendList";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
+import Constants from 'expo-constants';
 
 
 const MainScreen = ({navigation}) => {
@@ -125,11 +126,10 @@ const MainScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-        marginTop: 50,
+        paddingTop: Constants.statusBarHeight,
     },
     scrollView: {
         padding: 2,
-        marginBottom: "20%",
         backgroundColor: "#F7F6F6", //main background color
     },
     noFriendsText: {

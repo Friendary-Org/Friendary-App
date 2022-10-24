@@ -26,7 +26,7 @@ const FloatingGroupMain = ({navigation}) => {
                     size="small"
                 />
                 <FAB.Group
-                    style={[{paddingRight: windowWidth / 2.56, margin: 0}]}
+                    style={[{paddingRight: windowWidth / 2.85},styles.fab]}
                     open={open}
                     icon="account-plus-outline"
                     actions={[
@@ -54,11 +54,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         backgroundColor: "transparent",
-        position: "absolute",
-        bottom: 0,
+        bottom: -2500,
     },
     fab: {
-        margin: 16,
+        marginHorizontal: 16,
+        marginTop: -2560,
+        height: 40
     },
     fabLeft: {
         justifyContent: "flex-start",
