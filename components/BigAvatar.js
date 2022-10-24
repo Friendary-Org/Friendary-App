@@ -41,6 +41,7 @@ const BigAvatar = (props) => {
     return (
         <React.Fragment>
             <View style={styles.avatarContainer}>
+
                 {image != null && image.uri != null ?
                     <Avatar.Image size={avatarSize} source={{ uri: image.uri }} /> :
                     (image != null ?
