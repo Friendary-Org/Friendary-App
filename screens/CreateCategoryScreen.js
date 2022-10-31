@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { debounce } from 'lodash';
+
 import SaveButton from "../components/SaveButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from "../components/BackButton";
@@ -34,7 +36,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
                 setSnackBarMessage("New category created successfully!");
                 setSnackBarVisible(true);
-                setTimeout(() => navigation.goBack(), 1500);
+                debounce(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error while saving category: " + error.message)
             }

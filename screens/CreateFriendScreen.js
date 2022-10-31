@@ -4,6 +4,7 @@ import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { debounce } from 'lodash';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -40,7 +41,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("New friend created successfully!");
                 setSnackBarVisible(true);
-                setTimeout(() => navigation.goBack(), 1500);
+                debounce(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }

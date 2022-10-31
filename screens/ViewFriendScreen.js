@@ -5,6 +5,7 @@ import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { debounce } from 'lodash';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -55,7 +56,7 @@ const ViewFriendScreen = ({ route, navigation }) => {
                             icon="pencil-outline"
                             style={styles.iconButton}
                             size={32}
-                            onPress={() => navigation.push("Edit Friend", { friend })}
+                            onPress={debounce(() => navigation.push("Edit Friend", { friend }),300)}
                         />
                         <BigAvatar
                             preloadedAvatar={friend.avatar}/>

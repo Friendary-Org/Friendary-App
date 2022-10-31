@@ -4,6 +4,7 @@ import { TextInput, Snackbar, Text, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { debounce } from 'lodash';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -50,7 +51,7 @@ const EditFriendScreen = ({ route, navigation }) => {
                 setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
                 changedFriend.birthday = changedFriend.birthday.toString();
-                setTimeout(() => navigation.navigate("View Friend", { friendId: changedFriend.id }), 1500);
+                debounce(() => navigation.navigate("View Friend", { friendId: changedFriend.id }), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }
@@ -92,7 +93,7 @@ const EditFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("Friend deleted successfully!");
                 setSnackBarVisible(true);
-                setTimeout(() => navigation.popToTop(), 1500);
+                debounce(() => navigation.popToTop(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }

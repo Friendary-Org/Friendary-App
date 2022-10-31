@@ -17,7 +17,7 @@ const FloatingGroupMain = ({navigation}) => {
                 <FAB
                     icon="star-outline"
                     style={[styles.fab, styles.fabLeft]}
-                    onPress={debounce(() => {navigation.push("Test")}, 500,{ leading: false,  trailing: true })}
+                    onPress={debounce(() => navigation.push("Test"), 300)}
                     size="small"
                 />
                 <FAB
@@ -34,12 +34,12 @@ const FloatingGroupMain = ({navigation}) => {
                         {
                             icon: 'plus',
                             label: 'Create Friend',
-                            onPress: () => navigation.push("Create Friend"),
+                            onPress: debounce(() => navigation.push("Create Friend"), 300),
                         },
                         {
                             icon: 'import',
                             label: 'Import Friend',
-                            onPress: () => navigation.push("ImportFriend"),
+                            onPress: debounce(() => navigation.push("ImportFriend"),300),
                         },
                     ]}
                     onStateChange={onStateChange}

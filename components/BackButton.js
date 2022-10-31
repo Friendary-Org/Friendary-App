@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
+import { debounce } from 'lodash';
 
 const BackButton = ({navigation}) => {
 
@@ -9,7 +10,7 @@ const BackButton = ({navigation}) => {
                 <FAB
                     icon="arrow-left-top"
                     style={[styles.fab]}
-                    onPress={() => navigation.goBack()}
+                    onPress={debounce(() => navigation.goBack(),300)}
                     size="small"
                 />
 
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
     },
     fab: {
         marginLeft: Dimensions.get("screen").width / 2 + 780,
-        backgroundColor: "#80D8F7",
         width: 40
     },
 });

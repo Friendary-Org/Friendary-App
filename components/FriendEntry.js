@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { List } from "react-native-paper";
-
+import { debounce } from 'lodash';
 import AvatarWithStar from "../components/AvatarWithStar";
 
 
@@ -11,7 +11,7 @@ const FriendEntry = (props) => {
     return (
         <React.Fragment>
             <List.Item 
-                onPress={() => navigation.push("View Friend", {friendId: friend.id})}
+                onPress={debounce(() => navigation.push("View Friend", {friendId: friend.id}),300)}
                 title = {friend.name} 
                 description = {friend.description}
                 left = {() => <AvatarWithStar avatar={friend.avatar} />}

@@ -5,6 +5,7 @@ import { Button } from "react-native-paper";
 import * as Contacts from 'expo-contacts';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { debounce } from 'lodash';
 
 import ContactList from "../components/ContactList";
 import SearchBar from "../components/SearchBar";
