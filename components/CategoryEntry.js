@@ -12,6 +12,7 @@ const CategoryEntry = (props) => {
                     mode="outlined"
                     editable={true}
                     value={entryValue}
+                    style={{marginRight: 14}}
                     onChangeText={text => changeCallback(index, text)}
                     right={<TextInput.Icon icon="trash-can-outline" onPress={() => deleteCallback(index)}/>}
                 />

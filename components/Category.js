@@ -13,10 +13,7 @@ const Category = (props) => {
             return { uid: uuidv4(), value: item };
         })
         setEntries(uuidEntries)
-    }, [category]);
-
-    
-    
+    }, []);   
 
     const addEntry = () => {
         const changedEntries = [...newEntries, { uid: uuidv4(), value: "" }];
@@ -43,8 +40,9 @@ const Category = (props) => {
     }
 
     return (
+        <View style={styles.accordionContainer}>
         <List.Accordion
-            style={[{ backgroundColor: "#F7F6F6" }]}
+            style={styles.accordionHeader}
             title={category.name}
             left={props => <Text>{category.icon}</Text>}>
             <View style={styles.categoryEntryContainer}>
@@ -67,17 +65,29 @@ const Category = (props) => {
                 />
             </View>
         </List.Accordion>
+        </View>
     )
 
 
 }
 
 const styles = StyleSheet.create({
+    accordionContainer: {
+        backgroundColor: "#ececec",
+        borderRadius: 15,
+        marginBottom: 10
+    },
+    accordionHeader: {
+        backgroundColor: "#ececec",
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+    },
     categoryEntryContainer: {
         flexDirection: "row",
         flexWrap: "wrap",
         paddingLeft: "5%",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center",
     },
     addEntry: {
         alignSelf: "center",

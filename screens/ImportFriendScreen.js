@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Button } from "react-native-paper";
 import * as Contacts from 'expo-contacts';
+import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import ContactList from "../components/ContactList";
@@ -172,7 +173,7 @@ const ImportFriendScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     importTextContainer: {
         justifyContent: "center",
-        marginTop: "10%",
+        paddingTop: Constants.statusBarHeight,
         height: "6%",
         backgroundColor: "#A1C8E8"
     },
