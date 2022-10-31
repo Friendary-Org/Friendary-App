@@ -8,7 +8,7 @@ import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
-import SaveButton from '../components/Savebutton';
+import SaveButton from '../components/SaveButton';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");

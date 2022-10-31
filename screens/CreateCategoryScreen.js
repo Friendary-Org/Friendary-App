@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import SaveButton from "../components/Savebutton";
+import SaveButton from "../components/SaveButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from "../components/BackButton";
 

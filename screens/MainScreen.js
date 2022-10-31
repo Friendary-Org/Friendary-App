@@ -1,7 +1,7 @@
 import React from "react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';   
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PaperSelect } from 'react-native-paper-select';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -11,13 +11,13 @@ import FloatingButtonsMain from "../components/FloatingButtonsMain";
 import Constants from 'expo-constants';
 
 
-const MainScreen = ({navigation}) => {
+const MainScreen = ({ navigation }) => {
 
-    const [ friendList, setFriendList ] = useState([]);
-    const [ filterString, setFilterString ] = useState("");
-    const [ filterType, setFilterType ] = useState("Names");
-    const [ categoryList, setcategoryList ] = React.useState([]);
-    const [ filterOptions, setFilterOptions ] = useState(null);
+    const [friendList, setFriendList] = useState([]);
+    const [filterString, setFilterString] = useState("");
+    const [filterType, setFilterType] = useState("Names");
+    const [categoryList, setcategoryList] = React.useState([]);
+    const [filterOptions, setFilterOptions] = useState(null);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -31,8 +31,8 @@ const MainScreen = ({navigation}) => {
 
     useEffect(() => {
         if (categoryList !== null) {
-            let filterOptions = [{_id: -1, value: "Names"}]
-            categoryList.forEach((c) => {filterOptions.push({_id: c.uid, value: c.name})})
+            let filterOptions = [{ _id: -1, value: "Names" }]
+            categoryList.forEach((c) => { filterOptions.push({ _id: c.uid, value: c.name }) })
 
             setFilterOptions({
                 value: "Names",
@@ -45,9 +45,9 @@ const MainScreen = ({navigation}) => {
     const fetchData = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
-            if (contacts != null) 
+            if (contacts != null)
                 setFriendList(JSON.parse(contacts))
-            else 
+            else
                 setFriendList([])
         } catch (error) {
             console.log("error retrieving data: " + error.message)
@@ -57,7 +57,7 @@ const MainScreen = ({navigation}) => {
     const fetchCategoryList = async () => {
         try {
             const categories = await AsyncStorage.getItem('categories');
-            if(categories != null)
+            if (categories != null)
                 setcategoryList(JSON.parse(categories));
             else
                 setcategoryList([])
@@ -79,16 +79,16 @@ const MainScreen = ({navigation}) => {
         <React.Fragment>
             <View style={styles.searchContainer}>
 
-                <SearchBar setFilterString={setFilterString}/>
+                <SearchBar setFilterString={setFilterString} />
 
-                {filterOptions && <PaperSelect 
-                    label = "active filter"
-                    arrayList = {[...filterOptions.list]}
-                    selectedArrayList = {filterOptions.selectedList}
-                    textInputMode = "flat"
-                    multiEnable = {false}
-                    value = {filterOptions.value} 
-                    onSelection = {(value) => {
+                {filterOptions && <PaperSelect
+                    label="active filter"
+                    arrayList={[...filterOptions.list]}
+                    selectedArrayList={filterOptions.selectedList}
+                    textInputMode="flat"
+                    multiEnable={false}
+                    value={filterOptions.value}
+                    onSelection={(value) => {
                         setFilterOptions({
                             ...filterOptions,
                             value: value.text,
@@ -106,20 +106,18 @@ const MainScreen = ({navigation}) => {
 
             <ScrollView style={styles.scrollView}>
                 {friendList !== undefined && friendList.length > 0 ?
-                    <FriendList friendList={friendList} 
-                                filterString={filterString} 
-                                filterType={filterType}
-                                navigation={navigation}
+                    <FriendList friendList={friendList}
+                        filterString={filterString}
+                        filterType={filterType}
+                        navigation={navigation}
                     /> :
-                    <View style={{padding: 12}}>
+                    <View style={{ padding: 12 }}>
                         <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
                     </View>
                 }
             </ScrollView>
-            
-            <View>
-                <FloatingButtonsMain navigation={navigation}/>
-            </View>
+
+            <FloatingButtonsMain navigation={navigation} />
         </React.Fragment>
     );
 };

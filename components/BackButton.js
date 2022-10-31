@@ -20,15 +20,15 @@ const BackButton = ({navigation}) => {
 const styles = StyleSheet.create({
     navContainer: {
         width: "100%",
-        justifyContent: "center",
         position: "absolute",
-        alignItems: "center",
         backgroundColor: "transparent",
-        bottom: 0,
+        left: -800,
+        bottom: "3%",
     },
     fab: {
-        margin: 32,
-        backgroundColor: "#80D8F7"
+        marginLeft: Dimensions.get("screen").width / 2 + 780,
+        backgroundColor: "#80D8F7",
+        width: 40
     },
 });
 

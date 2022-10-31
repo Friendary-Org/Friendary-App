@@ -21,14 +21,14 @@ const SaveButton = (props) => {
 const styles = StyleSheet.create({
     navContainer: {
         width: "100%",
-        justifyContent: "center",
         position: "absolute",
-        alignItems: "center",
         backgroundColor: "transparent",
-        bottom: 0,
+        bottom: "10%",
+        left: -800
     },
     fab: {
-        marginBottom: 80,
+        marginLeft: Dimensions.get("screen").width / 2 + 740,
+        width: 120
     },
 });
 
