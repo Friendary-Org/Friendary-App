@@ -142,7 +142,7 @@ const ImportFriendScreen = ({navigation}) => {
             console.log("error saving data: " + error.message)
         }
 
-        navigation.push("Friends")
+        navigation.goBack();
     } 
 
     return (
