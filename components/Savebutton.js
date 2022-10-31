@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignItems: "center",
         backgroundColor: "transparent",
-        bottom: -2500,
+        bottom: 0,
     },
     fab: {
-        marginTop: -2630,
+        marginBottom: 80,
     },
 });
 
