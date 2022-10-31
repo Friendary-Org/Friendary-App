@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, } from 'react-native';
 import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
+import Constants from 'expo-constants';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        marginTop: "10%",
+        marginTop: Constants.statusBarHeight,
         backgroundColor: "#F7F6F6",
         width: "100%",
     },

@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 're
 import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        marginTop: "10%",
+        paddingTop: Constants.statusBarHeight,
         backgroundColor: "#F7F6F6",
         width: "100%",
     },

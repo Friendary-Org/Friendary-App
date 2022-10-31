@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, Alert } f
 import { TextInput, Snackbar, Text, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
@@ -66,11 +67,11 @@ const EditFriendScreen = ({ route, navigation }) => {
             `Do you want to delete ${friend.name} from your list? This can't be reverted`,
             [
                 {
-                    text: "No",
+                    text: "cancel",
                     onPress: () => resolve("false"),
                     style: "cancel"
                 },
-                { text: "Yes", onPress: () => resolve("true") }
+                { text: "delete", onPress: () => resolve("true") }
             ]
         );
     });
@@ -165,7 +166,7 @@ const EditFriendScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     containerView: {
-        marginTop: "10%",
+        paddingTop: Constants.statusBarHeight,
         backgroundColor: "#F7F6F6",
         width: "100%",
         height: "100%"
