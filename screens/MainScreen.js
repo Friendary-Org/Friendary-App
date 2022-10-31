@@ -112,7 +112,7 @@ const MainScreen = ({ navigation }) => {
                         navigation={navigation}
                     /> :
                     <View style={{ padding: 12 }}>
-                        <Text style={styles.noFriendsText}>{"no friends to display ..."}</Text>
+                        <Text style={styles.noFriendsText}>{"no friends to display"}</Text>
                     </View>
                 }
             </ScrollView>

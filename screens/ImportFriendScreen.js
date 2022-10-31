@@ -48,7 +48,7 @@ const ImportFriendScreen = ({navigation}) => {
                 setContactList(contactList)
             }
             else {
-                setError("no contacts found ...")
+                setError("no contacts found")
             }
           }
         })();
