@@ -71,7 +71,11 @@ const EditFriendScreen = ({ route, navigation }) => {
                     onPress: () => resolve("false"),
                     style: "cancel"
                 },
-                { text: "delete", onPress: () => resolve("true") }
+                { 
+                    text: "delete",
+                    onPress: () => resolve("true"),
+                    style: "destructive"
+                }
             ]
         );
     });

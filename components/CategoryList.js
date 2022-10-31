@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { List, Text, IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import Category from '../components/Category';
 import AddCategoryButton from "../components/AddCategoryButton";
@@ -9,14 +10,15 @@ import AddCategoryButton from "../components/AddCategoryButton";
 const CategoryList = (props) => {
     const [categoryList, setcategoryList] = React.useState([]);
     const { editable, newCategories, setCategories, navigation } = props;
-    const [unusedCategories, setUnusedCategories] = React.useState([])
+    const [unusedCategories, setUnusedCategories] = React.useState([]);
+    const isFocused = useIsFocused();
 
     const _fetchCategoryList = async () => {
         try {
             const value = await AsyncStorage.getItem('categories').then((value) => {
-                if(value != null){
+                if (value != null) {
                     setcategoryList(JSON.parse(value));
-                }else{
+                } else {
                     setcategoryList([])
                 }
             });
@@ -32,11 +34,11 @@ const CategoryList = (props) => {
 
     useEffect(() => {
         _fetchCategoryList();
-        const willFocusSubscription = navigation.addListener('focus', () => {
-            _fetchCategoryList();
-        });
-        return willFocusSubscription;
     }, []);
+
+    useEffect(() => {
+        _fetchCategoryList();
+    }, [isFocused]);
 
     useEffect(() => {
         _filterUnusedCategories();
@@ -47,17 +49,39 @@ const CategoryList = (props) => {
         setCategories([...newCategories, category]);
         setUnusedCategories(unusedCategories.filter((cat) => cat.uid !== category.uid));
     }
-    const deleteCategory = (index) => {
-        setCategories([...newCategories.slice(0, index), ...newCategories.slice(index + 1)]);
-        setUnusedCategories([...unusedCategories, newCategories[index]]);
+    const deleteCategory = async (index) => {
+        let value = await confirm();
+        if (value == "true") {
+            setCategories([...newCategories.slice(0, index), ...newCategories.slice(index + 1)]);
+            setUnusedCategories([...unusedCategories, newCategories[index]]);
+        }
     }
 
+    const confirm = async () => new Promise((resolve) => {
+        Alert.alert(
+            "Delete Category",
+            `Do you want to delete the whole category from your friend's page? This can't be reverted`,
+            [
+                {
+                    text: "cancel",
+                    onPress: () => resolve("false"),
+                    style: "cancel"
+                },
+                {
+                    text: "delete",
+                    onPress: () => resolve("true"),
+                    style: "destructive"
+                }
+            ]
+        );
+    });
+
     const changeEntries = (category, newEntries) => {
-        let onlyEntries = newEntries.map(function(e) { 
-            delete e.uid; 
-            return e.value;  
+        let onlyEntries = newEntries.map(function (e) {
+            delete e.uid;
+            return e.value;
         });
-        onlyEntries = onlyEntries.filter(e =>  e);
+        onlyEntries = onlyEntries.filter(e => e);
         const changedCategories = newCategories.map((e) => {
             if (e.uid === category.uid) {
                 e.entries = onlyEntries;
@@ -72,11 +96,11 @@ const CategoryList = (props) => {
 
     return (
         <View style={styles.categoryContainer}>
-            {editable && <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation}/>}    
+            {editable && <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation} />}
             {newCategories.length > 0 ?
-                (<List.Section title="Categories" style={{width: "80%"}}>
+                (<List.Section title="Categories" style={{ width: "80%" }}>
                     {newCategories.map((cat, index) => (
-                        <Category 
+                        <Category
                             category={cat}
                             key={cat.uid}
                             editable={editable ? editable : undefined}
