@@ -11,7 +11,7 @@ const FriendEntry = (props) => {
     return (
         <React.Fragment>
             <List.Item 
-                onPress={() => navigation.push("View Friend", {friend})}
+                onPress={() => navigation.push("View Friend", {friendId: friend.id})}
                 title = {friend.name} 
                 description = {friend.description}
                 left = {() => <AvatarWithStar avatar={friend.avatar} />}
