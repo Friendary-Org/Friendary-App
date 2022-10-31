@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IconButton, Text } from 'react-native-paper';
 import { PaperSelect } from 'react-native-paper-select';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -111,8 +112,11 @@ const MainScreen = ({ navigation }) => {
                         filterType={filterType}
                         navigation={navigation}
                     /> :
-                    <View style={{ padding: 12 }}>
-                        <Text style={styles.noFriendsText}>{"no friends to display"}</Text>
+                    <View style={{ padding: 12 },{alignItems: "center"}}>
+                        <Text variant="bodyLarge" style={{marginBottom: 10}}>no friends to display</Text>
+                        <Text variant="bodyLarge">add some using the <IconButton icon="account-plus-outline" style={{margin: 0}} /> Button</Text>
+                        <Text variant="bodyLarge">you can either import contacts from your phone</Text>
+                        <Text variant="bodyLarge">or create new contacts within Friendary</Text>
                     </View>
                 }
             </ScrollView>
@@ -129,14 +133,6 @@ const styles = StyleSheet.create({
     scrollView: {
         padding: 2,
         backgroundColor: "#F7F6F6", //main background color
-    },
-    noFriendsText: {
-        fontSize: 16,
-        fontWeight: "bold",
-        textAlign: "center",
-        top: "35%",
-        height: "100%",
-        width: "100%"
     }
 });
 

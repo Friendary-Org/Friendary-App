@@ -44,18 +44,12 @@ const ViewFriendScreen = ({ route, navigation }) => {
     }
 
     if(friend == undefined){
-        
         return (<ActivityIndicator animating={true} size={"large"} style={styles.loading}/>)
     }else{
         return (
             <KeyboardAvoidingView style={styles.containerView}
                 behavior={"padding"}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
-                    <Portal>
-                        <Modal visible={modalVisible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-                            <Text variant="bodyLarge" style={styles.description}>{friend.description != "" ? friend.description : "No description"}</Text>
-                        </Modal>
-                    </Portal>
                     <View style={styles.baseInfo}>
                         <IconButton
                             icon="pencil-outline"
@@ -64,10 +58,10 @@ const ViewFriendScreen = ({ route, navigation }) => {
                             onPress={() => navigation.push("Edit Friend", { friend })}
                         />
                         <BigAvatar
-                            preloadedAvatar={friend.avatar}
-                            descriptionCallback={() => showModal()} />
+                            preloadedAvatar={friend.avatar}/>
                         <Text variant="headlineMedium" style={{ textAlign: "center" }}>{friend.name}</Text>
-                        {friend.birthday != "" ? <BirthdateEntry date={new Date(friend.birthday)} /> : null}
+                        {friend.description != "" ? <Text variant="bodyLarge" style={[{width: "80%"},{ textAlign: "center" }]}>{friend.description}</Text> : null}
+                        {friend.birthday != "" ? <BirthdateEntry date={new Date(friend.birthday)} /> : null}  
                     </View>
                     <View style={styles.lineStyle} />
                     <CategoryList newCategories={friend.categories} navigation={navigation} />

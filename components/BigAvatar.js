@@ -8,7 +8,7 @@ const avatarSize = 128;
 const BigAvatar = (props) => {
 
     const IMAGE = { default: require(`../assets/avatar_neutral.jpg`) }
-    const { editable, setAvatar, preloadedAvatar, descriptionCallback } = props;
+    const { editable, setAvatar, preloadedAvatar } = props;
 
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
     const [image, setImage] = useState(preloadedAvatar);
@@ -49,13 +49,6 @@ const BigAvatar = (props) => {
                         <Avatar.Image size={avatarSize} source={IMAGE["default"]} />
                     )
                 }
-                {descriptionCallback && <IconButton
-                    style={styles.description}
-                    icon="note"
-                    size={avatarSize / 6}
-                    onPress={() => descriptionCallback()}
-                    mode="outlined"
-                />}
                 <IconButton
                     style={[styles.upload, editable == undefined ? { display: "none" } : {}]}
                     icon="pencil-outline"

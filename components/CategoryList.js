@@ -108,7 +108,12 @@ const CategoryList = (props) => {
                             changeEntriesCallback={changeEntries}
                             index={index} />
                     ))}
-                </List.Section>) : null
+                </List.Section>) :
+                <React.Fragment>
+                    <Text variant="bodyLarge" style={{marginBottom: 10}}>No categories yet!</Text>
+                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{margin: 0}} /> Button</Text>
+                    <Text variant="bodyLarge">in the top right of your screen</Text>
+                </React.Fragment>
             }
         </View >
     )
