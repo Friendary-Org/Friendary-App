@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from "react-native";
 import SaveButton from "../components/Savebutton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from "../components/BackButton";
@@ -61,33 +61,35 @@ const CreateCategoryScreen = ({ route, navigation }) => {
     }, []);
 
     return (
-        <View style={styles.containerView}>
-            <Text style={styles.header} variant="headlineMedium">Create new category</Text>
-            <TextInput
-                style={styles.input}
-                label="Category Name*"
-                value={categoryName}
-                onChangeText={categoryName => setCategoryName(categoryName)}
-                mode="outlined"
-            />
-            <TextInput
-                style={styles.input}
-                label="Set Emoji"
-                mode="outlined"
-                value={icon}
-                onChangeText={onChangeText}
-            />
-            <HelperText type="error" visible={validateText()}>
-                Can only be a single emoji
-            </HelperText>
-            <SaveButton callback={saveCategory}></SaveButton>
-            <BackButton navigation={navigation} />
-            <Snackbar
-                visible={snackBarVisible}
-                onDismiss={onDismissSnackBar}>
-                {snackBarMessage}
-            </Snackbar>
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.containerView}>
+                <Text style={styles.header} variant="headlineMedium">Create new category</Text>
+                <TextInput
+                    style={styles.input}
+                    label="Category Name*"
+                    value={categoryName}
+                    onChangeText={categoryName => setCategoryName(categoryName)}
+                    mode="outlined"
+                />
+                <TextInput
+                    style={styles.input}
+                    label="Set Emoji"
+                    mode="outlined"
+                    value={icon}
+                    onChangeText={onChangeText}
+                />
+                <HelperText type="error" visible={validateText()}>
+                    Can only be a single emoji
+                </HelperText>
+                <SaveButton callback={saveCategory}></SaveButton>
+                <BackButton navigation={navigation} />
+                <Snackbar
+                    visible={snackBarVisible}
+                    onDismiss={onDismissSnackBar}>
+                    {snackBarMessage}
+                </Snackbar>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
