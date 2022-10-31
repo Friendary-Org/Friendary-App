@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
@@ -10,13 +11,13 @@ const FloatingGroupMain = ({navigation}) => {
     const windowWidth = Dimensions.get('window').width;
 
     const { open } = state;
-
+    
     return (
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
                     style={[styles.fab, styles.fabLeft]}
-                    onPress={() => navigation.push("Test")}
+                    onPress={debounce(() => {navigation.push("Test")}, 500,{ leading: false,  trailing: true })}
                     size="small"
                 />
                 <FAB

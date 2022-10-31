@@ -112,10 +112,10 @@ const MainScreen = ({ navigation }) => {
                         filterType={filterType}
                         navigation={navigation}
                     /> :
-                    <View style={{ padding: 12 },{alignItems: "center"}}>
+                    <View style={[{ padding: 12 },{alignItems: "center"}]}>
                         <Text variant="bodyLarge" style={{marginBottom: 10}}>no friends to display</Text>
                         <Text variant="bodyLarge">add some using the <IconButton icon="account-plus-outline" style={{margin: 0}} /> Button</Text>
-                        <Text variant="bodyLarge">you can either import contacts from your phone</Text>
+                        <Text variant="bodyLarge">you can either import existing contacts</Text>
                         <Text variant="bodyLarge">or create new contacts within Friendary</Text>
                     </View>
                 }
