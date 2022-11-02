@@ -7,7 +7,7 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 
-import ContactEntry from '../components/ContactEntry';
+import ContactList from '../components/ContactList';
 import SearchBar from "../components/SearchBar";
 import BackButton from "../components/BackButton";
 
@@ -145,24 +145,6 @@ const ImportFriendScreen = ({ navigation }) => {
         navigation.goBack();
     }
 
-    const renderItem = (data) => {
-        return (
-            <React.Fragment key={data.id}>
-                <ContactEntry contact={data.item} setChecked={setChecked} />
-                <Divider />
-            </React.Fragment>
-        );
-    };
-
-    const filterContactList = () => {
-        let filteredContacts = contactList.filter((contact) => {
-            if (contact.name !== undefined)
-                return contact.name.toLowerCase().includes(filterString.toLowerCase())
-        }
-        );
-        return filteredContacts;
-    }
-
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
@@ -170,12 +152,7 @@ const ImportFriendScreen = ({ navigation }) => {
             </View>
 
             {error == "" ?
-
-                <FlatList
-                    data={filterContactList()}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                /> :
+                <ContactList contactList={contactList} filterString={filterString} setChecked={setChecked} />:
                 <Text variant="titleMedium" style={[{ alignSelf: "center" }, { marginTop: "20%" }]}>{error}</Text>
             }
 
