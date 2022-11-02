@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { List, Text, IconButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { DeviceEventEmitter } from "react-native";
 
 import Category from '../components/Category';
 import AddCategoryButton from "../components/AddCategoryButton";
@@ -34,6 +35,15 @@ const CategoryList = (props) => {
 
     useEffect(() => {
         _fetchCategoryList();
+        if(editable){
+            DeviceEventEmitter.addListener("event.createdCategory", async (eventData) => {
+                addCategory(eventData);
+            });
+            return () => {
+                DeviceEventEmitter.removeAllListeners("event.createdCategory")
+            };
+        }
+        
     }, []);
 
     useEffect(() => {
@@ -44,8 +54,9 @@ const CategoryList = (props) => {
         _filterUnusedCategories();
     }, [categoryList]);
 
-    const addCategory = (categoryUid) => {
-        let category = categoryList.filter(((item) => item.uid == categoryUid))[0];
+
+
+    const addCategory = (category) => {
         setCategories([...newCategories, category]);
         setUnusedCategories(unusedCategories.filter((cat) => cat.uid !== category.uid));
     }
@@ -109,7 +120,7 @@ const CategoryList = (props) => {
                             index={index} />
                     ))}
                 </List.Section>)}
-            {editable == undefined &&
+            {editable == undefined && newCategories.length < 0&&
                 <React.Fragment>
                     <Text variant="bodyLarge" style={{ marginBottom: 10 }}>No categories yet!</Text>
                     <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />Button</Text>

@@ -25,7 +25,7 @@ const AddCategoryButton = (props) => {
             <Divider bold />
             {categoryList.map((category) => (
                 <React.Fragment key={category.uid}>
-                    <Menu.Item onPress={() => addCategory(category.uid)} title={category.icon+" "+category.name} />
+                    <Menu.Item onPress={() => addCategory(category)} title={category.icon+" "+category.name} />
                 </React.Fragment>
             ))}
         </Menu>

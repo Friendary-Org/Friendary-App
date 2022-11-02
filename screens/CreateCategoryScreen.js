@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { debounce } from 'lodash';
+import {DeviceEventEmitter} from "react-native";
 
 import SaveButton from "../components/SaveButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -34,6 +35,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
             let newCategory = { uid: newUid, name: categoryName, icon: icon, entries: [""] };
             try {
                 await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
+                DeviceEventEmitter.emit("event.createdCategory", newCategory);
                 setSnackBarMessage("New category created successfully!");
                 setSnackBarVisible(true);
                 setfabDisabled(true);
@@ -61,6 +63,9 @@ const CreateCategoryScreen = ({ route, navigation }) => {
 
     useEffect(() => {
         fetchCategoryList();
+        return () => {
+            DeviceEventEmitter.removeAllListeners("event.createdCategory")
+          };
     }, []);
 
     return (
