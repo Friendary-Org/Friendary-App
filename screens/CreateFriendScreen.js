@@ -17,7 +17,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
     const [description, setDescription] = React.useState("");
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState([]);
-
+    const [fabDisabled, setfabDisabled] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("")
 
@@ -41,7 +41,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("New friend created successfully!");
                 setSnackBarVisible(true);
-                setTimeOut(() => navigation.goBack(), 1500);
+                setfabDisabled(true);
+                setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }
@@ -89,8 +90,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 <View style={styles.lineStyle} />
                 <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation}/>
             </ScrollView>
-            <SaveButton callback={save} />
-            <BackButton navigation={navigation} />
+            <SaveButton callback={save} disabled={fabDisabled ? true : undefined}/>
+            <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}
                 onDismiss={onDismissSnackBar}>

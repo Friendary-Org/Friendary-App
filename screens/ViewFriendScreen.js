@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Snackbar, Text, IconButton, Modal, Portal } from 'react-native-paper';
+import { Text, IconButton, Modal, Portal } from 'react-native-paper';
 import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';

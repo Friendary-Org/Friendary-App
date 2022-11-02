@@ -18,6 +18,7 @@ const EditFriendScreen = ({ route, navigation }) => {
     const [description, setDescription] = React.useState(friend.description);
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState(friend.categories);
+    const [fabDisabled, setfabDisabled] = React.useState(false);
 
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("")
@@ -51,6 +52,7 @@ const EditFriendScreen = ({ route, navigation }) => {
                 setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
                 changedFriend.birthday = changedFriend.birthday.toString();
+                setfabDisabled(true);
                 setTimeout(() => navigation.navigate("View Friend", { friendId: changedFriend.id }), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
@@ -93,6 +95,7 @@ const EditFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("Friend deleted successfully!");
                 setSnackBarVisible(true);
+                setfabDisabled(true);
                 setTimeout(() => navigation.popToTop(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
@@ -151,15 +154,16 @@ const EditFriendScreen = ({ route, navigation }) => {
                         mode="outlined"
                         onPress={() => deleteFriend()}
                         textColor="red"
-                        style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : { width: "40%" }]}>
+                        style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : { width: "40%" }]}
+                        disabled={fabDisabled ? true : undefined}>
                         Delete Friend
                     </Button>
                 </ScrollView>
 
 
             </KeyboardAvoidingView>
-            <SaveButton callback={save} />
-            <BackButton navigation={navigation} />
+            <SaveButton callback={save} disabled={fabDisabled ? true : undefined}/>
+            <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}
                 onDismiss={onDismissSnackBar}>

@@ -12,7 +12,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
     const [categoryName, setCategoryName] = React.useState("");
     const [icon, setIcon] = React.useState("");
     const onChangeText = text => setIcon(text);
-
+    const [fabDisabled, setfabDisabled] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("");
     const onDismissSnackBar = () => setSnackBarVisible(false);
@@ -36,6 +36,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
                 setSnackBarMessage("New category created successfully!");
                 setSnackBarVisible(true);
+                setfabDisabled(true);
                 setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error while saving category: " + error.message)
@@ -82,8 +83,8 @@ const CreateCategoryScreen = ({ route, navigation }) => {
             <HelperText type="error" visible={validateText()}>
                 Can only be a single emoji
             </HelperText>
-            <SaveButton callback={saveCategory}></SaveButton>
-            <BackButton navigation={navigation} />
+            <SaveButton callback={saveCategory} disabled={fabDisabled ? true : undefined}/>
+            <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}
                 onDismiss={onDismissSnackBar}>

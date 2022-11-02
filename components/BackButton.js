@@ -3,7 +3,7 @@ import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
 import { debounce } from 'lodash';
 
-const BackButton = ({navigation}) => {
+const BackButton = ({navigation, disabled}) => {
 
     return (
             <View style={styles.navContainer}>
@@ -12,6 +12,7 @@ const BackButton = ({navigation}) => {
                     style={[styles.fab]}
                     onPress={debounce(() => navigation.goBack(),300)}
                     size="small"
+                    disabled={disabled != undefined? true : false}
                 />
 
             </View>
