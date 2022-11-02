@@ -6,7 +6,7 @@ const ContactEntry = (props) => {
 
     const { contact, setChecked } = props;
     const determineNewCheckedState = (contact.checked == "unchecked" ? "checked" : "unchecked")
-
+    
     return (
         <List.Item 
             title = {contact.name} 

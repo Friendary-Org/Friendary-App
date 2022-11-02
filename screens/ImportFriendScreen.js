@@ -1,64 +1,64 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { Button } from "react-native-paper";
+import { View, StyleSheet, Text, ScrollView, FlatList } from 'react-native';
+import { Button, Divider } from "react-native-paper";
 import * as Contacts from 'expo-contacts';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 
 import ContactList from "../components/ContactList";
+import ContactEntry from '../components/ContactEntry';
 import SearchBar from "../components/SearchBar";
 import BackButton from "../components/BackButton";
 
 
-const ImportFriendScreen = ({navigation}) => {
+const ImportFriendScreen = ({ navigation }) => {
 
-    const [ contactList, setContactList ] = useState([]);
-    const [ contactsToDisable, setContactsToDisable ] = useState([]);
-    const [ existingFriendList, setExistingFriendList ] = useState([]);
-    const [ error, setError ] = useState("");
-    const [ filterString, setFilterString ] = useState("");
-    
-    
+    const [contactList, setContactList] = useState([]);
+    const [contactsToDisable, setContactsToDisable] = useState([]);
+    const [existingFriendList, setExistingFriendList] = useState([]);
+    const [error, setError] = useState("");
+    const [filterString, setFilterString] = useState("");
+
+
 
     useEffect(() => {
         (async () => {
-            
-          const { status } = await Contacts.requestPermissionsAsync();
-          if (status === 'granted') {
-            const { data } = await Contacts.getContactsAsync({
-              fields: [Contacts.Fields.Name, Contacts.IMAGE],
-            });
-    
-            if (data.length > 0) {
-                const contactList = data.map((phoneContact) => {
-                                    return {
-                                            id: phoneContact.id, 
-                                            name: phoneContact.name, 
-                                            description: "",
-                                            avatar: phoneContact.imageAvailable?phoneContact.image:undefined,
-                                            birthday: "",
-                                            categories: [],
-                                            checked: "unchecked",
-                                            disabled: false
-                                        }
-                                    }
-                );
 
-                setContactList(contactList)
+            const { status } = await Contacts.requestPermissionsAsync();
+            if (status === 'granted') {
+                const { data } = await Contacts.getContactsAsync({
+                    fields: [Contacts.Fields.Name, Contacts.IMAGE],
+                });
+
+                if (data.length > 0) {
+                    const contactList = data.map((phoneContact) => {
+                        return {
+                            id: phoneContact.id,
+                            name: phoneContact.name,
+                            description: "",
+                            avatar: phoneContact.imageAvailable ? phoneContact.image : undefined,
+                            birthday: "",
+                            categories: [],
+                            checked: "unchecked",
+                            disabled: false
+                        }
+                    }
+                    );
+                    setContactList(contactList)
+                }
+                else {
+                    setError("no contacts found")
+                }
             }
-            else {
-                setError("no contacts found")
-            }
-          }
         })();
     }, []);
 
 
     useEffect(() => {
         fetchData();
-    }, [contactList]) 
+    }, [contactList])
 
 
     useEffect(() => {
@@ -66,33 +66,33 @@ const ImportFriendScreen = ({navigation}) => {
         if (contactList.length !== 0 && existingFriendList !== 0) {
             let contactsToDisable = [];
 
-            contactList.forEach(contact => 
-                existingFriendList.forEach(existingFriend => 
-                                            contact.id === existingFriend.id ?
-                                            contactsToDisable.push(contact) :
-                                            "" 
+            contactList.forEach(contact =>
+                existingFriendList.forEach(existingFriend =>
+                    contact.id === existingFriend.id ?
+                        contactsToDisable.push(contact) :
+                        ""
                 )
             );
 
             setContactsToDisable(contactsToDisable);
         }
-    }, [existingFriendList]) 
+    }, [existingFriendList])
 
 
     useEffect(() => {
 
         if (contactList.length !== 0 && contactsToDisable.length !== 0) {
 
-            contactList.forEach(contact => 
+            contactList.forEach(contact =>
                 contactsToDisable.forEach(disableContact => {
-                                            if (contact.id === disableContact.id) {
-                                                contact.disabled = true;
-                                            }
-                                        })
-            );                                       
+                    if (contact.id === disableContact.id) {
+                        contact.disabled = true;
+                    }
+                })
+            );
             setContactsToDisable([]);
         }
-        
+
     }), [contactsToDisable]
 
     const fetchData = async () => {
@@ -100,7 +100,7 @@ const ImportFriendScreen = ({navigation}) => {
             const contacts = await AsyncStorage.getItem('contacts');
             if (contacts != null)
                 setExistingFriendList(JSON.parse(contacts))
-            else 
+            else
                 console.log("no entry for given key")
         } catch (error) {
             console.log("error retrieving data: " + error.message)
@@ -109,11 +109,11 @@ const ImportFriendScreen = ({navigation}) => {
 
     const setChecked = (contactName, newCheckedState) => {
         const updatedContactList = contactList.map((contact) => {
-                                                        if (contact.name == contactName) {
-                                                            contact.checked = newCheckedState
-                                                        }
-                                                        return contact
-                                                    })
+            if (contact.name == contactName) {
+                contact.checked = newCheckedState
+            }
+            return contact
+        })
         setContactList(updatedContactList)
     }
 
@@ -124,7 +124,7 @@ const ImportFriendScreen = ({navigation}) => {
         if (contacts == null) {
             await AsyncStorage.setItem('contacts', JSON.stringify([]));
         }
-        
+
         storeContacts(contactsToImportList)
     }
 
@@ -144,7 +144,22 @@ const ImportFriendScreen = ({navigation}) => {
         }
 
         navigation.goBack();
-    } 
+    }
+
+    const Item = (contact) => (
+        <React.Fragment key={contact.id}>
+            <ContactEntry contact={contact.item.item} setChecked={setChecked} />
+            <Divider />
+        </React.Fragment>
+    );
+
+    const renderItem = (item) => {
+        return (
+            <Item
+                item={item}
+            />
+        );
+    };
 
     return (
         <React.Fragment>
@@ -153,20 +168,22 @@ const ImportFriendScreen = ({navigation}) => {
             </View>
 
             <View style={styles.searchContainer}>
-                <SearchBar setFilterString={setFilterString}/>
+                <SearchBar setFilterString={setFilterString} />
             </View>
 
             {error == "" ?
-                <ScrollView style={styles.scrollView}>
-                    <ContactList contactList={contactList} filterString={filterString} setChecked={setChecked} />
-                </ScrollView> :
+                <FlatList
+                    data={contactList}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                /> :
                 <Text style={styles.errorText}>{error}</Text>
             }
 
             <View style={styles.selectButtonContainer}>
                 <Button style={styles.selectButton} mode="contained" onPress={() => importSelectedContacts()}>Import</Button>
             </View>
-            <BackButton navigation={navigation}/>
+            <BackButton navigation={navigation} />
         </React.Fragment>
     );
 }
