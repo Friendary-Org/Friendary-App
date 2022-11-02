@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import { FAB } from "react-native-paper";
 
 const FloatingGroupMain = ({navigation}) => {
@@ -16,19 +16,20 @@ const FloatingGroupMain = ({navigation}) => {
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
-                    style={[styles.fab, styles.fabLeft]}
+                    style={[styles.fab, styles.fabLeft, {display:"none"}]}
                     onPress={debounce(() => navigation.push("Test"), 300)}
                     size="small"
                 />
                 <FAB
                     icon="wrench-outline"
-                    style={[styles.fab, styles.fabRight]}
+                    style={[styles.fab, styles.fabRight, {display:"none"}]}
                     onPress={() => console.log("Pressed wrench")}
                     size="small"
                 />
                 <FAB.Group
-                    style={[{paddingRight: windowWidth / 2.85},styles.fab]}
+                    style={[styles.fab]}
                     open={open}
+                    visible
                     icon="account-plus-outline"
                     actions={[
                         {
@@ -43,7 +44,7 @@ const FloatingGroupMain = ({navigation}) => {
                         },
                     ]}
                     onStateChange={onStateChange}
-                    backdropColor= "transparent"
+                    backdropColor="transparent"
                 />
             </View>
     );
@@ -55,12 +56,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         backgroundColor: "transparent",
-        bottom: -2500,
+        bottom: -500,
         position: "absolute"
     },
     fab: {
         marginHorizontal: 16,
-        marginTop: -2560,
+        marginTop: -560,
         height: 40
     },
     fabLeft: {

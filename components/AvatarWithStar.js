@@ -32,7 +32,8 @@ const AvatarWithStar = (props) => {
 
 const styles = StyleSheet.create({
     starIconButton: {
-        margin: 0
+        margin: 0,
+        display: "none"
     }
 });
 
