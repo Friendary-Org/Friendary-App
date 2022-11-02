@@ -120,10 +120,10 @@ const CategoryList = (props) => {
                             index={index} />
                     ))}
                 </List.Section>)}
-            {editable == undefined && newCategories.length < 0&&
+            {editable == undefined && newCategories.length == 0 &&
                 <React.Fragment>
                     <Text variant="bodyLarge" style={{ marginBottom: 10 }}>No categories yet!</Text>
-                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />Button</Text>
+                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />button</Text>
                     <Text variant="bodyLarge">in the top right of your screen</Text>
                 </React.Fragment>
             }

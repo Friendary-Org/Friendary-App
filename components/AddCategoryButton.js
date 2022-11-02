@@ -21,7 +21,7 @@ const AddCategoryButton = (props) => {
             anchor={<Button style={{marginTop: "2%"}} icon="plus" mode="outlined" onPress={() => openMenu()}>
                 Add Category
             </Button>}>
-            <Menu.Item leadingIcon="plus" onPress={debounce(() => {closeMenu(); navigation.push("Create Category")},300)} title="Create new Category         " />
+            <Menu.Item leadingIcon="plus" onPress={debounce(() => {closeMenu(); navigation.push("Create Category")},300)} title="Create new category         " />
             <Divider bold />
             {categoryList.map((category) => (
                 <React.Fragment key={category.uid}>

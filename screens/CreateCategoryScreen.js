@@ -73,14 +73,14 @@ const CreateCategoryScreen = ({ route, navigation }) => {
             <Text style={styles.header} variant="headlineMedium">Create new category</Text>
             <TextInput
                 style={styles.input}
-                label="Category Name*"
+                label="Name*"
                 value={categoryName}
                 onChangeText={categoryName => setCategoryName(categoryName)}
                 mode="outlined"
             />
             <TextInput
                 style={styles.input}
-                label="Set Emoji"
+                label="Emoji*"
                 mode="outlined"
                 value={icon}
                 onChangeText={onChangeText}
