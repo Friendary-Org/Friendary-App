@@ -41,7 +41,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("New friend created successfully!");
                 setSnackBarVisible(true);
-                debounce(() => navigation.goBack(), 1500);
+                setTimeOut(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }

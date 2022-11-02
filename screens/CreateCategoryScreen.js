@@ -36,7 +36,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
                 setSnackBarMessage("New category created successfully!");
                 setSnackBarVisible(true);
-                debounce(() => navigation.goBack(), 1500);
+                setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error while saving category: " + error.message)
             }
