@@ -97,7 +97,7 @@ const CategoryList = (props) => {
     return (
         <View style={styles.categoryContainer}>
             {editable && <AddCategoryButton categoryList={unusedCategories} addCallback={addCategory} selectedCategories={newCategories} navigation={navigation} />}
-            {newCategories.length > 0 ?
+            {newCategories.length > 0 &&
                 (<List.Section title="Categories" style={{ width: "80%" }}>
                     {newCategories.map((cat, index) => (
                         <Category
@@ -108,10 +108,11 @@ const CategoryList = (props) => {
                             changeEntriesCallback={changeEntries}
                             index={index} />
                     ))}
-                </List.Section>) :
+                </List.Section>)}
+            {editable == undefined &&
                 <React.Fragment>
-                    <Text variant="bodyLarge" style={{marginBottom: 10}}>No categories yet!</Text>
-                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{margin: 0}} size={20}/>Button</Text>
+                    <Text variant="bodyLarge" style={{ marginBottom: 10 }}>No categories yet!</Text>
+                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />Button</Text>
                     <Text variant="bodyLarge">in the top right of your screen</Text>
                 </React.Fragment>
             }
