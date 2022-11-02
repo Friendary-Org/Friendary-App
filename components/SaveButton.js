@@ -3,7 +3,7 @@ import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
 
 const SaveButton = (props) => {
-    const {callback} = props;
+    const {callback, disabled} = props;
 
     return (
             <View style={styles.navContainer}>
@@ -13,6 +13,7 @@ const SaveButton = (props) => {
                     style={[styles.fab]}
                     onPress={() => callback()}
                     size="medium"
+                    disabled={disabled != undefined?true:false}
                 />
             </View>
     );
