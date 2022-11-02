@@ -117,7 +117,8 @@ const CategoryList = (props) => {
                             editable={editable ? editable : undefined}
                             deleteCallback={deleteCategory}
                             changeEntriesCallback={changeEntries}
-                            index={index} />
+                            index={index}
+                            navigation={navigation}/>
                     ))}
                 </List.Section>)}
             {editable == undefined && newCategories.length == 0 &&

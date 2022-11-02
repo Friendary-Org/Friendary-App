@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
+import { TextInput, HelperText, Text, Snackbar, Button } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { debounce } from 'lodash';
 import {DeviceEventEmitter} from "react-native";
@@ -8,7 +8,7 @@ import SaveButton from "../components/SaveButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from "../components/BackButton";
 
-const CreateCategoryScreen = ({ route, navigation }) => {
+const EditCategoryScreen = ({ route, navigation }) => {
     const [categoryList, setcategoryList] = React.useState([]);
     const [categoryName, setCategoryName] = React.useState(route.params.categoryName);
     const [icon, setIcon] = React.useState(route.params.icon);
@@ -90,6 +90,14 @@ const CreateCategoryScreen = ({ route, navigation }) => {
             <HelperText type="error" visible={validateText()}>
                 Can only be a single emoji
             </HelperText>
+            <Button icon="trash-can-outline"
+                        mode="outlined"
+                        onPress={() => deleteFriend()}
+                        textColor="red"
+                        style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : { width: "40%" }]}
+                        disabled={fabDisabled ? true : undefined}>
+                        Delete Category
+            </Button>
             <SaveButton callback={saveCategory} disabled={fabDisabled ? true : undefined}/>
             <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
@@ -119,6 +127,11 @@ const styles = StyleSheet.create({
         width: "100%",
         paddingBottom: "20%"
     },
+    deleteButton: {
+        borderColor: "red",
+        alignSelf: "center",
+        marginTop: "2%"
+    }
 });
 
-export default CreateCategoryScreen;
+export default EditCategoryScreen;
