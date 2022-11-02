@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions, Keyboard } from "react-native";
-import { TextInput, Text} from 'react-native-paper';
+import { TextInput, Text, Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FriendEntry from './FriendEntry';
 
@@ -16,51 +16,64 @@ const BirthdateEntry = (props) => {
     };
 
     if (editable === undefined) {
-        return(
+        return (
             <View style={styles.birthdateContainer}>
-                        <Text
-                            style={[{ width: "100%" },{textAlign: "center"}]} variant="bodyLarge"
-                        > Birthdate: {date.toLocaleDateString()}</Text>
+                <Text
+                    style={[{ width: "100%" }, { textAlign: "center" }]} variant="bodyLarge"
+                > Birthdate: {date.toLocaleDateString()}</Text>
             </View>
         )
     } else {
-        return (
-            <View style={styles.birthdateContainer}>
-                {Platform.OS == "ios" ?
-                    <React.Fragment>
-                        <TextInput
-                            style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
-                            label="Birthdate"
-                            mode="outlined"
-                            editable={false}
-                            outlineColor="transparent"
-                        />
-                        <DateTimePicker
-                            style={[{ width: "45%" }, { marginTop: "2%" }]}
-                            value={date}
-                            onChange={onChange}
-                        />
-                    </React.Fragment>
+        if (date.toDateString() != new Date().toDateString()) {
+            return (
+                <View style={styles.birthdateContainer}>
+                    {Platform.OS == "ios" ?
+                        <React.Fragment>
+                            <TextInput
+                                style={[{ width: "50%" }, { backgroundColor: "transparent" }]}
+                                label="Birthdate"
+                                mode="outlined"
+                                editable={false}
+                                outlineColor="transparent"
+                            />
+                            <DateTimePicker
+                                style={[{ width: "45%" }, { marginTop: "2%" }]}
+                                value={date}
+                                onChange={onChange}
+                            />
+                        </React.Fragment>
+                        :
+                        <React.Fragment>
+                            <TextInput
+                                style={[{ width: "100%" }, { marginTop: "2%" }]}
+                                label="Birthdate"
+                                mode="outlined"
+                                value={date.toLocaleDateString()}
+                                onFocus={() => setShow(true)}
 
-                    :
-                    <React.Fragment>
-                        <TextInput
-                            style={[{ width: "100%" },{marginTop: "2%"}]}
-                            label="Birthdate"
-                            mode="outlined"
-                            value={date.toLocaleDateString()}
-                            onFocus={() => setShow(true)}
+                            />
+                            {show && <DateTimePicker
+                                style={[{ width: "45%" }, { marginTop: "2%" }]}
+                                value={date}
+                                onChange={onChange}
+                            />}
+                        </React.Fragment>
+                    }
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.birthdateContainer}>
+                    <Button icon="plus"
+                        mode="outlined"
+                        onPress={() => setDate(new Date(date.getFullYear() - 20, date.getMonth(), date.getDate()))}
+                        style={styles.addBirthdate}>
+                        Add Birthdate
+                    </Button>
+                </View>
+            )
+        }
 
-                        />
-                        {show && <DateTimePicker
-                            style={[{ width: "45%" }, { marginTop: "2%" }]}
-                            value={date}
-                            onChange={onChange}
-                        />}
-                    </React.Fragment>
-                }
-            </View>
-        );
     }
 }
 
@@ -69,6 +82,11 @@ const styles = StyleSheet.create({
         width: "80%",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center"
+    },
+    addBirthdate: {
+        alignSelf: "center",
+        marginTop: "2%"
     },
 });
 

@@ -63,19 +63,19 @@ const BigAvatar = (props) => {
 
 const styles = StyleSheet.create({
     icon: {
-        backgroundColor: "#80D8F7",
+        backgroundColor: "#EADDFF",
     },
     upload: {
         position: "absolute",
         marginLeft: avatarSize * 0.65,
         marginTop: avatarSize * 0.65,
-        backgroundColor: "#80D8F7",
+        backgroundColor: "#EADDFF",
     },
     description: {
         position: "absolute",
         marginRight: avatarSize * 0.65,
         marginTop: avatarSize * 0.65,
-        backgroundColor: "#80D8F7",
+        backgroundColor: "#EADDFF",
     },
     avatarContainer: {
         flexDirection: "row",

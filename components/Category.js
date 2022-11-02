@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     },
     addEntry: {
         alignSelf: "center",
-        backgroundColor: "#80D8F7",
+        backgroundColor: "#EADDFF",
     },
 });
 
