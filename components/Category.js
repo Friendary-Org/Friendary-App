@@ -68,7 +68,7 @@ const Category = (props) => {
                     style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
                     icon="pencil-outline"
                     size={20}
-                    onPress={debounce(() =>navigation.push("Edit Category",{categoryName: category.name, icon: category.icon}), 300)}
+                    onPress={debounce(() =>navigation.push("Edit Category",{category}), 300)}
                     mode="outlined"
                 />
             </View>

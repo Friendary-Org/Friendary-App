@@ -10,10 +10,14 @@ import BackButton from "../components/BackButton";
 
 const EditCategoryScreen = ({ route, navigation }) => {
     const [categoryList, setcategoryList] = React.useState([]);
-    const [categoryName, setCategoryName] = React.useState(route.params.categoryName);
-    const [icon, setIcon] = React.useState(route.params.icon);
+    const oldCategory = route.params.category;
+    const [categoryName, setCategoryName] = React.useState(oldCategory.name);
+    const [icon, setIcon] = React.useState(oldCategory.icon);
     const onChangeText = text => setIcon(text);
+    const [friendList, setFriendList] = React.useState([]);
     const [fabDisabled, setfabDisabled] = React.useState(false);
+
+
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("");
     const onDismissSnackBar = () => setSnackBarVisible(false);
@@ -31,20 +35,45 @@ const EditCategoryScreen = ({ route, navigation }) => {
             setSnackBarMessage("Please enter a valid category icon!");
             setSnackBarVisible(true);
         } else {
-            //THIS NEEDS TO BE CHANGED
-            let newUid = Math.max(...categoryList.map(o => o.uid)) + 1;
-            let newCategory = { uid: newUid, name: categoryName, icon: icon, entries: [""] };
+            oldCategory.entries =[""];
+            let newCategoryList = categoryList.map((cat) => {
+                if(cat.uid===oldCategory.uid){
+                    cat.name = categoryName;
+                    cat.icon = icon;
+                    return cat
+                }else{
+                    return cat
+                }
+            });
             
             try {
-                await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
-                DeviceEventEmitter.emit("event.createdCategory", newCategory);
-                setSnackBarMessage("New category created successfully!");
+                await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
+                setSnackBarMessage("Category edited successfully!");
                 setSnackBarVisible(true);
                 setfabDisabled(true);
                 setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error while saving category: " + error.message)
             }
+            
+            await fetchData();
+            let test = friendList.map((friend)=>{
+                if(friend.categories.includes(oldCategory.uid)){
+                    console.log("MATCH")
+                }
+            })
+        }
+    }
+
+    const fetchData = async () => {
+        try {
+            const contacts = await AsyncStorage.getItem('contacts');
+            if (contacts != null)
+                setFriendList(JSON.parse(contacts))
+            else
+                setFriendList([])
+        } catch (error) {
+            console.log("error retrieving data: " + error.message)
         }
     }
 
@@ -72,7 +101,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.containerView}>
-            <Text style={styles.header} variant="headlineMedium">Create new category</Text>
+            <Text style={styles.header} variant="headlineMedium">Edit category</Text>
             <TextInput
                 style={styles.input}
                 label="Name*"
