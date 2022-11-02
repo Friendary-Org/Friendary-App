@@ -106,9 +106,9 @@ const ImportFriendScreen = ({ navigation }) => {
         }
     }
 
-    const setChecked = (contactName, newCheckedState) => {
+    const setChecked = (contactId, newCheckedState) => {
         const updatedContactList = contactList.map((contact) => {
-            if (contact.name == contactName) {
+            if (contact.id == contactId) {
                 contact.checked = newCheckedState
             }
             return contact
