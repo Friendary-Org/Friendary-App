@@ -35,6 +35,13 @@ const BirthdateEntry = (props) => {
                                 mode="outlined"
                                 editable={false}
                                 outlineColor="transparent"
+                                right={<TextInput.Icon 
+                                    style={[styles.deleteBirthdate,]}
+                                    icon="trash-can-outline"
+                                    size={20}
+                                    onPress={() => setDate(new Date())}
+                                    mode="outlined"
+                                />}
                             />
                             <DateTimePicker
                                 style={[{ width: "45%" }, { marginTop: "2%" }]}
@@ -50,7 +57,13 @@ const BirthdateEntry = (props) => {
                                 mode="outlined"
                                 value={date.toLocaleDateString()}
                                 onFocus={() => setShow(true)}
-
+                                right={<TextInput.Icon 
+                                    style={[styles.deleteBirthdate,]}
+                                    icon="trash-can-outline"
+                                    size={20}
+                                    onPress={() => setDate(new Date())}
+                                    mode="outlined"
+                                />}
                             />
                             {show && <DateTimePicker
                                 style={[{ width: "45%" }, { marginTop: "2%" }]}
@@ -87,6 +100,9 @@ const styles = StyleSheet.create({
     addBirthdate: {
         alignSelf: "center",
         marginTop: "2%"
+    },
+    deleteBirthdate: {
+        backgroundColor: "#EADDFF",
     },
 });
 
