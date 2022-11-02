@@ -7,7 +7,6 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 
-import ContactList from "../components/ContactList";
 import ContactEntry from '../components/ContactEntry';
 import SearchBar from "../components/SearchBar";
 import BackButton from "../components/BackButton";
@@ -146,20 +145,22 @@ const ImportFriendScreen = ({ navigation }) => {
         navigation.goBack();
     }
 
-    const Item = (contact) => (
-        <React.Fragment key={contact.id}>
-            <ContactEntry contact={contact.item.item} setChecked={setChecked} />
-            <Divider />
-        </React.Fragment>
-    );
-
-    const renderItem = (item) => {
+    const renderItem = (data) => {
         return (
-            <Item
-                item={item}
-            />
+            <React.Fragment key={data.id}>
+                <ContactEntry contact={data.item} setChecked={setChecked} />
+                <Divider />
+            </React.Fragment>
         );
     };
+
+    const filterContactList = () => {
+        let filteredContacts = contactList.filter((contact) => 
+            {if(contact.name !== undefined)
+                return contact.name.toLowerCase().includes(filterString.toLowerCase())}
+        );
+        return filteredContacts;
+    }
 
     return (
         <React.Fragment>
@@ -171,9 +172,10 @@ const ImportFriendScreen = ({ navigation }) => {
                 <SearchBar setFilterString={setFilterString} />
             </View>
 
-            {error == "" ?
+            {error == "" ? 
+
                 <FlatList
-                    data={contactList}
+                    data={filterContactList()}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                 /> :
@@ -181,7 +183,7 @@ const ImportFriendScreen = ({ navigation }) => {
             }
 
             <View style={styles.selectButtonContainer}>
-                <Button style={styles.selectButton} mode="contained" onPress={() => importSelectedContacts()}>Import</Button>
+                <Button style={styles.selectButton} mode="contained" onPress={() => filterList()}>Import</Button>
             </View>
             <BackButton navigation={navigation} />
         </React.Fragment>
