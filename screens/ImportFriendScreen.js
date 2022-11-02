@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ScrollView, FlatList } from 'react-native';
-import { Button, Divider } from "react-native-paper";
+import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { Button, Divider, Text, FAB } from "react-native-paper";
 import * as Contacts from 'expo-contacts';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -155,52 +155,50 @@ const ImportFriendScreen = ({ navigation }) => {
     };
 
     const filterContactList = () => {
-        let filteredContacts = contactList.filter((contact) => 
-            {if(contact.name !== undefined)
-                return contact.name.toLowerCase().includes(filterString.toLowerCase())}
+        let filteredContacts = contactList.filter((contact) => {
+            if (contact.name !== undefined)
+                return contact.name.toLowerCase().includes(filterString.toLowerCase())
+        }
         );
         return filteredContacts;
     }
 
     return (
         <React.Fragment>
-            <View style={styles.importTextContainer}>
-                <Text style={styles.importText}>Import from Contacts</Text>
-            </View>
-
             <View style={styles.searchContainer}>
                 <SearchBar setFilterString={setFilterString} />
             </View>
 
-            {error == "" ? 
+            {error == "" ?
 
                 <FlatList
                     data={filterContactList()}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                 /> :
-                <Text style={styles.errorText}>{error}</Text>
+                <Text variant="titleMedium" style={[{ alignSelf: "center" }, { marginTop: "20%" }]}>{error}</Text>
             }
 
-            <View style={styles.selectButtonContainer}>
-                <Button style={styles.selectButton} mode="contained" onPress={() => filterList()}>Import</Button>
+            <View style={styles.importButtonContainer}>
+                <FAB
+                    icon="import"
+                    size="medium"
+                    label="Import"
+                    style={styles.importButton}
+                    onPress={debounce(() => importSelectedContacts(), 500)}
+                />
             </View>
+
             <BackButton navigation={navigation} />
         </React.Fragment>
     );
 }
 
 const styles = StyleSheet.create({
-    importTextContainer: {
+    searchContainer: {
         justifyContent: "center",
         paddingTop: Constants.statusBarHeight,
-        height: "6%",
-        backgroundColor: "#A1C8E8"
-    },
-    importText: {
-        paddingLeft: 8,
-        fontSize: 16,
-        fontWeight: "bold",
+        backgroundColor: "#F7F6F6"
     },
     errorText: {
         textAlign: "center",
@@ -212,14 +210,16 @@ const styles = StyleSheet.create({
         height: "20%",
         backgroundColor: "#F7F6F6" //main background color
     },
-    selectButtonContainer: {
-        marginBottom: 85,
+    importButtonContainer: {
         width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
+        position: "absolute",
+        backgroundColor: "transparent",
+        bottom: "10%",
+        left: -800
     },
-    selectButton: {
-        marginTop: 10
+    importButton: {
+        marginLeft: Dimensions.get("screen").width / 2 + 740,
+        width: 120
     },
 });
 
