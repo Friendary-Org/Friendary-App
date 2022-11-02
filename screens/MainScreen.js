@@ -1,15 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IconButton, Text } from 'react-native-paper';
+import { IconButton, Text, Divider } from 'react-native-paper';
 import { PaperSelect } from 'react-native-paper-select';
 import { useIsFocused } from '@react-navigation/native';
+import Constants from 'expo-constants';
 
 import SearchBar from "../components/SearchBar";
 import FriendList from "../components/FriendList";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
-import Constants from 'expo-constants';
+
 
 
 const MainScreen = ({ navigation }) => {
@@ -28,6 +29,7 @@ const MainScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
+        fetchCategoryList();
     }, [isFocused]);
 
     useEffect(() => {
@@ -67,15 +69,6 @@ const MainScreen = ({ navigation }) => {
         }
     }
 
-    const removeContacts = async () => {
-        try {
-            await AsyncStorage.removeItem('contacts');
-            console.log("removal successful");
-        } catch (error) {
-            console.log("removal failed: " + error.message)
-        }
-    }
-
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
@@ -105,21 +98,21 @@ const MainScreen = ({ navigation }) => {
 
             </View>
 
-            <ScrollView style={styles.scrollView}>
-                {friendList !== undefined && friendList.length > 0 ?
-                    <FriendList friendList={friendList}
-                        filterString={filterString}
-                        filterType={filterType}
-                        navigation={navigation}
-                    /> :
-                    <View style={[{ padding: 12 },{alignItems: "center"}]}>
-                        <Text variant="bodyLarge" style={{marginBottom: 10}}>no friends to display</Text>
-                        <Text variant="bodyLarge">add some using the <IconButton icon="account-plus-outline" style={{ marginTop: 0 }} size={20} /> Button</Text>
-                        <Text variant="bodyLarge">you can either import existing contacts</Text>
-                        <Text variant="bodyLarge">or create new contacts within Friendary</Text>
-                    </View>
-                }
-            </ScrollView>
+
+            {friendList !== undefined && friendList.length > 0 ?
+                <FriendList friendList={friendList}
+                    filterString={filterString}
+                    filterType={filterType}
+                    navigation={navigation}
+                /> :
+                <View style={[{ padding: 12 }, { alignItems: "center" }]}>
+                    <Text variant="bodyLarge" style={{ marginBottom: 10 }}>no friends to display</Text>
+                    <Text variant="bodyLarge">add some using the <IconButton icon="account-plus-outline" style={{ marginTop: 0 }} size={20} /> Button</Text>
+                    <Text variant="bodyLarge">you can either import existing contacts</Text>
+                    <Text variant="bodyLarge">or create new contacts within Friendary</Text>
+                </View>
+            }
+
 
             <FloatingButtonsMain navigation={navigation} />
         </React.Fragment>
