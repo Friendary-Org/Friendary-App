@@ -39,8 +39,12 @@ const CategoryList = (props) => {
             DeviceEventEmitter.addListener("event.createdCategory", async (eventData) => {
                 addCategory(eventData);
             });
+            DeviceEventEmitter.addListener("event.changedCategory", async (eventData) => {
+                changeCategory(eventData);
+            });
             return () => {
-                DeviceEventEmitter.removeAllListeners("event.createdCategory")
+                DeviceEventEmitter.removeAllListeners("event.createdCategory");
+                DeviceEventEmitter.removeAllListeners("event.changedCategory");
             };
         }
         
@@ -59,6 +63,16 @@ const CategoryList = (props) => {
     const addCategory = (category) => {
         setCategories([...newCategories, category]);
         setUnusedCategories(unusedCategories.filter((cat) => cat.uid !== category.uid));
+    }
+    const changeCategory = (changedCategory) => {
+        let changedCategoryList = newCategories.map((cat) => {
+            if(cat.uid === changedCategory.uid){
+                cat.name = changedCategory.name;
+                cat.icon = changedCategory.icon;
+            }
+            return cat;
+        })
+        setCategories(changedCategoryList);
     }
     const deleteCategory = async (index) => {
         let value = await confirm();
