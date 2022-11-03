@@ -3,11 +3,13 @@ import { Searchbar } from 'react-native-paper';
 
 const SearchBar = (props) => {
   const [ searchQuery, setSearchQuery ] = React.useState('');
-  const { setFilterString } = props;
+  const { setFilterString, setSearchbarFocused } = props;
   const onChangeSearch = query => {setSearchQuery(query); setFilterString(query)};
 
   return (
     <Searchbar
+        onFocus={() => setSearchbarFocused(true)} 
+        onBlur={() => setSearchbarFocused(false)} 
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}

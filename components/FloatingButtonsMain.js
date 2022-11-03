@@ -1,5 +1,6 @@
+import { debounce } from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View, Dimensions, Text } from "react-native";
 import { FAB } from "react-native-paper";
 
 const FloatingGroupMain = ({navigation}) => {
@@ -10,39 +11,40 @@ const FloatingGroupMain = ({navigation}) => {
     const windowWidth = Dimensions.get('window').width;
 
     const { open } = state;
-
+    
     return (
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
-                    style={[styles.fab, styles.fabLeft]}
-                    onPress={() => navigation.push("Test")}
+                    style={[styles.fab, styles.fabLeft, {display:"none"}]}
+                    onPress={debounce(() => navigation.push("Test"), 300)}
                     size="small"
                 />
                 <FAB
                     icon="wrench-outline"
-                    style={[styles.fab, styles.fabRight]}
+                    style={[styles.fab, styles.fabRight, {display:"none"}]}
                     onPress={() => console.log("Pressed wrench")}
                     size="small"
                 />
                 <FAB.Group
-                    style={[{paddingRight: windowWidth / 2.56, margin: 0}]}
+                    style={[styles.fab]}
                     open={open}
+                    visible
                     icon="account-plus-outline"
                     actions={[
                         {
                             icon: 'plus',
                             label: 'Create Friend',
-                            onPress: () => navigation.push("Create Friend"),
+                            onPress: debounce(() => navigation.push("Create Friend"), 300),
                         },
                         {
                             icon: 'import',
                             label: 'Import Friend',
-                            onPress: () => navigation.push("ImportFriend"),
+                            onPress: debounce(() => navigation.push("ImportFriend"),300),
                         },
                     ]}
                     onStateChange={onStateChange}
-                    backdropColor= "transparent"
+                    backdropColor="transparent"
                 />
             </View>
     );
@@ -54,11 +56,13 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         backgroundColor: "transparent",
-        position: "absolute",
-        bottom: 0,
+        bottom: -500,
+        position: "absolute"
     },
     fab: {
-        margin: 16,
+        marginHorizontal: 16,
+        marginTop: -560,
+        height: 40
     },
     fabLeft: {
         justifyContent: "flex-start",

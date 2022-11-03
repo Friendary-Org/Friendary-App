@@ -3,12 +3,14 @@ import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView, Alert } f
 import { TextInput, Snackbar, Text, Button } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import { debounce } from 'lodash';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
-import SaveButton from '../components/Savebutton';
+import SaveButton from '../components/SaveButton';
 
 const EditFriendScreen = ({ route, navigation }) => {
     const friend = route.params.friend;
@@ -16,6 +18,7 @@ const EditFriendScreen = ({ route, navigation }) => {
     const [description, setDescription] = React.useState(friend.description);
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState(friend.categories);
+    const [fabDisabled, setfabDisabled] = React.useState(false);
 
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("")
@@ -25,6 +28,7 @@ const EditFriendScreen = ({ route, navigation }) => {
     const [avatar, setAvatar] = React.useState(null)
 
     const save = async () => {
+        console.log(newCategories)
         if (name != "") {
             let changedFriend = {
                 id: friend.id,
@@ -49,7 +53,8 @@ const EditFriendScreen = ({ route, navigation }) => {
                 setSnackBarMessage("Friend edited successfully!");
                 setSnackBarVisible(true);
                 changedFriend.birthday = changedFriend.birthday.toString();
-                setTimeout(() => navigation.navigate("View Friend", { friend: changedFriend }), 1500);
+                setfabDisabled(true);
+                setTimeout(() => navigation.navigate("View Friend", { friendId: changedFriend.id }), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
             }
@@ -66,11 +71,15 @@ const EditFriendScreen = ({ route, navigation }) => {
             `Do you want to delete ${friend.name} from your list? This can't be reverted`,
             [
                 {
-                    text: "No",
+                    text: "cancel",
                     onPress: () => resolve("false"),
                     style: "cancel"
                 },
-                { text: "Yes", onPress: () => resolve("true") }
+                { 
+                    text: "delete",
+                    onPress: () => resolve("true"),
+                    style: "destructive"
+                }
             ]
         );
     });
@@ -78,7 +87,7 @@ const EditFriendScreen = ({ route, navigation }) => {
     const deleteFriend = async () => {
         let value = await confirm();
 
-        if (value=="true") {
+        if (value == "true") {
             let contacts = await _fetchContacts();
 
             contacts = contacts.filter(c => c.id != friend.id);
@@ -87,6 +96,7 @@ const EditFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("Friend deleted successfully!");
                 setSnackBarVisible(true);
+                setfabDisabled(true);
                 setTimeout(() => navigation.popToTop(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
@@ -117,58 +127,59 @@ const EditFriendScreen = ({ route, navigation }) => {
     }, []);
 
     return (
-        <KeyboardAvoidingView style={styles.containerView}
-            behavior={"padding"}>
-            <ScrollView contentContainerStyle={styles.scrollView}>
-                <View style={styles.baseInfo}>
-                    <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar} />
-                    <TextInput
-                        style={styles.input}
-                        label="Name*"
+        <React.Fragment>
+            <KeyboardAvoidingView style={styles.containerView}
+                behavior={"padding"}>
+                <ScrollView contentContainerStyle={styles.scrollView}>
+                    <View style={styles.baseInfo}>
+                        <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar} />
+                        <TextInput
+                            style={styles.input}
+                            label="Name*"
+                            mode="outlined"
+                            value={name}
+                            onChangeText={name => setName(name)}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            label="Description"
+                            mode="outlined"
+                            value={description}
+                            onChangeText={desc => setDescription(desc)}
+                        />
+                        <BirthdateEntry date={date} setDate={setDate} editable />
+                    </View>
+                    <View style={styles.lineStyle} />
+                    <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation} />
+                    <Button icon="trash-can-outline"
                         mode="outlined"
-                        value={name}
-                        onChangeText={name => setName(name)}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        label="Description"
-                        mode="outlined"
-                        value={description}
-                        onChangeText={desc => setDescription(desc)}
-                    />
-                    <BirthdateEntry date={date} setDate={setDate} editable />
-                </View>
-                <View style={styles.lineStyle} />
-                <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation} />
-                <Button icon="trash-can-outline"
-                    mode="outlined"
-                    onPress={() => deleteFriend()}
-                    textColor="red"
-                    style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : {width: "40%"}]}>
-                    Delete Friend
-                </Button>
-            </ScrollView>
+                        onPress={() => deleteFriend()}
+                        textColor="red"
+                        style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : { width: "40%" }]}
+                        disabled={fabDisabled ? true : undefined}>
+                        Delete Friend
+                    </Button>
+                </ScrollView>
 
-            <SaveButton callback={save} />
-            <BackButton navigation={navigation} />
+
+            </KeyboardAvoidingView>
+            <SaveButton callback={save} disabled={fabDisabled ? true : undefined}/>
+            <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}
                 onDismiss={onDismissSnackBar}>
                 {snackBarMessage}
             </Snackbar>
-        </KeyboardAvoidingView>
-
+        </React.Fragment>
     );
 };
 
 const styles = StyleSheet.create({
     containerView: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        marginTop: "10%",
+        paddingTop: Constants.statusBarHeight,
         backgroundColor: "#F7F6F6",
         width: "100%",
+        height: "100%"
     },
     baseInfo: {
         flex: 1,

@@ -4,19 +4,17 @@ import { List, Text, IconButton } from 'react-native-paper';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import CategoryEntry from './CategoryEntry';
+import { debounce } from 'lodash';
 
 const Category = (props) => {
-    const { category, editable, deleteCallback, index, changeEntriesCallback } = props;
+    const { category, editable, deleteCallback, index, changeEntriesCallback, navigation } = props;
     const [newEntries, setEntries] = React.useState(category.entries);
     useEffect(() => {
         let uuidEntries = category.entries.map(item => {
             return { uid: uuidv4(), value: item };
         })
         setEntries(uuidEntries)
-    }, [category]);
-
-    
-    
+    }, []);   
 
     const addEntry = () => {
         const changedEntries = [...newEntries, { uid: uuidv4(), value: "" }];
@@ -29,6 +27,7 @@ const Category = (props) => {
         setEntries(changedEntries);
     }
     const changeEntry = (index, value) => {
+        console.log("trigger")
         const changedEntries = newEntries.map((e, i) => {
             if (i === index) {
                 e.value = value;
@@ -43,8 +42,9 @@ const Category = (props) => {
     }
 
     return (
+        <View style={styles.accordionContainer}>
         <List.Accordion
-            style={[{ backgroundColor: "#F7F6F6" }]}
+            style={styles.accordionHeader}
             title={category.name}
             left={props => <Text>{category.icon}</Text>}>
             <View style={styles.categoryEntryContainer}>
@@ -65,23 +65,42 @@ const Category = (props) => {
                     onPress={() => deleteCallback(index)}
                     mode="outlined"
                 />
+                <IconButton
+                    style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
+                    icon="pencil-outline"
+                    size={20}
+                    onPress={debounce(() =>navigation.push("Edit Category",{category}), 300)}
+                    mode="outlined"
+                />
             </View>
         </List.Accordion>
+        </View>
     )
 
 
 }
 
 const styles = StyleSheet.create({
+    accordionContainer: {
+        backgroundColor: "#ececec",
+        borderRadius: 15,
+        marginBottom: 10
+    },
+    accordionHeader: {
+        backgroundColor: "#ececec",
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+    },
     categoryEntryContainer: {
         flexDirection: "row",
         flexWrap: "wrap",
         paddingLeft: "5%",
-        justifyContent: "center"
+        justifyContent: "center",
+        alignItems: "center",
     },
     addEntry: {
         alignSelf: "center",
-        backgroundColor: "#80D8F7",
+        backgroundColor: "#EADDFF",
     },
 });
 

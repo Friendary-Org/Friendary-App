@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from "react-native";
 import { FAB } from "react-native-paper";
+import { debounce } from 'lodash';
 
-const BackButton = ({navigation}) => {
+const BackButton = ({navigation, disabled}) => {
 
     return (
             <View style={styles.navContainer}>
                 <FAB
                     icon="arrow-left-top"
                     style={[styles.fab]}
-                    onPress={() => navigation.goBack()}
+                    onPress={debounce(() => navigation.goBack(),300)}
                     size="small"
+                    disabled={disabled != undefined? true : false}
                 />
 
             </View>
@@ -20,15 +22,14 @@ const BackButton = ({navigation}) => {
 const styles = StyleSheet.create({
     navContainer: {
         width: "100%",
-        justifyContent: "center",
         position: "absolute",
-        alignItems: "center",
         backgroundColor: "transparent",
-        bottom: 0,
+        left: -800,
+        bottom: "3%",
     },
     fab: {
-        margin: 32,
-        backgroundColor: "#80D8F7"
+        marginLeft: Dimensions.get("screen").width / 2 + 780,
+        width: 40
     },
 });
 

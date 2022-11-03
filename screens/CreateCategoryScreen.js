@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
-import SaveButton from "../components/Savebutton";
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from "react-native"
+import { debounce } from 'lodash';
+import { DeviceEventEmitter } from "react-native";
+
+import SaveButton from "../components/SaveButton";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackButton from "../components/BackButton";
 
@@ -10,7 +13,7 @@ const CreateCategoryScreen = ({ route, navigation }) => {
     const [categoryName, setCategoryName] = React.useState("");
     const [icon, setIcon] = React.useState("");
     const onChangeText = text => setIcon(text);
-
+    const [fabDisabled, setfabDisabled] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("");
     const onDismissSnackBar = () => setSnackBarVisible(false);
@@ -32,8 +35,10 @@ const CreateCategoryScreen = ({ route, navigation }) => {
             let newCategory = { uid: newUid, name: categoryName, icon: icon, entries: [""] };
             try {
                 await AsyncStorage.setItem('categories', JSON.stringify([...categoryList, newCategory]));
+                DeviceEventEmitter.emit("event.createdCategory", newCategory);
                 setSnackBarMessage("New category created successfully!");
                 setSnackBarVisible(true);
+                setfabDisabled(true);
                 setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error while saving category: " + error.message)
@@ -58,42 +63,48 @@ const CreateCategoryScreen = ({ route, navigation }) => {
 
     useEffect(() => {
         fetchCategoryList();
+        return () => {
+            DeviceEventEmitter.removeAllListeners("event.createdCategory")
+        };
     }, []);
 
     return (
-        <View style={styles.containerView}>
-            <Text style={styles.header} variant="headlineMedium">Create new category</Text>
-            <TextInput
-                style={styles.input}
-                label="Category Name*"
-                value={categoryName}
-                onChangeText={categoryName => setCategoryName(categoryName)}
-                mode="outlined"
-            />
-            <TextInput
-                style={styles.input}
-                label="Set Emoji"
-                mode="outlined"
-                value={icon}
-                onChangeText={onChangeText}
-            />
-            <HelperText type="error" visible={validateText()}>
-                Can only be a single emoji
-            </HelperText>
-            <SaveButton callback={saveCategory}></SaveButton>
-            <BackButton navigation={navigation} />
-            <Snackbar
-                visible={snackBarVisible}
-                onDismiss={onDismissSnackBar}>
-                {snackBarMessage}
-            </Snackbar>
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.containerView}>
+                <Text style={styles.header} variant="headlineMedium">Create new category</Text>
+                <TextInput
+                    style={styles.input}
+                    label="Name*"
+                    value={categoryName}
+                    onChangeText={categoryName => setCategoryName(categoryName)}
+                    mode="outlined"
+                />
+                <TextInput
+                    style={styles.input}
+                    label="Emoji*"
+                    mode="outlined"
+                    value={icon}
+                    onChangeText={onChangeText}
+                />
+                <HelperText type="error" visible={validateText()}>
+                    Can only be a single emoji
+                </HelperText>
+                <SaveButton callback={saveCategory} disabled={fabDisabled ? true : undefined} />
+                <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined} />
+                <Snackbar
+                    visible={snackBarVisible}
+                    onDismiss={onDismissSnackBar}>
+                    {snackBarMessage}
+                </Snackbar>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 
 const styles = StyleSheet.create({
     header: {
-        alignSelf: "center"
+        alignSelf: "center",
+        marginTop: "60%"
     },
     input: {
         width: "80%",
@@ -102,12 +113,11 @@ const styles = StyleSheet.create({
     containerView: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: "center",
         alignContent: "center",
         alignItems: "center",
         backgroundColor: "#F7F6F6",
         width: "100%",
-        paddingBottom: "20%"
+        paddingBottom: "30%"
     },
 });
 

@@ -3,19 +3,21 @@ import { ScrollView, View, StyleSheet, Platform, KeyboardAvoidingView } from 're
 import { TextInput, Snackbar, Text } from 'react-native-paper';
 import { v4 as uuidv4 } from 'uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import { debounce } from 'lodash';
 
 import BackButton from "../components/BackButton";
 import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
-import SaveButton from '../components/Savebutton';
+import SaveButton from '../components/SaveButton';
 
 const CreateFriendScreen = ({ route, navigation }) => {
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [date, setDate] = React.useState(new Date());
     const [newCategories, setCategories] = React.useState([]);
-
+    const [fabDisabled, setfabDisabled] = React.useState(false);
     const [snackBarVisible, setSnackBarVisible] = React.useState(false);
     const [snackBarMessage, setSnackBarMessage] = React.useState("")
 
@@ -39,6 +41,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('contacts', JSON.stringify(contacts));
                 setSnackBarMessage("New friend created successfully!");
                 setSnackBarVisible(true);
+                setfabDisabled(true);
                 setTimeout(() => navigation.goBack(), 1500);
             } catch (error) {
                 console.log("error retrieving data: " + error.message);
@@ -87,8 +90,8 @@ const CreateFriendScreen = ({ route, navigation }) => {
                 <View style={styles.lineStyle} />
                 <CategoryList editable newCategories={newCategories} setCategories={setCategories} navigation={navigation}/>
             </ScrollView>
-            <SaveButton callback={save} />
-            <BackButton navigation={navigation} />
+            <SaveButton callback={save} disabled={fabDisabled ? true : undefined}/>
+            <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}
                 onDismiss={onDismissSnackBar}>
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        marginTop: "10%",
+        paddingTop: Constants.statusBarHeight,
         backgroundColor: "#F7F6F6",
         width: "100%",
     },
