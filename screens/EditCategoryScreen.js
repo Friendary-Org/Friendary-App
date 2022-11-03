@@ -27,8 +27,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
         return !regex.test(icon);
     }
 
-    const saveCategory = async () => {
-
+    const editCategory = async () => {
         if (categoryName == "") {
             setSnackBarMessage("Please enter a category name!");
             setSnackBarVisible(true);
@@ -63,7 +62,6 @@ const EditCategoryScreen = ({ route, navigation }) => {
                 await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
                 await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
                 DeviceEventEmitter.emit("event.changedCategory", newCategory);
-                console.log(newCategory)
                 setSnackBarMessage("Category edited successfully!");
                 setSnackBarVisible(true);
                 setfabDisabled(true);
@@ -72,6 +70,26 @@ const EditCategoryScreen = ({ route, navigation }) => {
                 console.log("error while saving category: " + error.message)
             }
             
+        }
+    }
+
+    const deleteCategory = async () => {
+        let newCategoryList = categoryList.filter((cat) => cat.uid!==oldCategory.uid);
+        let newFriendList = friendList.map((friend) => {
+            let friendCategories = friend.categories.filter((cat) => cat.uid!==oldCategory.uid);
+            friend.categories = friendCategories;
+            return friend
+        });
+        try {
+            await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
+            await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
+            DeviceEventEmitter.emit("event.deletedCategory", oldCategory);
+            setSnackBarMessage("Category deleted successfully!");
+            setSnackBarVisible(true);
+            setfabDisabled(true);
+            setTimeout(() => navigation.goBack(), 1500);
+        } catch (error) {
+            console.log("error while saving category: " + error.message)
         }
     }
 
@@ -106,7 +124,8 @@ const EditCategoryScreen = ({ route, navigation }) => {
         fetchFriendList();
         fetchCategoryList();
         return () => {
-            DeviceEventEmitter.removeAllListeners("event.createdCategory")
+            DeviceEventEmitter.removeAllListeners("event.changedCategory");
+            DeviceEventEmitter.removeAllListeners("event.deletedCategory")
           };
     }, []);
 
@@ -132,13 +151,13 @@ const EditCategoryScreen = ({ route, navigation }) => {
             </HelperText>
             <Button icon="trash-can-outline"
                         mode="outlined"
-                        onPress={() => deleteFriend()}
+                        onPress={() => deleteCategory()}
                         textColor="red"
                         style={[styles.deleteButton, Platform.OS == "ios" ? { width: "100%" } : { width: "40%" }]}
                         disabled={fabDisabled ? true : undefined}>
                         Delete Category
             </Button>
-            <SaveButton callback={saveCategory} disabled={fabDisabled ? true : undefined}/>
+            <SaveButton callback={editCategory} disabled={fabDisabled ? true : undefined}/>
             <BackButton navigation={navigation} disabled={fabDisabled ? true : undefined}/>
             <Snackbar
                 visible={snackBarVisible}

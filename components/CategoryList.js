@@ -42,9 +42,14 @@ const CategoryList = (props) => {
             DeviceEventEmitter.addListener("event.changedCategory", async (eventData) => {
                 changeCategory(eventData);
             });
+            DeviceEventEmitter.addListener("event.deletedCategory", async (eventData) => {
+                let index = newCategories.findIndex((cat) => cat.uid === eventData.uid);
+                setCategories([...newCategories.slice(0, index), ...newCategories.slice(index + 1)]);
+            });
             return () => {
                 DeviceEventEmitter.removeAllListeners("event.createdCategory");
                 DeviceEventEmitter.removeAllListeners("event.changedCategory");
+                DeviceEventEmitter.removeAllListeners("event.deletedCategory");
             };
         }
         
