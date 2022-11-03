@@ -53,6 +53,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
                     newCategory = editCategory;
                     newCategory.name = categoryName;
                     newCategory.icon = icon;
+                    console.log(newCategory)
                     friend.categories[friend.categories.findIndex((cat) => cat==editCategory)] = newCategory
                 }
                 return friend

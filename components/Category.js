@@ -27,6 +27,7 @@ const Category = (props) => {
         setEntries(changedEntries);
     }
     const changeEntry = (index, value) => {
+        console.log("trigger")
         const changedEntries = newEntries.map((e, i) => {
             if (i === index) {
                 e.value = value;

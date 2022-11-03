@@ -41,6 +41,7 @@ const CategoryList = (props) => {
             });
             DeviceEventEmitter.addListener("event.changedCategory", async (eventData) => {
                 changeCategory(eventData);
+
             });
             DeviceEventEmitter.addListener("event.deletedCategory", async (eventData) => {
                 let index = newCategories.findIndex((cat) => cat.uid === eventData.uid);
@@ -77,6 +78,7 @@ const CategoryList = (props) => {
             }
             return cat;
         })
+        console.log(changedCategoryList);
         setCategories(changedCategoryList);
     }
     const deleteCategory = async (index) => {

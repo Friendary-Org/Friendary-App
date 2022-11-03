@@ -16,11 +16,6 @@ const ViewFriendScreen = ({ route, navigation }) => {
     const [friend, setFriend] = React.useState(undefined)
     const isFocused = useIsFocused()
 
-    const [modalVisible, setModalVisible] = React.useState(false);
-
-    const showModal = () => setModalVisible(true);
-    const hideModal = () => setModalVisible(false);
-
     useEffect(() => {
         setFriend(undefined)
         fetchData(route.params.friendId);

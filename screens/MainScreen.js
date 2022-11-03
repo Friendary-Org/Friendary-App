@@ -29,7 +29,6 @@ const MainScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
-        fetchCategoryList();
     }, [isFocused]);
 
     useEffect(() => {
