@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect} from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';   
 import { PaperSelect } from 'react-native-paper-select';
 import { useIsFocused } from '@react-navigation/native';
@@ -17,12 +17,19 @@ const MainScreen = ({navigation}) => {
     const [ filterType, setFilterType ] = useState("Names");
     const [ categoryList, setcategoryList ] = React.useState([]);
     const [ filterOptions, setFilterOptions ] = useState(null);
+    const [ searchbarFocused, setSearchbarFocused ] = React.useState(false);
     const isFocused = useIsFocused();
 
     useEffect(() => {
         fetchData();
         fetchCategoryList();
     }, []);
+
+    useEffect(() => {
+        if (!searchbarFocused) {
+            Keyboard.dismiss();
+        }
+    }, [searchbarFocused]);
 
     useEffect(() => {
         fetchData();
@@ -77,15 +84,15 @@ const MainScreen = ({navigation}) => {
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
+                <SearchBar setFilterString={setFilterString} setSearchbarFocused={setSearchbarFocused}/>
 
-                <SearchBar setFilterString={setFilterString}/>
-
-                {filterOptions && <PaperSelect 
+                {filterOptions && <PaperSelect
                     label = "active filter"
                     arrayList = {[...filterOptions.list]}
                     selectedArrayList = {filterOptions.selectedList}
                     textInputMode = "flat"
                     multiEnable = {false}
+                    hideSearchBox = {true}
                     value = {filterOptions.value} 
                     onSelection = {(value) => {
                         setFilterOptions({
@@ -100,7 +107,6 @@ const MainScreen = ({navigation}) => {
                     modalCloseButtonText="cancel"
                     modalDoneButtonText="select"
                 />}
-
             </View>
 
             <ScrollView style={styles.scrollView}>
