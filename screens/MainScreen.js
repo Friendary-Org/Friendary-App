@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IconButton, Text, Divider } from 'react-native-paper';
 import { PaperSelect } from 'react-native-paper-select';
@@ -15,17 +15,24 @@ import FloatingButtonsMain from "../components/FloatingButtonsMain";
 
 const MainScreen = ({ navigation }) => {
 
-    const [friendList, setFriendList] = useState([]);
-    const [filterString, setFilterString] = useState("");
-    const [filterType, setFilterType] = useState("Names");
-    const [categoryList, setcategoryList] = React.useState([]);
-    const [filterOptions, setFilterOptions] = useState(null);
+    const [ friendList, setFriendList ] = useState([]);
+    const [ filterString, setFilterString ] = useState("");
+    const [ filterType, setFilterType ] = useState("Names");
+    const [ categoryList, setcategoryList ] = React.useState([]);
+    const [ filterOptions, setFilterOptions ] = useState(null);
+    const [ searchbarFocused, setSearchbarFocused ] = React.useState(false);
     const isFocused = useIsFocused();
 
     useEffect(() => {
         fetchData();
         fetchCategoryList();
     }, []);
+
+    useEffect(() => {
+        if (!searchbarFocused) {
+            Keyboard.dismiss();
+        }
+    }, [searchbarFocused]);
 
     useEffect(() => {
         fetchData();
@@ -71,17 +78,17 @@ const MainScreen = ({ navigation }) => {
     return (
         <React.Fragment>
             <View style={styles.searchContainer}>
-
-                <SearchBar setFilterString={setFilterString} />
+                <SearchBar setFilterString={setFilterString} setSearchbarFocused={setSearchbarFocused}/>
 
                 {filterOptions && <PaperSelect
-                    label="Active filter"
-                    arrayList={[...filterOptions.list]}
-                    selectedArrayList={filterOptions.selectedList}
-                    textInputMode="flat"
-                    multiEnable={false}
-                    value={filterOptions.value}
-                    onSelection={(value) => {
+                    label = "Active filter"
+                    arrayList = {[...filterOptions.list]}
+                    selectedArrayList = {filterOptions.selectedList}
+                    textInputMode = "flat"
+                    multiEnable = {false}
+                    hideSearchBox = {true}
+                    value = {filterOptions.value} 
+                    onSelection = {(value) => {
                         setFilterOptions({
                             ...filterOptions,
                             value: value.text,
@@ -94,7 +101,6 @@ const MainScreen = ({ navigation }) => {
                     modalCloseButtonText="cancel"
                     modalDoneButtonText="select"
                 />}
-
             </View>
 
 
