@@ -28,6 +28,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
     }
 
     const saveCategory = async () => {
+
         if (categoryName == "") {
             setSnackBarMessage("Please enter a category name!");
             setSnackBarVisible(true);
@@ -36,6 +37,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
             setSnackBarVisible(true);
         } else {
             oldCategory.entries =[""];
+            let newCategory = {};
             let newCategoryList = categoryList.map((cat) => {
                 if(cat.uid===oldCategory.uid){
                     cat.name = categoryName;
@@ -46,8 +48,22 @@ const EditCategoryScreen = ({ route, navigation }) => {
                 }
             });
             
+            let newFriendList = friendList.map((friend)=>{
+                let editCategory = friend.categories.find((cat) => cat.uid === oldCategory.uid);
+                if(editCategory !== undefined){  
+                    newCategory = editCategory;
+                    newCategory.name = categoryName;
+                    newCategory.icon = icon;
+                    friend.categories[friend.categories.findIndex((cat) => cat==editCategory)] = newCategory
+                }
+                return friend
+            })
+
             try {
                 await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
+                await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
+                DeviceEventEmitter.emit("event.changedCategory", newCategory);
+                console.log(newCategory)
                 setSnackBarMessage("Category edited successfully!");
                 setSnackBarVisible(true);
                 setfabDisabled(true);
@@ -56,16 +72,10 @@ const EditCategoryScreen = ({ route, navigation }) => {
                 console.log("error while saving category: " + error.message)
             }
             
-            await fetchData();
-            let test = friendList.map((friend)=>{
-                if(friend.categories.includes(oldCategory.uid)){
-                    console.log("MATCH")
-                }
-            })
         }
     }
 
-    const fetchData = async () => {
+    const fetchFriendList = async () => {
         try {
             const contacts = await AsyncStorage.getItem('contacts');
             if (contacts != null)
@@ -93,6 +103,7 @@ const EditCategoryScreen = ({ route, navigation }) => {
     }
 
     useEffect(() => {
+        fetchFriendList();
         fetchCategoryList();
         return () => {
             DeviceEventEmitter.removeAllListeners("event.createdCategory")
