@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar, Button } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { debounce } from 'lodash';
 import {DeviceEventEmitter} from "react-native";
 
@@ -74,7 +74,9 @@ const EditCategoryScreen = ({ route, navigation }) => {
     }
 
     const deleteCategory = async () => {
-        let newCategoryList = categoryList.filter((cat) => cat.uid!==oldCategory.uid);
+        let value = await confirm();
+        if(value == "true"){
+            let newCategoryList = categoryList.filter((cat) => cat.uid!==oldCategory.uid);
         let newFriendList = friendList.map((friend) => {
             let friendCategories = friend.categories.filter((cat) => cat.uid!==oldCategory.uid);
             friend.categories = friendCategories;
@@ -91,7 +93,27 @@ const EditCategoryScreen = ({ route, navigation }) => {
         } catch (error) {
             console.log("error while saving category: " + error.message)
         }
+        }
     }
+
+    const confirm = async () => new Promise((resolve) => {
+        Alert.alert(
+            "Delete Category",
+            `Do you want to completly delete this category? \n This category will be removed from all friends! \n This can't be reverted`,
+            [
+                {
+                    text: "cancel",
+                    onPress: () => resolve("false"),
+                    style: "cancel"
+                },
+                {
+                    text: "delete",
+                    onPress: () => resolve("true"),
+                    style: "destructive"
+                }
+            ]
+        );
+    });
 
     const fetchFriendList = async () => {
         try {
