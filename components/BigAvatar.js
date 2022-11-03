@@ -7,7 +7,7 @@ const avatarSize = 128;
 
 const BigAvatar = (props) => {
 
-    const IMAGE = { default: require(`../assets/avatar_neutral.jpg`) }
+    const IMAGE = { default: require(`../assets/avatar.png`) }
     const { editable, setAvatar, preloadedAvatar } = props;
 
     const [hasGalleryPermission, setHasGalleryPermission] = useState(null);

@@ -6,7 +6,7 @@ import { Avatar, IconButton } from "react-native-paper";
 const AvatarWithStar = (props) => {
 
     const { avatar } = props;
-    const IMAGE = {default: require(`../assets/avatar_neutral.jpg`)}
+    const IMAGE = {default: require(`../assets/avatar.png`)}
 
     return (
         <React.Fragment>
