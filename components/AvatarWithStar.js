@@ -6,7 +6,7 @@ import { Avatar, IconButton } from "react-native-paper";
 const AvatarWithStar = (props) => {
 
     const { avatar } = props;
-    const IMAGE = {default: require(`../assets/avatar_neutral.jpg`)}
+    const IMAGE = {default: require(`../assets/avatar.png`)}
 
     return (
         <React.Fragment>
@@ -32,7 +32,8 @@ const AvatarWithStar = (props) => {
 
 const styles = StyleSheet.create({
     starIconButton: {
-        margin: 0
+        margin: 0,
+        display: "none"
     }
 });
 
