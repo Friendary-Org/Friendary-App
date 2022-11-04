@@ -55,7 +55,7 @@ const CategoryTab = (props) => {
                     icon="plus"
                     style={styles.fab}
                     label="Create category"
-                    onPress={() => console.log('Pressed')}
+                    onPress={debounce(() => navigation.push("Create Category"),300)}
                 />
             </View>
         </React.Fragment>
