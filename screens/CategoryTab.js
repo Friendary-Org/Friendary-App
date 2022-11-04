@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import { StyleSheet, FlatList, View, Dimensions } from "react-native";
-import { Divider, List, Text, FAB } from "react-native-paper";
+import { Avatar, List, Text, FAB } from "react-native-paper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { debounce } from 'lodash';
 
@@ -32,14 +32,16 @@ const CategoryTab = (props) => {
 
     const renderItem = (data) => {
         return (
-            <View key={data.id} style={[{ alignItems: "center" }]}>
+            <View key={data.id} style={styles.categoryContainer}>
                 <List.Item
                     title={data.item.name}
                     left={() => <Text variant={'headlineSmall'}>{data.item.icon}</Text>}
                     onPress={debounce(() => navigation.push("Edit Category", { category: data.item }), 300)}
-                    style={styles.item}
                 />
-                <Divider />
+                <View style={styles.avatarContainer}>
+
+                </View>
+
             </View>
         )
     }
@@ -55,7 +57,7 @@ const CategoryTab = (props) => {
                     icon="plus"
                     style={styles.fab}
                     label="Create category"
-                    onPress={debounce(() => navigation.push("Create Category"),300)}
+                    onPress={debounce(() => navigation.push("Create Category"), 300)}
                 />
             </View>
         </React.Fragment>
@@ -63,11 +65,11 @@ const CategoryTab = (props) => {
 }
 
 const styles = StyleSheet.create({
-    item: {
-        width: "95%"
-    },
-    deleteCategory: {
-        backgroundColor: "#EADDFF",
+    categoryContainer: {
+        marginHorizontal: "2%",
+        marginTop: "2%",
+        backgroundColor: "#ececec",
+        borderRadius: 15
     },
     addContainer: {
         width: "100%",
@@ -75,6 +77,10 @@ const styles = StyleSheet.create({
         backgroundColor: "transparent",
         bottom: "3%",
         left: -800
+    },
+    avatarContainer: {
+        width: "100%",
+        flexDirection: "row",
     },
     fab: {
         marginLeft: Dimensions.get("screen").width / 2 + 720,
