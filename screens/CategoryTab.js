@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useIsFocused } from '@react-navigation/native';
-import { StyleSheet, FlatList, View } from "react-native";
-import { Divider, List, Text, IconButton } from "react-native-paper";
+import { StyleSheet, FlatList, View, Dimensions } from "react-native";
+import { Divider, List, Text, FAB } from "react-native-paper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { debounce } from 'lodash';
 
 const CategoryTab = (props) => {
     const isFocused = useIsFocused();
@@ -32,21 +32,14 @@ const CategoryTab = (props) => {
 
     const renderItem = (data) => {
         return (
-            <View key={data.id} style={[{alignItems: "center"}]}>
+            <View key={data.id} style={[{ alignItems: "center" }]}>
                 <List.Item
                     title={data.item.name}
                     left={() => <Text variant={'headlineSmall'}>{data.item.icon}</Text>}
-                    onPress={() => navigation.push("Edit Category", {category: data.item})}
-                    right={() => <IconButton
-                        style={styles.deleteCategory}
-                        icon="trash-can-outline"
-                        size={20}
-                        onPress={() => console.log("test")}
-                        mode="outlined"
-                    />}
+                    onPress={debounce(() => navigation.push("Edit Category", { category: data.item }), 300)}
                     style={styles.item}
                 />
-                <Divider/>
+                <Divider />
             </View>
         )
     }
@@ -57,6 +50,14 @@ const CategoryTab = (props) => {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.uid}
             />
+            <View style={styles.addContainer}>
+                <FAB
+                    icon="plus"
+                    style={styles.fab}
+                    label="Create category"
+                    onPress={() => console.log('Pressed')}
+                />
+            </View>
         </React.Fragment>
     );
 }
@@ -68,6 +69,17 @@ const styles = StyleSheet.create({
     deleteCategory: {
         backgroundColor: "#EADDFF",
     },
+    addContainer: {
+        width: "100%",
+        position: "absolute",
+        backgroundColor: "transparent",
+        bottom: "3%",
+        left: -800
+    },
+    fab: {
+        marginLeft: Dimensions.get("screen").width / 2 + 720,
+        width: 160
+    }
 });
 
 export default CategoryTab;

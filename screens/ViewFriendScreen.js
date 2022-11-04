@@ -44,7 +44,7 @@ const ViewFriendScreen = ({ route, navigation }) => {
     }else{
         return (
             <KeyboardAvoidingView style={styles.containerView}
-                behavior={"padding"}>
+                behavior={"height"}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <View style={styles.baseInfo}>
                         <IconButton
