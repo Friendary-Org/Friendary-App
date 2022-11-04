@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         width: "100%",
+        paddingBottom: 200
     },
     deleteButton: {
         borderColor: "red",
