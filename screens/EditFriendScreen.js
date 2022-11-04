@@ -129,7 +129,7 @@ const EditFriendScreen = ({ route, navigation }) => {
     return (
         <React.Fragment>
             <KeyboardAvoidingView style={styles.containerView}
-                behavior={"padding"}>
+                behavior={"height"}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <View style={styles.baseInfo}>
                         <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar} />
