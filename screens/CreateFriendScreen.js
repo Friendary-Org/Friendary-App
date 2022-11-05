@@ -67,7 +67,7 @@ const CreateFriendScreen = ({ route, navigation }) => {
 
     return (
         <KeyboardAvoidingView style={styles.containerView}
-            behavior={"height"}>
+            behavior={Platform.OS == "ios"? "padding":null}>
             <ScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.baseInfo}>
                     <BigAvatar editable setAvatar={setAvatar}/>

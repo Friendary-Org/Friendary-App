@@ -11,6 +11,7 @@ import BigAvatar from "../components/BigAvatar";
 import CategoryList from '../components/CategoryList';
 import BirthdateEntry from '../components/BirthdateEntry';
 import SaveButton from '../components/SaveButton';
+import { ContactTypes } from 'expo-contacts';
 
 const EditFriendScreen = ({ route, navigation }) => {
     const friend = route.params.friend;
@@ -127,8 +128,8 @@ const EditFriendScreen = ({ route, navigation }) => {
 
     return (
         <React.Fragment>
-            <KeyboardAvoidingView style={styles.containerView}
-                behavior={"height"}>
+            <KeyboardAvoidingView style={styles.containerView} 
+                behavior={Platform.OS == "ios"? "padding":null}>
                 <ScrollView contentContainerStyle={styles.scrollView}>
                     <View style={styles.baseInfo}>
                         <BigAvatar editable setAvatar={setAvatar} preloadedAvatar={friend.avatar} />
