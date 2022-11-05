@@ -1,8 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, StyleSheet, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Keyboard } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IconButton, Text, Divider } from 'react-native-paper';
+import { IconButton, Text } from 'react-native-paper';
 import { PaperSelect } from 'react-native-paper-select';
 import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
@@ -12,16 +12,19 @@ import FriendList from "../components/FriendList";
 import FloatingButtonsMain from "../components/FloatingButtonsMain";
 
 
-
 const MainScreen = ({ navigation }) => {
 
     const [ friendList, setFriendList ] = useState([]);
-    const [ filterString, setFilterString ] = useState("");
-    const [ filterType, setFilterType ] = useState("Names");
     const [ categoryList, setcategoryList ] = React.useState([]);
-    const [ filterOptions, setFilterOptions ] = useState(null);
-    const [ searchbarFocused, setSearchbarFocused ] = React.useState(false);
     const isFocused = useIsFocused();
+
+    const [ filterString, setFilterString ] = useState("");
+    const [ searchbarFocused, setSearchbarFocused ] = React.useState(false);
+
+    const [ filterType, setFilterType ] = useState("Names");
+    const [ filterOptions, setFilterOptions ] = useState(null);
+    const [ filterOptionIndex, setFilterOptionIndex ] = useState(0);
+
 
     useEffect(() => {
         fetchData();
@@ -29,24 +32,40 @@ const MainScreen = ({ navigation }) => {
     }, []);
 
     useEffect(() => {
-        if (!searchbarFocused) {
+        if (!searchbarFocused)
             Keyboard.dismiss();
-        }
     }, [searchbarFocused]);
 
     useEffect(() => {
         fetchData();
+        fetchCategoryList();
     }, [isFocused]);
 
     useEffect(() => {
         if (categoryList !== null) {
             let filterOptions = [{ _id: -1, value: "Names" }]
-            categoryList.forEach((c) => { filterOptions.push({ _id: c.uid, value: c.name }) })
+            let useDefaultFilterType = true;
+
+            categoryList.forEach((c, idx) => { 
+                                    filterOptions.push({ _id: c.uid, value: c.name});
+
+                                    if (filterType.toLowerCase() === c.name.toLowerCase()) {
+                                        setFilterOptionIndex(idx + 1); 
+                                        useDefaultFilterType = false;
+                                    }
+                                });
+
+            if (useDefaultFilterType)
+                setFilterOptionIndex(0);
+            
+            if (filterOptions[filterOptionIndex] === undefined)
+                setFilterOptionIndex(0)
+            
 
             setFilterOptions({
-                value: "Names",
+                value: (filterOptions[filterOptionIndex] !== undefined ? filterOptions[filterOptionIndex].value : filterOptions[0].value),
                 list: filterOptions,
-                selectedList: [filterOptions[0]]
+                selectedList: [filterOptions[filterOptionIndex] !== undefined ? filterOptions[filterOptionIndex] : filterOptions[0]]
             })
         }
     }, [categoryList]);
