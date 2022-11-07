@@ -18,6 +18,7 @@ const FriendTab = ({ navigation }) => {
     const [filterOptions, setFilterOptions] = useState(null);
     const [searchbarFocused, setSearchbarFocused] = React.useState(false);
     const isFocused = useIsFocused();
+    const [ filterOptionIndex, setFilterOptionIndex ] = useState(0);
 
     useEffect(() => {
         fetchData();
@@ -32,17 +33,34 @@ const FriendTab = ({ navigation }) => {
 
     useEffect(() => {
         fetchData();
+        fetchCategoryList();
     }, [isFocused]);
 
     useEffect(() => {
         if (categoryList !== null) {
             let filterOptions = [{ _id: -1, value: "Names" }]
-            categoryList.forEach((c) => { filterOptions.push({ _id: c.uid, value: c.name }) })
+            let useDefaultFilterType = true;
+
+            categoryList.forEach((c, idx) => { 
+                                    filterOptions.push({ _id: c.uid, value: c.name});
+
+                                    if (filterType.toLowerCase() === c.name.toLowerCase()) {
+                                        setFilterOptionIndex(idx + 1); 
+                                        useDefaultFilterType = false;
+                                    }
+                                });
+
+            if (useDefaultFilterType)
+                setFilterOptionIndex(0);
+
+            if (filterOptions[filterOptionIndex] === undefined)
+                setFilterOptionIndex(0)
+
 
             setFilterOptions({
-                value: "Names",
+                value: (filterOptions[filterOptionIndex] !== undefined ? filterOptions[filterOptionIndex].value : filterOptions[0].value),
                 list: filterOptions,
-                selectedList: [filterOptions[0]]
+                selectedList: [filterOptions[filterOptionIndex] !== undefined ? filterOptions[filterOptionIndex] : filterOptions[0]]
             })
         }
     }, [categoryList]);
@@ -76,7 +94,7 @@ const FriendTab = ({ navigation }) => {
             <SearchBar setFilterString={setFilterString} setSearchbarFocused={setSearchbarFocused} />
 
             {filterOptions && <PaperSelect
-                label="Active filter"
+                label="Active Filter"
                 arrayList={[...filterOptions.list]}
                 selectedArrayList={filterOptions.selectedList}
                 textInputMode="flat"
@@ -93,8 +111,8 @@ const FriendTab = ({ navigation }) => {
 
                     value.selectedList.length > 0 ? setFilterType(value.text) : setFilterType("Names")
                 }}
-                modalCloseButtonText="cancel"
-                modalDoneButtonText="select"
+                modalCloseButtonText="Cancel"
+                modalDoneButtonText="Select"
             />}
 
 
@@ -105,10 +123,10 @@ const FriendTab = ({ navigation }) => {
                     navigation={navigation}
                 /> :
                 <View style={[{ padding: 12 }, { alignItems: "center" }]}>
-                    <Text variant="bodyLarge" style={{ marginBottom: 10 }}>no friends to display</Text>
-                    <Text variant="bodyLarge">add some using the <IconButton icon="account-plus-outline" style={{ marginTop: 0 }} size={20} /> Button</Text>
-                    <Text variant="bodyLarge">you can either import existing contacts</Text>
-                    <Text variant="bodyLarge">or create new contacts within Friendary</Text>
+                    <Text variant="bodyLarge" style={{ marginBottom: 10 }}>No friends to display!</Text>
+                    <Text variant="bodyLarge">Add some using the<IconButton icon="account-plus-outline" style={{ marginTop: 0 }} size={20} />button!</Text>
+                    <Text variant="bodyLarge">You can either import existing contacts</Text>
+                    <Text variant="bodyLarge">or create new contacts within Friendary.</Text>
                 </View>
             }
 

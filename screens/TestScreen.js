@@ -59,6 +59,7 @@ const TestScreen = ({navigation}) => {
     const removeCategories = async () => {
         try {
             await AsyncStorage.removeItem('categories');
+            await AsyncStorage.removeItem('firstBoot');
             console.log("removal successful");
         } catch (error) {
             console.log("removal failed: " + error.message)
