@@ -15,7 +15,7 @@ const ContactEntry = (props) => {
             right = {() => <Checkbox 
                                 status={contact.checked}
                                 disabled={contact.disabled}
-                                onPress={() => !contact.disabled ? setChecked(contact.name, determineNewCheckedState) : ""}
+                                onPress={() => !contact.disabled ? setChecked(contact.id, determineNewCheckedState) : ""}
                             /> 
                     }
         />

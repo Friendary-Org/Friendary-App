@@ -53,7 +53,6 @@ const EditCategoryScreen = ({ route, navigation }) => {
                     newCategory = editCategory;
                     newCategory.name = categoryName;
                     newCategory.icon = icon;
-                    console.log(newCategory)
                     friend.categories[friend.categories.findIndex((cat) => cat == editCategory)] = newCategory
                 }
                 return friend
@@ -62,7 +61,6 @@ const EditCategoryScreen = ({ route, navigation }) => {
             try {
                 await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
                 await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
-                DeviceEventEmitter.emit("event.changedCategory", newCategory);
                 setSnackBarMessage("Category edited successfully!");
                 setSnackBarVisible(true);
                 setfabDisabled(true);
@@ -76,31 +74,30 @@ const EditCategoryScreen = ({ route, navigation }) => {
 
     const deleteCategory = async () => {
         let value = await confirm();
-        if (value == "true") {
-            let newCategoryList = categoryList.filter((cat) => cat.uid !== oldCategory.uid);
-            let newFriendList = friendList.map((friend) => {
-                let friendCategories = friend.categories.filter((cat) => cat.uid !== oldCategory.uid);
-                friend.categories = friendCategories;
-                return friend
-            });
-            try {
-                await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
-                await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
-                DeviceEventEmitter.emit("event.deletedCategory", oldCategory);
-                setSnackBarMessage("Category deleted successfully!");
-                setSnackBarVisible(true);
-                setfabDisabled(true);
-                setTimeout(() => navigation.goBack(), 1500);
-            } catch (error) {
-                console.log("error while saving category: " + error.message)
-            }
+        if(value == "true"){
+            let newCategoryList = categoryList.filter((cat) => cat.uid!==oldCategory.uid);
+        let newFriendList = friendList.map((friend) => {
+            let friendCategories = friend.categories.filter((cat) => cat.uid!==oldCategory.uid);
+            friend.categories = friendCategories;
+            return friend
+        });
+        try {
+            await AsyncStorage.setItem('categories', JSON.stringify(newCategoryList));
+            await AsyncStorage.setItem('contacts', JSON.stringify(newFriendList));
+            setSnackBarMessage("Category deleted successfully!");
+            setSnackBarVisible(true);
+            setfabDisabled(true);
+            setTimeout(() => navigation.goBack(), 1500);
+        } catch (error) {
+            console.log("error while saving category: " + error.message)
+        }
         }
     }
 
     const confirm = async () => new Promise((resolve) => {
         Alert.alert(
             "Delete Category",
-            `Do you want to completly delete this category? \n This category will be removed from all friends! \n This can't be reverted`,
+            `Do you want to completly delete this category? \nThis category will be removed from all friends! \nThis can't be reverted`,
             [
                 {
                     text: "cancel",

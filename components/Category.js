@@ -27,7 +27,6 @@ const Category = (props) => {
         setEntries(changedEntries);
     }
     const changeEntry = (index, value) => {
-        console.log("trigger")
         const changedEntries = newEntries.map((e, i) => {
             if (i === index) {
                 e.value = value;
@@ -63,13 +62,6 @@ const Category = (props) => {
                     icon="trash-can-outline"
                     size={20}
                     onPress={() => deleteCallback(index)}
-                    mode="outlined"
-                />
-                <IconButton
-                    style={[styles.addEntry, editable == undefined ? { display: "none" } : {}]}
-                    icon="pencil-outline"
-                    size={20}
-                    onPress={debounce(() =>navigation.push("Edit Category",{category}), 300)}
                     mode="outlined"
                 />
             </View>

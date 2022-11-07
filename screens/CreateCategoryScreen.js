@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { TextInput, HelperText, Text, Snackbar } from "react-native-paper";
 import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from "react-native"
-import { debounce } from 'lodash';
 import { DeviceEventEmitter } from "react-native";
 
 import SaveButton from "../components/SaveButton";

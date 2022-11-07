@@ -29,7 +29,6 @@ const EditFriendScreen = ({ route, navigation }) => {
     const [avatar, setAvatar] = React.useState(null)
 
     const save = async () => {
-        console.log(newCategories)
         if (name != "") {
             let changedFriend = {
                 id: friend.id,

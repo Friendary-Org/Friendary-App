@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         width: "100%",
         position: "absolute",
         backgroundColor: "transparent",
-        bottom: "10%",
+        bottom: "11%",
         left: -800
     },
     fab: {

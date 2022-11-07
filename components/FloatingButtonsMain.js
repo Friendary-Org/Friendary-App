@@ -16,7 +16,7 @@ const FloatingGroupMain = ({navigation}) => {
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
-                    style={[styles.fab, styles.fabLeft, {display:"none"}]}
+                    style={[styles.fab, styles.fabLeft, {display:"flex"}]}
                     onPress={debounce(() => navigation.push("Test"), 300)}
                     size="small"
                 />
@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         backgroundColor: "transparent",
-        bottom: -500,
+        bottom: -2500,
         position: "absolute"
     },
     fab: {
         marginHorizontal: 16,
-        marginTop: -560,
+        marginTop: -2560,
         height: 40
     },
     fabLeft: {
