@@ -39,18 +39,8 @@ const CategoryList = (props) => {
             DeviceEventEmitter.addListener("event.createdCategory", async (eventData) => {
                 addCategory(eventData);
             });
-            DeviceEventEmitter.addListener("event.changedCategory", async (eventData) => {
-                changeCategory(eventData);
-
-            });
-            DeviceEventEmitter.addListener("event.deletedCategory", async (eventData) => {
-                let index = newCategories.findIndex((cat) => cat.uid === eventData.uid);
-                setCategories([...newCategories.slice(0, index), ...newCategories.slice(index + 1)]);
-            });
             return () => {
                 DeviceEventEmitter.removeAllListeners("event.createdCategory");
-                DeviceEventEmitter.removeAllListeners("event.changedCategory");
-                DeviceEventEmitter.removeAllListeners("event.deletedCategory");
             };
         }
         
@@ -70,17 +60,7 @@ const CategoryList = (props) => {
         setCategories([...newCategories, category]);
         setUnusedCategories(unusedCategories.filter((cat) => cat.uid !== category.uid));
     }
-    const changeCategory = (changedCategory) => {
-        let changedCategoryList = newCategories.map((cat) => {
-            if(cat.uid === changedCategory.uid){
-                cat.name = changedCategory.name;
-                cat.icon = changedCategory.icon;
-            }
-            return cat;
-        })
-        console.log(changedCategoryList);
-        setCategories(changedCategoryList);
-    }
+
     const deleteCategory = async (index) => {
         let value = await confirm();
         if (value == "true") {
@@ -145,8 +125,8 @@ const CategoryList = (props) => {
             {editable == undefined && newCategories.length == 0 &&
                 <React.Fragment>
                     <Text variant="bodyLarge" style={{ marginBottom: 10 }}>No categories yet!</Text>
-                    <Text variant="bodyLarge">Add some using the <IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />button</Text>
-                    <Text variant="bodyLarge">in the top right of your screen</Text>
+                    <Text variant="bodyLarge">Add some using the<IconButton icon="pencil-outline" style={{ margin: 0 }} size={20} />button</Text>
+                    <Text variant="bodyLarge">in the top right of your screen.</Text>
                 </React.Fragment>
             }
         </View >
