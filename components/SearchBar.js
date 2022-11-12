@@ -7,13 +7,20 @@ const SearchBar = (props) => {
   const onChangeSearch = query => {setSearchQuery(query); setFilterString(query)};
 
   return (
-    <Searchbar
+    (setSearchbarFocused !== undefined && setSearchbarFocused !== undefined ? 
+      <Searchbar
         onFocus={() => setSearchbarFocused(true)} 
         onBlur={() => setSearchbarFocused(false)} 
         placeholder="Search"
         onChangeText={onChangeSearch}
         value={searchQuery}
-    />
+      /> :
+      <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+      />
+    )
   );
 };
 
