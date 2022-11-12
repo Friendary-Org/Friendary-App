@@ -16,7 +16,7 @@ const FloatingGroupMain = ({navigation}) => {
             <View style={styles.navContainer}>
                 <FAB
                     icon="star-outline"
-                    style={[styles.fab, styles.fabLeft, {display:"flex"}]}
+                    style={[styles.fab, styles.fabLeft, {display:"none"}]}
                     onPress={debounce(() => navigation.push("Test"), 300)}
                     size="small"
                 />
